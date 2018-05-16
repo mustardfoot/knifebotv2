@@ -19,6 +19,9 @@ client.on('guildMemberAdd', function(member) {
      if(them){
        if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Enhanced Permissions")) >= 0){
          member.addRole(member.guild.roles.find("name","verified"));
+         member.user.createDM().then((boi) => {
+            boi.send('Welcome, '+member.user.username+'.');
+          });
        }else{
          member.user.createDM().then((boi) => {
             boi.send('You do not have the enhanced permissions role in Synapse.');
