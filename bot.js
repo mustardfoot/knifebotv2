@@ -6,11 +6,11 @@ client.on('ready', () => {
 });
 client.on('guildMemberAdd', function(member) {
  var serverjoined = member.guild;
- if(serverjoined.id === "446110564822024203"){
+ if(serverjoined.id === process.env.ENHANCED_SERVER){
    var theirid = member.user.id;
    var yeet = null;
    client.guilds.forEach(function(guild){
-     if(guild.id === "443971401741893635"){
+     if(guild.id === process.env.SYNAPSE_SERVER){
        yeet = guild;
      }
    })
