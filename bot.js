@@ -5,9 +5,8 @@ client.on('ready', () => {
   console.log('hell yeah');
 });
 client.on('guildMemberAdd', function(member) {
-  console.log('added');
  var serverjoined = member.guild;
- if(serverjoined === 446110564822024203){
+ if(serverjoined.id === 446110564822024203){
    console.log('right server');
    var theirid = member.user.id;
    var yeet = null;
