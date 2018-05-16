@@ -17,14 +17,17 @@ client.on('guildMemberAdd', function(member) {
    if(yeet !== null){
      var them = yeet.member(member.user);
      if(them){
-       if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Enhanced Permissions")) >= 0){
-         member.addRole(member.guild.roles.find("name","verified"));
+       if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Administrator")) >= 0){
+         member.addRole(member.guild.roles.find("name","admins"));
+         if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Enhanced Permissions")) >= 0){
+           member.addRole(member.guild.roles.find("name","enhanced perms"));
+         }
          member.user.createDM().then((boi) => {
             boi.send('Welcome, '+member.user.username+'.');
           });
        }else{
          member.user.createDM().then((boi) => {
-            boi.send('You do not have the enhanced permissions role in Synapse.');
+            boi.send('You do not have the admin role or higher in Synapse.');
            member.kick()
           });
        }
