@@ -33,7 +33,7 @@ client.on('guildMemberAdd', function(member) {
      }
    }else{
      member.user.createDM().then((boi) => {
-        boi.send('Sorry, the Synapse server has been recently deleted and the bot is not currently in it! We can't check if you're enhanced perms or not automatically.');
+        boi.send("Sorry, the Synapse server has been recently deleted and the bot is not currently in it! We can't check if you're enhanced perms or not automatically.");
      });
      console.log('bot is not in synapse');
    }
