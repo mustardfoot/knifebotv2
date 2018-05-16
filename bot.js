@@ -19,7 +19,7 @@ client.on('guildMemberAdd', function(member) {
      if(them){
        if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Moderator")) >= 0){
          member.addRole(member.guild.roles.find("name","mods"));
-         if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Administrators")) >= 0){
+         if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Administrator")) >= 0){
            member.addRole(member.guild.roles.find("name","admins"));
          }
          if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Enhanced Permissions")) >= 0){
