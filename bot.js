@@ -18,7 +18,7 @@ client.on('guildMemberAdd', function(member) {
    if(yeet !== null){
      var them = yeet.member(member.user);
      if(them){
-       if(them.highestRole && them.highestRole.comparePositionTo(message.member.guild.roles.find("name","Enhanced Permissions")) >= 0){
+       if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Enhanced Permissions")) >= 0){
          member.addRole(member.guild.roles.find("name","verified"));
        }else{
          member.user.createDM().then((boi) => {
