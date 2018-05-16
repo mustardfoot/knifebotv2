@@ -12,7 +12,7 @@ client.on('guildMemberAdd', function(member) {
    client.guilds.forEach(function(guild){
      if(guild.id === 443971401741893635){
        yeet = guild;
-     )
+     }
    })
    if(yeet !== null){
      ver them = yeet.member(member.user);
