@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-
+client.user.setActivity('the mods sleep', { type: 'WATCHING' });
 client.on('ready', () => {
   console.log('hell yeah');
 });
