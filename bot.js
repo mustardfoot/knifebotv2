@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 client.on('ready', () => {
   console.log('hell yeah');
-  client.user.setActivity('the mods sleep', { type: 'WATCHING' })
-    .catch(console.error);
+  client.user.setActivity('the staff team sleep', { type: 'WATCHING' })
+  .catch(console.error);
 });
 client.on('guildMemberAdd', function(member) {
  var serverjoined = member.guild;
