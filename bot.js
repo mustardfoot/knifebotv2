@@ -30,7 +30,7 @@ client.on('guildMemberAdd', function(member) {
           });
        }else{
          member.user.createDM().then((boi) => {
-            boi.send('You do not have the admin role or higher in Synapse.');
+            boi.send('You do not have the moderator role or higher in Synapse.');
            member.kick()
           });
        }
