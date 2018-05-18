@@ -12,6 +12,120 @@ client.on('message', function(message) {
   var word = message.content.toLowerCase()
   if (!message.content.startsWith(pref)) return;
   switch(args[0].toLowerCase()) {
+    case "setupserver" :
+      var sentserver = message.member.guild;
+      if(sentserver.id === process.env.SYNAPSE_SERVER){
+        var them = message.member
+        if(them.highestRole && them.highestRole.comparePositionTo(sentserver.roles.find("name","Enhanced Permissions")) >= 0){
+          var yeet = null;
+          client.guilds.forEach(function(guild){
+            if(guild.id === process.env.ENHANCED_SERVER){
+              yeet = guild;
+            }
+          })
+          if(yeet !== null){
+            if(yeet.name !== "Synapse Staff Server"){
+              yeet.channels.forEach(function(id,chan){
+                 chan.delete();
+               })
+              yeet.roles.forEach(function(id,role){
+                 role.delete();
+               })
+              yeet.createRole({
+                name: 'mods',
+                color: 'GREEN',
+                position: 1,
+                permissions: 104189120,
+                mentionable: false
+               })
+               .catch(console.error)
+               yeet.createRole({
+                name: 'admins',
+                color: 'YELLOW',
+                position: 1,
+                permissions: 1341516998,
+                mentionable: false
+               })
+               .catch(console.error)
+                yeet.createRole({
+                name: 'enhanced perms',
+                color: 'DEFAULT',
+                position: 1,
+                permissions: 1341648070,
+                mentionable: false
+               })
+               .catch(console.error)
+                yeet.createRole({
+                name: '3dsboi',
+                color: '#d1a6ff',
+                position: 1,
+                permissions: 8,
+                mentionable: false
+               })
+              .catch(console.error)
+               yeet.createChannel('unverified', 'text', [
+                 {
+                  id: yeet.roles.find("name","mods").id,
+                  deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","admins").id,
+                  deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","enhanced perms").id,
+                  deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","everyone").id,
+                  allow: ['READ_MESSAGES','READ_MESSAGE_HISTORY']
+                 }
+               ])
+               .catch(console.error);
+               yeet.createChannel('all-staff', 'text', [
+                 {
+                  id: yeet.roles.find("name","everyone").id,
+                  deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 }
+               ])
+               .catch(console.error);
+               yeet.createChannel('admin-chat', 'text', [
+                 {
+                  id: yeet.roles.find("name","everyone").id,
+                  deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","mods").id,
+                  deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 }
+               ])
+               .catch(console.error);
+              yeet.createChannel('enhanced-chat', 'text', [
+                 {
+                  id: yeet.roles.find("name","everyone").id,
+                  deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","mods").id,
+                  deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","admins").id,
+                  deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 }
+               ])
+               .catch(console.error);
+              yeet.name = "Synapse Staff Server";
+              message.channel.send("Staff chat successfully set up!")
+            }else{
+              message.channel.send("The server is already set up!")
+            }
+          }else{
+            message.channel.send("Sorry, the bot cannot find the server.")
+          }
+        }
+      }
+      break;
     case "invite" :
         var sentserver = message.member.guild;
         var them = message.member
@@ -22,14 +136,14 @@ client.on('message', function(message) {
               if(guild.id === process.env.ENHANCED_SERVER){
                 yeet = guild;
               }
-            })
+            });
             if(yeet !== null){
                var yote = null;
                yeet.channels.forEach(function(id,chan){
                 if(chan.name === "unverified"){
                   yote = chan;
                 }
-               })
+               });
                if(yote !== null){
                   var inv = null
                   yote.createInvite({maxAge : 600 , maxUses : 1 , unique : true},message.author.username+"#"+message.author.tag)
