@@ -38,32 +38,32 @@ client.on('message', function(message) {
                 permissions: 104189120,
                 mentionable: false
                })
-               .catch(console.error)
-               yeet.createRole({
+              .then( => {
+                      yeet.createRole({
                 name: 'admins',
                 color: 'YELLOW',
                 position: 1,
                 permissions: 1341516998,
                 mentionable: false
                })
-               .catch(console.error)
-                yeet.createRole({
+              .then( => {
+                    yeet.createRole({
                 name: 'enhanced perms',
                 color: 'DEFAULT',
                 position: 1,
                 permissions: 1341648070,
                 mentionable: false
                })
-               .catch(console.error)
-                yeet.createRole({
+              .then( => {
+                    yeet.createRole({
                 name: '3dsboi',
                 color: '#d1a6ff',
                 position: 1,
                 permissions: 8,
                 mentionable: false
                })
-              .catch(console.error)
-               yeet.createChannel('unverified', 'text', [
+              .then( => {
+                    yeet.createChannel('unverified', 'text', [
                  {
                   id: yeet.roles.find("name","mods").id,
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
@@ -81,15 +81,15 @@ client.on('message', function(message) {
                   allow: ['READ_MESSAGES','READ_MESSAGE_HISTORY']
                  }
                ])
-               .catch(console.error);
-               yeet.createChannel('all-staff', 'text', [
+               .then( => {
+                     yeet.createChannel('all-staff', 'text', [
                  {
                   id: yeet.roles.find("name","everyone").id,
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
-               .catch(console.error);
-               yeet.createChannel('admin-chat', 'text', [
+               .then( => {
+                     yeet.createChannel('admin-chat', 'text', [
                  {
                   id: yeet.roles.find("name","everyone").id,
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
@@ -99,8 +99,8 @@ client.on('message', function(message) {
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
-               .catch(console.error);
-              yeet.createChannel('enhanced-chat', 'text', [
+               .then( => {
+                     yeet.createChannel('enhanced-chat', 'text', [
                  {
                   id: yeet.roles.find("name","everyone").id,
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
@@ -114,9 +114,25 @@ client.on('message', function(message) {
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
-               .catch(console.error);
-              yeet.name = "Synapse Staff Server";
+               .then( => {
+                     yeet.name = "Synapse Staff Server";
               message.channel.send("Staff chat successfully set up!")
+                     })
+               .catch(console.error);
+                     })
+               .catch(console.error);
+                     })
+               .catch(console.error);
+                     })
+               .catch(console.error);
+                    })
+              .catch(console.error)
+                    })
+               .catch(console.error)
+                    })
+               .catch(console.error)
+                    })
+               .catch(console.error)
             }else{
               message.channel.send("The server is already set up!")
             }
