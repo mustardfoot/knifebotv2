@@ -145,7 +145,7 @@ client.on('message', function(message) {
                  }
                ])
                .then(() => {
-                     guild.setName('Synapse Staff Server')
+                     yeet.setName('Synapse Staff Server')
                       .then(() => {message.channel.send("Staff chat successfully set up!")})
                       .catch(console.error);
                      })
