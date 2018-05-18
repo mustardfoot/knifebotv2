@@ -14,7 +14,7 @@ client.on('message', function(message) {
   if (!message.content.startsWith(pref)) return;
   console.log('oof')
   switch(args[0].toLowerCase()) {
-      case "invite"
+    case "invite" :
         var sentserver = message.member.guild;
         var them = message.member
         if(sentserver.id === process.env.SYNAPSE_SERVER){
