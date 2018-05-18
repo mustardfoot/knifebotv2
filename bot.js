@@ -38,7 +38,7 @@ client.on('message', function(message) {
                 permissions: 104189120,
                 mentionable: false
                })
-              .then( {
+              .then(() => {
                       yeet.createRole({
                 name: 'admins',
                 color: 'YELLOW',
@@ -46,7 +46,7 @@ client.on('message', function(message) {
                 permissions: 1341516998,
                 mentionable: false
                })
-              .then( {
+              .then(() => {
                     yeet.createRole({
                 name: 'enhanced perms',
                 color: 'DEFAULT',
@@ -54,7 +54,7 @@ client.on('message', function(message) {
                 permissions: 1341648070,
                 mentionable: false
                })
-              .then( {
+              .then(() => {
                     yeet.createRole({
                 name: '3dsboi',
                 color: '#d1a6ff',
@@ -62,7 +62,7 @@ client.on('message', function(message) {
                 permissions: 8,
                 mentionable: false
                })
-              .then( {
+              .then(() => {
                     yeet.createChannel('unverified', 'text', [
                  {
                   id: yeet.roles.find("name","mods").id,
@@ -81,14 +81,14 @@ client.on('message', function(message) {
                   allow: ['READ_MESSAGES','READ_MESSAGE_HISTORY']
                  }
                ])
-               .then( {
+               .then(() => {
                      yeet.createChannel('all-staff', 'text', [
                  {
                   id: yeet.roles.find("name","everyone").id,
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
-               .then( {
+               .then(() => {
                      yeet.createChannel('admin-chat', 'text', [
                  {
                   id: yeet.roles.find("name","everyone").id,
@@ -99,7 +99,7 @@ client.on('message', function(message) {
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
-               .then( {
+               .then(() => {
                      yeet.createChannel('enhanced-chat', 'text', [
                  {
                   id: yeet.roles.find("name","everyone").id,
@@ -114,7 +114,7 @@ client.on('message', function(message) {
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
-               .then( {
+               .then(() => {
                      yeet.name = "Synapse Staff Server";
               message.channel.send("Staff chat successfully set up!")
                      })
