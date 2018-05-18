@@ -34,15 +34,15 @@ client.on('message', function(message) {
               yeet.createRole({
                 name: 'mods',
                 color: 'GREEN',
-                position: 4,
+                position: 1,
                 permissions: 104189120,
                 mentionable: false
                })
               .then(() => {
                       yeet.createRole({
                 name: 'admins',
-                color: 'YELLOW',
-                position: 3,
+                color: 'GOLD',
+                position: 2,
                 permissions: 1341516998,
                 mentionable: false
                })
@@ -50,7 +50,7 @@ client.on('message', function(message) {
                     yeet.createRole({
                 name: 'enhanced perms',
                 color: 'DEFAULT',
-                position: 2,
+                position: 3,
                 permissions: 1341648070,
                 mentionable: false
                })
@@ -58,7 +58,7 @@ client.on('message', function(message) {
                     yeet.createRole({
                 name: '3dsboi',
                 color: '#d1a6ff',
-                position: 1,
+                position: 4,
                 permissions: 8,
                 mentionable: false
                })
