@@ -25,6 +25,7 @@ client.on('message', function(message) {
           })
           if(yeet !== null){
             if(yeet.name !== "Synapse Staff Server"){
+              message.channel.send("Working...")
               yeet.channels.forEach(function(chan){
                  chan.delete();
                })
@@ -192,11 +193,8 @@ client.on('message', function(message) {
                 }
                });
                if(yote !== null){
-                  var inv = null
                   yote.createInvite({maxAge : 600 , maxUses : 1 , unique : true},message.author.username+"#"+message.author.tag)
-                  .then(invite => inv = invite)
-                  .catch(console.error);
-                  if(inv !== null){
+                  .then(inv => {if(inv !== null){
                     member.user.createDM().then((boi) => {
                       boi.send('Here is an invite to the mod chat (one use, expires 10 minutes after being sent): discord.gg/'+inv.code);
                       message.channel.send("An invite to the mod chat has been sent to your DMs, <@"+message.author.id+">!")
@@ -204,7 +202,8 @@ client.on('message', function(message) {
                     .catch(console.error);
                   }else{
                     message.channel.send("Sorry, the bot is currently unable to send invites, <@"+message.author.id+">. (error creating an invite)")
-                  }
+                  }})
+                  .catch(console.error);
                }else{
                   message.channel.send("Sorry, the bot is currently unable to send invites, <@"+message.author.id+">. (unverified channel not found)")
                }
