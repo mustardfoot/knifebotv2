@@ -195,7 +195,7 @@ client.on('message', function(message) {
                if(yote !== null){
                   yote.createInvite({maxAge : 600 , maxUses : 1 , unique : true},message.author.username+"#"+message.author.tag)
                   .then(inv => {if(inv !== null){
-                    member.user.createDM().then((boi) => {
+                    message.author.createDM().then((boi) => {
                       boi.send('Here is an invite to the mod chat (one use, expires 10 minutes after being sent): discord.gg/'+inv.code);
                       message.channel.send("An invite to the mod chat has been sent to your DMs, <@"+message.author.id+">!")
                     })
