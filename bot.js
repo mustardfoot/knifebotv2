@@ -30,7 +30,7 @@ client.on('message', function(message) {
                  chan.delete();
                })
               yeet.roles.forEach(function(role){
-                if(role.editable === true){
+                if(role.name !== "@everyone"){
                  role.delete();
                 }
                })
