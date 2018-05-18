@@ -42,13 +42,13 @@ client.on('message', function(message) {
                     })
                     .catch(console.error);
                   }else{
-                    message.channel.send("Sorry, the bot is currently unable to send invites, <@"+message.author.id+">.")
+                    message.channel.send("Sorry, the bot is currently unable to send invites, <@"+message.author.id+">. (error creating an invite)")
                   }
                }else{
-                  message.channel.send("Sorry, the bot is currently unable to send invites, <@"+message.author.id+">.")
+                  message.channel.send("Sorry, the bot is currently unable to send invites, <@"+message.author.id+">. (unverified channel not found)")
                }
             }else{
-              message.channel.send("Sorry, the bot is currently unable to send invites, <@"+message.author.id+">.")
+              message.channel.send("Sorry, the bot is currently unable to send invites, <@"+message.author.id+">. (staff server not found)")
             }
           }else{
             message.channel.send("Sorry, you need the moderator role or higher to join the staff chat, <@"+message.author.id+">.")
