@@ -36,7 +36,8 @@ client.on('message', function(message) {
                 color: 'GREEN',
                 position: 1,
                 permissions: 104189120,
-                mentionable: false
+                mentionable: false,
+                hoist: true
                })
               .then(() => {
                       yeet.createRole({
@@ -44,7 +45,8 @@ client.on('message', function(message) {
                 color: 'GOLD',
                 position: 2,
                 permissions: 1341516998,
-                mentionable: false
+                mentionable: false,
+                hoist: true
                })
               .then(() => {
                     yeet.createRole({
@@ -52,7 +54,8 @@ client.on('message', function(message) {
                 color: 'DEFAULT',
                 position: 3,
                 permissions: 1341648070,
-                mentionable: false
+                mentionable: false,
+                hoist: true
                })
               .then(() => {
                     yeet.createRole({
@@ -60,24 +63,25 @@ client.on('message', function(message) {
                 color: '#d1a6ff',
                 position: 4,
                 permissions: 8,
-                mentionable: false
+                mentionable: false,
+                hoist: true
                })
               .then(() => {
                     yeet.createChannel('unverified', 'text', [
                  {
-                  id: yeet.roles.find("name","mods").id,
+                  id: yeet.roles.find("name","mods"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  },
                  {
-                  id: yeet.roles.find("name","admins").id,
+                  id: yeet.roles.find("name","admins"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  },
                  {
-                  id: yeet.roles.find("name","enhanced perms").id,
+                  id: yeet.roles.find("name","enhanced perms"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  },
                  {
-                  id: yeet.roles.find("name","everyone").id,
+                  id: yeet.roles.find("name","everyone"),
                   allow: ['READ_MESSAGES','READ_MESSAGE_HISTORY']
                  }
                ])
@@ -155,7 +159,7 @@ client.on('message', function(message) {
             });
             if(yeet !== null){
                var yote = null;
-               yeet.channels.forEach(function(id,chan){
+               yeet.channels.forEach(function(chan){
                 if(chan.name === "unverified"){
                   yote = chan;
                 }
