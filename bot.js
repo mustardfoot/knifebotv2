@@ -92,6 +92,18 @@ client.on('message', function(message) {
                  {
                   id: yeet.roles.find("name","@everyone"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","mods"),
+                  allow: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","admins"),
+                  allow: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","enhanced perms"),
+                  allow: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
                .then(() => {
@@ -103,6 +115,14 @@ client.on('message', function(message) {
                  {
                   id: yeet.roles.find("name","mods"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","admins"),
+                  allow: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","enhanced perms"),
+                  allow: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
                .then(() => {
@@ -118,11 +138,16 @@ client.on('message', function(message) {
                  {
                   id: yeet.roles.find("name","admins"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
+                 },
+                 {
+                  id: yeet.roles.find("name","enhanced perms"),
+                  allow: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
                .then(() => {
-                     yeet.name = "Synapse Staff Server";
-              message.channel.send("Staff chat successfully set up!")
+                     guild.setName('Synapse Staff Server')
+                      .then(() => {message.channel.send("Staff chat successfully set up!")})
+                      .catch(console.error);
                      })
                .catch(console.error);
                      })
