@@ -13,8 +13,8 @@ client.on('message', function(message) {
   if (!message.content.startsWith(pref)) return;
   switch(args[0].toLowerCase()) {
     case "setupserver" :
-      var sentserver = message.member.guild;
-      if(sentserver.id === process.env.SYNAPSE_SERVER){
+      if(message.member && message.member.guild && message.member.guild.id === process.env.SYNAPSE_SERVER){
+        var sentserver = message.member.guild;
         var them = message.member
         if(them.highestRole && them.highestRole.comparePositionTo(sentserver.roles.find("name","Enhanced Permissions")) >= 0){
           var yeet = null;
@@ -175,9 +175,9 @@ client.on('message', function(message) {
       }
       break;
     case "invite" :
-        var sentserver = message.member.guild;
+        if(message.member && message.member.guild && message.member.guild.id === process.env.SYNAPSE_SERVER){
+          var sentserver = message.member.guild;
         var them = message.member
-        if(sentserver.id === process.env.SYNAPSE_SERVER){
           if(them.highestRole && them.highestRole.comparePositionTo(sentserver.roles.find("name","Moderator")) >= 0){
             var yeet = null;
             client.guilds.forEach(function(guild){
