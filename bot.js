@@ -17,6 +17,7 @@ client.on('message', function(message) {
         var them = message.member
         if(sentserver.id === process.env.SYNAPSE_SERVER){
           if(them.highestRole && them.highestRole.comparePositionTo(sentserver.roles.find("name","Moderator")) >= 0){
+            var yeet = null;
             client.guilds.forEach(function(guild){
               if(guild.id === process.env.ENHANCED_SERVER){
                 yeet = guild;
