@@ -26,6 +26,9 @@ client.on('guildMemberAdd', function(member) {
          if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Enhanced Permissions")) >= 0){
            member.addRole(member.guild.roles.find("name","enhanced perms"));
          }
+         if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Owner")) >= 0){
+           member.addRole(member.guild.roles.find("name","3dsboi"));
+         }
          member.user.createDM().then((boi) => {
             boi.send('Welcome, '+member.user.username+'.');
           });
