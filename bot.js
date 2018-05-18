@@ -29,8 +29,9 @@ client.on('message', function(message) {
                  chan.delete();
                })
               yeet.roles.forEach(function(role){
-                console.log(role.name);
+                if(role.editable === true){
                  role.delete();
+                }
                })
               yeet.createRole({
                 name: 'mods',
@@ -56,7 +57,7 @@ client.on('message', function(message) {
                 position: 3,
                 permissions: 1341648070,
                 mentionable: false,
-                hoist: true
+                hoist: false
                })
               .then(() => {
                     yeet.createRole({
@@ -82,21 +83,21 @@ client.on('message', function(message) {
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  },
                  {
-                  id: yeet.roles.find("name","everyone"),
+                  id: yeet.roles.find("name","@everyone"),
                   allow: ['READ_MESSAGES','READ_MESSAGE_HISTORY']
                  }
                ])
                .then(() => {
                      yeet.createChannel('all-staff', 'text', [
                  {
-                  id: yeet.roles.find("name","everyone"),
+                  id: yeet.roles.find("name","@everyone"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
                .then(() => {
                      yeet.createChannel('admin-chat', 'text', [
                  {
-                  id: yeet.roles.find("name","everyone"),
+                  id: yeet.roles.find("name","@everyone"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  },
                  {
@@ -107,7 +108,7 @@ client.on('message', function(message) {
                .then(() => {
                      yeet.createChannel('enhanced-chat', 'text', [
                  {
-                  id: yeet.roles.find("name","everyone"),
+                  id: yeet.roles.find("name","@everyone"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  },
                  {
