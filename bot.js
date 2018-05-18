@@ -10,15 +10,13 @@ client.on('message', function(message) {
   if (message.author.equals(client.user)) return;
   var args = message.content.substring(pref.length).split(" ");
   var word = message.content.toLowerCase()
-  console.log('eef')
   if (!message.content.startsWith(pref)) return;
-  console.log('oof')
   switch(args[0].toLowerCase()) {
     case "invite" :
         var sentserver = message.member.guild;
         var them = message.member
         if(sentserver.id === process.env.SYNAPSE_SERVER){
-          if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Moderator")) >= 0){
+          if(them.highestRole && them.highestRole.comparePositionTo(sentserver.roles.find("name","Moderator")) >= 0){
             client.guilds.forEach(function(guild){
               if(guild.id === process.env.ENHANCED_SERVER){
                 yeet = guild;
