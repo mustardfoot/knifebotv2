@@ -29,6 +29,7 @@ client.on('message', function(message) {
                  chan.delete();
                })
               yeet.roles.forEach(function(role){
+                console.log(role.name);
                  role.delete();
                })
               yeet.createRole({
@@ -88,33 +89,33 @@ client.on('message', function(message) {
                .then(() => {
                      yeet.createChannel('all-staff', 'text', [
                  {
-                  id: yeet.roles.find("name","everyone").id,
+                  id: yeet.roles.find("name","everyone"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
                .then(() => {
                      yeet.createChannel('admin-chat', 'text', [
                  {
-                  id: yeet.roles.find("name","everyone").id,
+                  id: yeet.roles.find("name","everyone"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  },
                  {
-                  id: yeet.roles.find("name","mods").id,
+                  id: yeet.roles.find("name","mods"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
                .then(() => {
                      yeet.createChannel('enhanced-chat', 'text', [
                  {
-                  id: yeet.roles.find("name","everyone").id,
+                  id: yeet.roles.find("name","everyone"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  },
                  {
-                  id: yeet.roles.find("name","mods").id,
+                  id: yeet.roles.find("name","mods"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  },
                  {
-                  id: yeet.roles.find("name","admins").id,
+                  id: yeet.roles.find("name","admins"),
                   deny: ['READ_MESSAGES','READ_MESSAGE_HISTORY','SEND_MESSAGES']
                  }
                ])
