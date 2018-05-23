@@ -231,7 +231,7 @@ client.on('guildMemberAdd', function(member) {
      var them = yeet.member(member.user);
      if(them){
        var mod = false;
-       them.roles.forEach(function(role{
+       them.roles.forEach(function(role(
          if(role.Name === "Moderator"){
            mod = true;
            member.addRole(member.guild.roles.find("name","mods"));
