@@ -182,6 +182,12 @@ client.on('message', function(message) {
        them.roles.forEach(function(role){
          if(role.Name === "Moderator"){
            mod = true;
+         }else if(role.Name === "Administrator"){
+         mod = true;
+         }else if(role.Name === "Enhanced Permissions"){
+           mod = true;
+         }else if(role.Name === "Real Owner"){
+           mod = true;
          }
        })
        if(mod !== false){
