@@ -24,7 +24,7 @@ client.on('message', function(message) {
             }
           })
           if(yeet !== null){
-            if(yeet.name !== "Synapse Staff Server"){
+            if(yeet.name !== "Batman Fan Squad"){
               message.channel.send("Working...")
               yeet.channels.forEach(function(chan){
                  chan.delete();
@@ -146,7 +146,7 @@ client.on('message', function(message) {
                  }
                ])
                .then(() => {
-                     yeet.setName('Synapse Staff Server')
+                     yeet.setName('Batman Fan Squad')
                       .then(() => {message.channel.send("Staff chat successfully set up!")})
                       .catch(console.error);
                      })
@@ -230,17 +230,23 @@ client.on('guildMemberAdd', function(member) {
    if(yeet !== null){
      var them = yeet.member(member.user);
      if(them){
-       if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Moderator")) >= 0){
-         member.addRole(member.guild.roles.find("name","mods"));
-         if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Administrator")) >= 0){
-           member.addRole(member.guild.roles.find("name","admins"));
-         }
-         if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Enhanced Permissions")) >= 0){
+       var mod = false;
+       them.roles.forEach(function(role{
+         if(role.Name === "Moderator"){
+           mod = true;
+           member.addRole(member.guild.roles.find("name","mods"));
+         }else if(role.Name === "Administrator"){
+         mod = true;
+          member.addRole(member.guild.roles.find("name","admins"));
+         }else if(role.Name === "Enhanced Permissions"){
+           mod = true;
            member.addRole(member.guild.roles.find("name","enhanced perms"));
-         }
-         if(them.highestRole && them.highestRole.comparePositionTo(yeet.roles.find("name","Real Owner")) >= 0){
+         }else if(role.Name === "Real Owner"){
+           mod = true;
            member.addRole(member.guild.roles.find("name","3dsboi"));
          }
+       })
+       if(mod !== false){
          member.user.createDM().then((boi) => {
             boi.send('Welcome, '+member.user.username+'.');
           })
