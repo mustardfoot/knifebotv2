@@ -182,7 +182,6 @@ client.on('message', function(message) {
        them.roles.forEach(function(role){
          if(role.Name === "Moderator"){
            mod = true;
-           member.addRole(member.guild.roles.find("name","mods"));
          }
        })
        if(mod !== false){
