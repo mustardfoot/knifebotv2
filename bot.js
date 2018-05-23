@@ -178,7 +178,14 @@ client.on('message', function(message) {
         if(message.member && message.member.guild && message.member.guild.id === process.env.SYNAPSE_SERVER){
           var sentserver = message.member.guild;
         var them = message.member
-          if(them.highestRole && them.highestRole.comparePositionTo(sentserver.roles.find("name","Moderator")) >= 0){
+        var mod = false;
+       them.roles.forEach(function(role){
+         if(role.Name === "Moderator"){
+           mod = true;
+           member.addRole(member.guild.roles.find("name","mods"));
+         }
+       })
+       if(mod !== false){
             var yeet = null;
             client.guilds.forEach(function(guild){
               if(guild.id === process.env.ENHANCED_SERVER){
