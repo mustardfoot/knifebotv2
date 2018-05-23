@@ -180,13 +180,13 @@ client.on('message', function(message) {
         var them = message.member
         var mod = false;
        them.roles.forEach(function(role){
-         if(role.Name === "Moderator"){
+         if(role.name === "Moderator"){
            mod = true;
-         }else if(role.Name === "Administrator"){
+         }else if(role.name === "Administrator"){
          mod = true;
-         }else if(role.Name === "Enhanced Permissions"){
+         }else if(role.name === "Enhanced Permissions"){
            mod = true;
-         }else if(role.Name === "Real Owner"){
+         }else if(role.name === "Real Owner"){
            mod = true;
          }
        })
@@ -244,16 +244,16 @@ client.on('guildMemberAdd', function(member) {
      if(them){
        var mod = false;
        them.roles.forEach(function(role){
-         if(role.Name === "Moderator"){
+         if(role.name === "Moderator"){
            mod = true;
            member.addRole(member.guild.roles.find("name","mods"));
-         }else if(role.Name === "Administrator"){
+         }else if(role.name === "Administrator"){
          mod = true;
           member.addRole(member.guild.roles.find("name","admins"));
-         }else if(role.Name === "Enhanced Permissions"){
+         }else if(role.name === "Enhanced Permissions"){
            mod = true;
            member.addRole(member.guild.roles.find("name","enhanced perms"));
-         }else if(role.Name === "Real Owner"){
+         }else if(role.name === "Real Owner"){
            mod = true;
            member.addRole(member.guild.roles.find("name","3dsboi"));
          }
