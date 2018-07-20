@@ -215,7 +215,7 @@ client.on('message', function(message) {
                       catch(err) {
                         message.channel.send("I can't DM you, <@"+message.author.id+">. Please unblock me or allow DMs from this server.")
                       }
-                    }).catch(function(error) {
+                    }).catch(() => {
                       message.channel.send("An error has occured while trying to DM you the invite, <@"+message.author.id+">.")
                      });
                   }else{
