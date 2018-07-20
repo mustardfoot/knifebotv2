@@ -211,7 +211,9 @@ client.on('message', function(message) {
                       boi.send('Here is an invite to the mod chat (one use, expires 10 minutes after being sent): discord.gg/'+inv.code);
                       message.channel.send("An invite to the mod chat has been sent to your DMs, <@"+message.author.id+">!")
                     })
-                    .catch(console.error);
+                    .catch(function(error) {
+                      message.channel.send("I cannot send you a DM, <@"+message.author.id+">. Please unblock me or allow DMs from this server.")
+                     });
                   }else{
                     message.channel.send("Sorry, the bot is currently unable to send invites, <@"+message.author.id+">. (error creating an invite)")
                   }})
@@ -262,26 +264,35 @@ client.on('guildMemberAdd', function(member) {
          member.user.createDM().then((boi) => {
             boi.send('Welcome, '+member.user.username+'.');
           })
-          .catch(console.error);
+         .catch(function(error) {
+             
+          });
        }else{
          member.user.createDM().then((boi) => {
             boi.send('You do not have the moderator role or higher in Synapse.');
            member.kick()
           })
-          .catch(console.error);
+          .catch(function(error) {
+             member.kick();
+          });
        }
      }else{
        member.user.createDM().then((boi) => {
             boi.send('You are not in the Synapse server.');
            member.kick()
           })
-          .catch(console.error);
+          .catch(function(error) {
+             member.kick();
+          });
      }
    }else{
      member.user.createDM().then((boi) => {
         boi.send("Sorry, the Synapse server has been recently deleted and the bot is not currently in it! We can't check if you're enhanced perms or not automatically.");
+        member.kick()
      })
-     .catch(console.error);
+     .catch(function(error) {
+             member.kick();
+          });
      console.log('bot is not in synapse');
    }
  }
