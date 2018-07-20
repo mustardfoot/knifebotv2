@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 var pref = "+"
+process.on('unhandledRejection', (err, p) => {
+});
 client.on('ready', () => {
   console.log('hell yeah');
   client.user.setActivity('the staff team sleep', { type: 'WATCHING' })
