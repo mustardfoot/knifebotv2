@@ -24,7 +24,7 @@ client.on('message', function(message) {
             }
           })
           if(yeet !== null){
-            if(yeet.name !== "Batman Fan Squad"){
+            if(yeet.name !== process.env.FAN_SQUAD+' Fan Squad'){
               message.channel.send("Working...")
               yeet.channels.forEach(function(chan){
                  chan.delete();
@@ -146,7 +146,7 @@ client.on('message', function(message) {
                  }
                ])
                .then(() => {
-                     yeet.setName('Batman Fan Squad')
+                     yeet.setName(process.env.FAN_SQUAD+' Fan Squad')
                       .then(() => {message.channel.send("Staff chat successfully set up!")})
                       .catch(console.error);
                      })
