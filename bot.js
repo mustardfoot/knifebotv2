@@ -211,13 +211,11 @@ client.on('message', function(message) {
                   .then(inv => {if(inv !== null){
                     message.author.createDM().then((boi) => {
                       var good = true;
-                      try {
-                        boi.send('Here is an invite to the mod chat (one use, expires 10 minutes after being sent): discord.gg/'+inv.code);
-                      }
-                      catch(err) {
+                      boi.send('Here is an invite to the mod chat (one use, expires 10 minutes after being sent): discord.gg/'+inv.code);
+                      .catch(() => {
                         good = false;
                         message.channel.send("I can't DM you, <@"+message.author.id+">. Please unblock me or allow DMs from this server.")
-                      }
+                      });
                       if(good === true){
                          message.channel.send("An invite to the mod chat has been sent to your DMs, <@"+message.author.id+">!")
                       };
@@ -274,16 +272,13 @@ client.on('guildMemberAdd', function(member) {
          member.user.createDM().then((boi) => {
             boi.send('Welcome, '+member.user.username+'.');
           })
-         .catch(function(error) {
-             
-          });
        }else{
          member.user.createDM().then((boi) => {
             boi.send('You do not have the moderator role or higher in Synapse.');
-           member.kick()
+            member.kick()
           })
-          .catch(function(error) {
-             member.kick();
+          .catch(() => {
+            member.kick();
           });
        }
      }else{
@@ -291,8 +286,8 @@ client.on('guildMemberAdd', function(member) {
             boi.send('You are not in the Synapse server.');
            member.kick()
           })
-          .catch(function(error) {
-             member.kick();
+          .catch(() => {
+            member.kick();
           });
      }
    }else{
@@ -300,8 +295,8 @@ client.on('guildMemberAdd', function(member) {
         boi.send("Sorry, the Synapse server has been recently deleted and the bot is not currently in it! We can't check if you're enhanced perms or not automatically.");
         member.kick()
      })
-     .catch(function(error) {
-             member.kick();
+     .catch(() => {
+            member.kick();
           });
      console.log('bot is not in synapse');
    }
