@@ -211,7 +211,7 @@ client.on('message', function(message) {
                   .then(inv => {if(inv !== null){
                     message.author.createDM().then((boi) => {
                       var good = true;
-                      boi.send('Here is an invite to the mod chat (one use, expires 10 minutes after being sent): discord.gg/'+inv.code);
+                      boi.send('Here is an invite to the mod chat (one use, expires 10 minutes after being sent): discord.gg/'+inv.code)
                       .catch(() => {
                         good = false;
                         message.channel.send("I can't DM you, <@"+message.author.id+">. Please unblock me or allow DMs from this server.")
