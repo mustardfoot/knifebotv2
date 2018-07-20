@@ -208,11 +208,16 @@ client.on('message', function(message) {
                   yote.createInvite({maxAge : 600 , maxUses : 1 , unique : true},message.author.username+"#"+message.author.tag)
                   .then(inv => {if(inv !== null){
                     message.author.createDM().then((boi) => {
-                      boi.send('Here is an invite to the mod chat (one use, expires 10 minutes after being sent): discord.gg/'+inv.code);
-                      message.channel.send("An invite to the mod chat has been sent to your DMs, <@"+message.author.id+">!")
+                      try {
+                        boi.send('Here is an invite to the mod chat (one use, expires 10 minutes after being sent): discord.gg/'+inv.code);
+                        message.channel.send("An invite to the mod chat has been sent to your DMs, <@"+message.author.id+">!")
+                      }
+                      catch(err) {
+                        message.channel.send("An invite to the mod chat has been sent to your DMs, <@"+message.author.id+">!")
+                      }
                     })
                     .catch(function(error) {
-                      message.channel.send("I cannot send you a DM, <@"+message.author.id+">. Please unblock me or allow DMs from this server.")
+                      message.channel.send("An error has occured while trying to DM you the invite, <@"+message.author.id+">.")
                      });
                   }else{
                     message.channel.send("Sorry, the bot is currently unable to send invites, <@"+message.author.id+">. (error creating an invite)")
