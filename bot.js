@@ -215,10 +215,11 @@ client.on('message', function(message) {
                       .catch(() => {
                         good = false;
                         message.channel.send("I can't DM you, <@"+message.author.id+">. Please unblock me or allow DMs from this server.")
+                      }).then(() => {
+                        if(good === true){
+                          message.channel.send("An invite to the mod chat has been sent to your DMs, <@"+message.author.id+">!")
+                        };
                       });
-                      if(good === true){
-                         message.channel.send("An invite to the mod chat has been sent to your DMs, <@"+message.author.id+">!")
-                      };
                     }).catch(() => {
                       message.channel.send("An error has occured while trying to DM you the invite, <@"+message.author.id+">.")
                      });
