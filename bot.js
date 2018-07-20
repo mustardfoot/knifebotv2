@@ -213,7 +213,7 @@ client.on('message', function(message) {
                         message.channel.send("An invite to the mod chat has been sent to your DMs, <@"+message.author.id+">!")
                       }
                       catch(err) {
-                        message.channel.send("An invite to the mod chat has been sent to your DMs, <@"+message.author.id+">!")
+                        message.channel.send("I can't DM you, <@"+message.author.id+">. Please unblock me or allow DMs from this server.")
                       }
                     })
                     .catch(function(error) {
