@@ -95,9 +95,9 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
         });
       }
       if(displaytime !== "forever"){
-        message.channel.send("**:white_check_mark: The user <@"+mentionedmember.id+"> would be muted for **"+displaytime+"**.** ["+reason+"]")
+        message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted for **"+displaytime+"**.")
       }else{
-        message.channel.send("**:white_check_mark: The user <@"+mentionedmember.id+"> would be muted **forever**.** ["+reason+"]")
+        message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted **forever**.")
       }
     }else{
       message.channel.send("**:no_entry_sign: This is not a valid user.**")
