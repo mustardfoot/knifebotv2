@@ -59,6 +59,23 @@ addcommand("unmute",[],"unmutes a user who was previously muted","helper",functi
                 mentionedmember.removeRole(role)
               }
             })
+            guild.channels.forEach(function(channel){
+              if(channel.name === "logs"){
+                channel.send({"embed": {
+                  "description":"Unmute",
+                  "fields": [
+                    {
+                      "name": "Staff Member",
+                      "value": "<@"+message.author.id+">"
+                    },
+                    {
+                      "name": "User",
+                      "value": "<@"+mentionedmember.id+">"
+                    }
+                  ]
+                }})
+              }
+            });
             message.channel.send(":white_check_mark: <@"+mentionedmember.id+"> has been unmuted.")
           }else{
             message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
@@ -177,6 +194,33 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
                           }
                         })
                         if(good === true){
+                          guild.channels.forEach(function(channel){
+                            if(channel.name === "logs"){
+                              channel.send({"embed": {
+                                "description":"Mute",
+                                "fields": [
+                                  {
+                                    "name": "Staff Member",
+                                    "value": "<@"+message.author.id+">",
+                                    "inline": true
+                                  },
+                                  {
+                                    "name": "Time",
+                                    "value": displaytime,
+                                    "inline": true
+                                  },
+                                  {
+                                    "name": "User",
+                                    "value": "<@"+mentionedmember.id+">"
+                                  },
+                                  {
+                                    "name": "Reason",
+                                    "value": reason
+                                  }
+                                ]
+                              }})
+                            }
+                          });
                           if(displaytime !== "forever"){
                             message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted for **"+displaytime+"**.")
                           }else{
