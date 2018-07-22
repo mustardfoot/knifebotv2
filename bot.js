@@ -209,7 +209,7 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
 });
 
 addcommand("verify",[],"verifies an unverified user","",function(args,message){
-    if(message.channel.guild && message.channel.name && message.channel.name === "✅verify"){
+    if(message.channel.guild && message.channel.name && message.channel.name === "verify"){
       if(message.member){
         var good = true;
         if(guild.roles.find("name","verified")){
