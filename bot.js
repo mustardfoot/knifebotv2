@@ -6,6 +6,15 @@ var pref = "!"
 var guild;
 var commands = [];
 
+function diff_minutes(dt2, dt1, add)
+ {
+
+  var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+  diff /= 60;
+  return Math.round(diff-add);
+
+ }
+
 function getmemberfromid(id){
   if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
     return guild.members.get(id.substring(2,id.length-1));
@@ -332,5 +341,67 @@ client.on('message', function(message) {
       }
   });
 });
+
+var myInterval = setInterval(function() {
+  t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
+    datas.forEach(function(data){
+      if (data.name === "mutes"){
+        hwids = data.id;
+      }
+    })
+    if(hwids){
+      t.get("/1/lists/"+hwids+"/cards?fields=id,name,desc",function(err,cards){
+        cards.forEach(function(card){
+          t.get('1/cards/'+card.id+'/dateLastActivity',function(err,date){
+            var goaltime = new Date(date._value);
+            var todaytime = new Date();
+            var todaymin = diff_minutes(todaytime,goaltime,card.desc);
+            if (todaymin >= 0 && card.desc !== 0 && card.desc !== "0"){
+              var cardname = card.name;
+              var carddesc = card.desc;
+              t.del('1/cards/'+card.id,function(err,returns){});
+              client.fetchUser(cardname).then((thatuser) => {
+                guild.fetchMember(thatuser).then((muser) => {
+                  var roles = muser.roles
+                  roles.forEach(function(role){
+                    if (role.name === "muted") {
+                      muser.removeRole(role)
+                      thatuser.createDM().then((boi) => {
+                        boi.send('**Your mute time has run out and you have been unmuted in the server. You may now talk again.**')
+                      })
+                      guild.channels.forEach(function(channel){
+                        if(channel.name === "logs"){
+                          channel.send({"embed": {
+                            "description":"Automatic Unmute",
+                            "fields": [
+                              {
+                                "name": "User",
+                                "value": "<@"+mentionedmember.id+">"
+                              }
+                            ]
+                          }})
+                        }
+                      });
+                    }
+                  })
+                })
+              })
+            }else{
+              var cardname = card.name;
+              var carddesc = card.desc;
+              client.fetchUser(cardname).then((thatuser) => {
+                guild.fetchMember(thatuser).then((muser) => {
+                  if (guild.roles.find("name","muted")) {
+                    muser.addRole(guild.roles.find("name","muted"))
+                  }
+                })
+              })
+            }
+          });
+        })
+      });
+    }
+});
+}, 5000);
 
 client.login(process.env.BOT_TOKEN);
