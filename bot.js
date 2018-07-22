@@ -29,78 +29,118 @@ addcommand("unmute",[],"unmutes a user who was previously muted","helper",functi
 });
 
 addcommand("mute",[],"prevents the mentioned user from talking in text and voice channels","helper",function(args,message){
-  if(message.guild){
-    var mentionedmember = getmemberfromid(args[1]);
-    if (mentionedmember){
-      var time;
-      var displaytime = "forever";
-      var reason = "No Reason Provided";
-      if(args[2]){
-        if(Number(args[2])){
-          time = args[2];
-          displaytime = args[2]+" minutes";
-        }else if(Number(args[2].substring(0,args[2].length-1))){
-          if(args[2].substring(args[2].length-1) === "d"){
-            time = Number(args[2].substring(0,args[2].length-1))*1440;
-            if(args[2].substring(0,args[2].length-1) !== "1"){
-              displaytime = args[2].substring(0,args[2].length-1)+" days";
-            }else{
-              displaytime = args[2].substring(0,args[2].length-1)+" day";
-            }
-          }else if(args[2].substring(args[2].length-1) === "m"){
-            time = Number(args[2].substring(0,args[2].length-1));
-            if(args[2].substring(0,args[2].length-1) !== "1"){
-              displaytime = args[2].substring(0,args[2].length-1)+" minutes";
-            }else{
-              displaytime = args[2].substring(0,args[2].length-1)+" minute";
-            }
-          }else if(args[2].substring(args[2].length-1) === "s"){
-            time = Number(args[2].substring(0,args[2].length-1))/60;
-            if(args[2].substring(0,args[2].length-1) !== "1"){
-              displaytime = args[2].substring(0,args[2].length-1)+" seconds";
-            }else{
-              displaytime = args[2].substring(0,args[2].length-1)+" second";
-            }
-          }else if(args[2].substring(args[2].length-1) === "h"){
-            time = Number(args[2].substring(0,args[2].length-1))*60;
-            if(args[2].substring(0,args[2].length-1) !== "1"){
-              displaytime = args[2].substring(0,args[2].length-1)+" hours";
-            }else{
-              displaytime = args[2].substring(0,args[2].length-1)+" hour";
-            }
-          }else if(args[2].substring(args[2].length-1) === "w"){
-            time = Number(args[2].substring(0,args[2].length-1))*10080;
-            if(args[2].substring(0,args[2].length-1) !== "1"){
-              displaytime = args[2].substring(0,args[2].length-1)+" weeks";
-            }else{
-              displaytime = args[2].substring(0,args[2].length-1)+" week";
+  if(message.guild && message.guild === guild){
+    if(args[1]){
+      var mentionedmember = getmemberfromid(args[1]);
+      if (mentionedmember){
+        if (message.member && message.member.highestRole.comparePositionTo(mentionedmember.highestRole) > 0 ) {
+          var time;
+          var displaytime = "forever";
+          var reason = "No Reason Provided";
+          if(args[2]){
+            if(Number(args[2])){
+              time = args[2];
+              displaytime = args[2]+" minutes";
+            }else if(Number(args[2].substring(0,args[2].length-1))){
+              if(args[2].substring(args[2].length-1) === "d"){
+                time = Number(args[2].substring(0,args[2].length-1))*1440;
+                if(args[2].substring(0,args[2].length-1) !== "1"){
+                  displaytime = args[2].substring(0,args[2].length-1)+" days";
+                }else{
+                  displaytime = args[2].substring(0,args[2].length-1)+" day";
+                }
+              }else if(args[2].substring(args[2].length-1) === "m"){
+                time = Number(args[2].substring(0,args[2].length-1));
+                if(args[2].substring(0,args[2].length-1) !== "1"){
+                  displaytime = args[2].substring(0,args[2].length-1)+" minutes";
+                }else{
+                  displaytime = args[2].substring(0,args[2].length-1)+" minute";
+                }
+              }else if(args[2].substring(args[2].length-1) === "s"){
+                time = Number(args[2].substring(0,args[2].length-1))/60;
+                if(args[2].substring(0,args[2].length-1) !== "1"){
+                  displaytime = args[2].substring(0,args[2].length-1)+" seconds";
+                }else{
+                  displaytime = args[2].substring(0,args[2].length-1)+" second";
+                }
+              }else if(args[2].substring(args[2].length-1) === "h"){
+                time = Number(args[2].substring(0,args[2].length-1))*60;
+                if(args[2].substring(0,args[2].length-1) !== "1"){
+                  displaytime = args[2].substring(0,args[2].length-1)+" hours";
+                }else{
+                  displaytime = args[2].substring(0,args[2].length-1)+" hour";
+                }
+              }else if(args[2].substring(args[2].length-1) === "w"){
+                time = Number(args[2].substring(0,args[2].length-1))*10080;
+                if(args[2].substring(0,args[2].length-1) !== "1"){
+                  displaytime = args[2].substring(0,args[2].length-1)+" weeks";
+                }else{
+                  displaytime = args[2].substring(0,args[2].length-1)+" week";
+                }
+              }
             }
           }
+          var adjustment = 0;
+          if(!time){
+            adjustment = 1;
+            time = 0;
+          }
+          if(args.length > 3){
+            reason = "";
+            args.forEach(function(arg,n){
+              if(n > 2-adjustment){
+                if(n > 3-adjustment){
+                  reason = reason+" "
+                }
+                reason = reason+arg
+              }
+            });
+          }
+          var today = new Date();
+          var m = today.getMinutes();
+          t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
+            datas.forEach(function(data){
+              if (data.name === "mutes"){
+                hwids = data.id;
+              }
+            })
+            if(hwids){
+              t.get("/1/lists/"+hwids+"/cards?fields=id,name,desc",function(err,cards){
+                cards.forEach(function(card){
+                  if(card.name === mentionedmember.id){
+                    t.del('1/cards/'+card.id,function(err,returns){});
+                  }
+                })
+                t.post('/1/cards?name='+mentionedmember.id+'&desc='+args[2]+'&pos=top&idList='+hwids,function(err,returns){
+                  if(guild.roles.find("name","muted")){
+                    mentionedmember.addRole(guild.roles.find("name","muted"))
+                    .catch(() => {
+                      good = false;
+                      message.channel.send("**:no_entry_sign: There has been an error giving the user the muted role. Please attempt to re-mute them.**")
+                    }).then(() => {
+                      if(good === true){
+                        if(displaytime !== "forever"){
+                          message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted for **"+displaytime+"**.")
+                        }else{
+                          message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted **forever**.")
+                        }
+                      }
+                    });
+                  }else{
+                    message.channel.send(":no_entry_sign: **The muted role doesn't exist. Please contact mustardfoot to fix this.**")
+                  }
+                });
+              });
+            }else{
+              message.channel.send("**Something seems to be wrong with the mute database, please contact mustardfoot about this issue.**")
+            }
+          });
+        }else{
+          message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
         }
-      }
-      var adjustment = 0;
-      if(!time){
-        adjustment = 1;
-        time = 0;
-      }
-      if(args.length > 3){
-        reason = "";
-        args.forEach(function(arg,n){
-          if(n > 2-adjustment){
-            if(n > 3-adjustment){
-              reason = reason+" "
-            }
-            reason = reason+arg
-          }
-        });
-      }
-      if(displaytime !== "forever"){
-        message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted for **"+displaytime+"**.")
       }else{
-        message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted **forever**.")
+        message.channel.send("**:no_entry_sign: This is not a valid user.**")
       }
-    }else{
-      message.channel.send("**:no_entry_sign: This is not a valid user.**")
     }
   }else{
     message.channel.send("**:no_entry_sign: This command cannot be used in DMs.**")
