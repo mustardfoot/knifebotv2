@@ -33,52 +33,70 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
     var mentionedmember = getmemberfromid(args[1]);
     if (mentionedmember){
       var time;
-      var displaytime = "ERROR";
-      if(Number(args[2])){
-        time = args[2];
-        displaytime = args[2]+" minutes";
-      }else if(Number(args[2].substring(0,args[2].length-1))){
-        if(args[2].substring(args[2].length-1) === "d"){
-          time = Number(args[2].substring(0,args[2].length-1))*1440;
-          if(args[2].substring(0,args[2].length-1) !== "1"){
-            displaytime = args[2].substring(0,args[2].length-1)+" days";
-          }else{
-            displaytime = args[2].substring(0,args[2].length-1)+" day";
-          }
-        }else if(args[2].substring(args[2].length-1) === "m"){
-          time = Number(args[2].substring(0,args[2].length-1));
-          if(args[2].substring(0,args[2].length-1) !== "1"){
-            displaytime = args[2].substring(0,args[2].length-1)+" minutes";
-          }else{
-            displaytime = args[2].substring(0,args[2].length-1)+" minute";
-          }
-        }else if(args[2].substring(args[2].length-1) === "s"){
-          time = Number(args[2].substring(0,args[2].length-1))/60;
-          if(args[2].substring(0,args[2].length-1) !== "1"){
-            displaytime = args[2].substring(0,args[2].length-1)+" seconds";
-          }else{
-            displaytime = args[2].substring(0,args[2].length-1)+" second";
-          }
-        }else if(args[2].substring(args[2].length-1) === "h"){
-          time = Number(args[2].substring(0,args[2].length-1))*60;
-          if(args[2].substring(0,args[2].length-1) !== "1"){
-            displaytime = args[2].substring(0,args[2].length-1)+" hours";
-          }else{
-            displaytime = args[2].substring(0,args[2].length-1)+" hour";
-          }
-        }else if(args[2].substring(args[2].length-1) === "w"){
-          time = Number(args[2].substring(0,args[2].length-1))*10080;
-          if(args[2].substring(0,args[2].length-1) !== "1"){
-            displaytime = args[2].substring(0,args[2].length-1)+" weeks";
-          }else{
-            displaytime = args[2].substring(0,args[2].length-1)+" week";
+      var displaytime = "forever";
+      var reason = "No Reason Provided";
+      if(args[2]){
+        if(Number(args[2])){
+          time = args[2];
+          displaytime = args[2]+" minutes";
+        }else if(Number(args[2].substring(0,args[2].length-1))){
+          if(args[2].substring(args[2].length-1) === "d"){
+            time = Number(args[2].substring(0,args[2].length-1))*1440;
+            if(args[2].substring(0,args[2].length-1) !== "1"){
+              displaytime = args[2].substring(0,args[2].length-1)+" days";
+            }else{
+              displaytime = args[2].substring(0,args[2].length-1)+" day";
+            }
+          }else if(args[2].substring(args[2].length-1) === "m"){
+            time = Number(args[2].substring(0,args[2].length-1));
+            if(args[2].substring(0,args[2].length-1) !== "1"){
+              displaytime = args[2].substring(0,args[2].length-1)+" minutes";
+            }else{
+              displaytime = args[2].substring(0,args[2].length-1)+" minute";
+            }
+          }else if(args[2].substring(args[2].length-1) === "s"){
+            time = Number(args[2].substring(0,args[2].length-1))/60;
+            if(args[2].substring(0,args[2].length-1) !== "1"){
+              displaytime = args[2].substring(0,args[2].length-1)+" seconds";
+            }else{
+              displaytime = args[2].substring(0,args[2].length-1)+" second";
+            }
+          }else if(args[2].substring(args[2].length-1) === "h"){
+            time = Number(args[2].substring(0,args[2].length-1))*60;
+            if(args[2].substring(0,args[2].length-1) !== "1"){
+              displaytime = args[2].substring(0,args[2].length-1)+" hours";
+            }else{
+              displaytime = args[2].substring(0,args[2].length-1)+" hour";
+            }
+          }else if(args[2].substring(args[2].length-1) === "w"){
+            time = Number(args[2].substring(0,args[2].length-1))*10080;
+            if(args[2].substring(0,args[2].length-1) !== "1"){
+              displaytime = args[2].substring(0,args[2].length-1)+" weeks";
+            }else{
+              displaytime = args[2].substring(0,args[2].length-1)+" week";
+            }
           }
         }
       }
       if(!time){
         time = 0;
       }
-      message.channel.send("**:white_check_mark: The user <@"+mentionedmember.id+"> would be muted for "+displaytime+".**")
+      if(args.length > 3){
+        reason = "";
+        args.forEach(function(arg,n){
+          if(n > 3){
+            if(n > 4){
+              reason = reason+" "
+            }
+            reason = reason+arg
+          }
+        });
+      }
+      if(displaytime !== "forever"){
+        message.channel.send("**:white_check_mark: The user <@"+mentionedmember.id+"> would be muted for **"+displaytime+"**.** ["+reason+"]")
+      }else{
+        message.channel.send("**:white_check_mark: The user <@"+mentionedmember.id+"> would be muted **forever**.** ["+reason+"]")
+      }
     }else{
       message.channel.send("**:no_entry_sign: This is not a valid user.**")
     }
