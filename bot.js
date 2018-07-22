@@ -9,10 +9,26 @@ function addcommand(name,aliases,desc,minrank,does){
 }
 
 addcommand("test",["check"],"checks if the bot is online","",function(args,message){
-    message.channel.send(":white_check_mark: The bot is active!");
+    message.channel.send(":white_check_mark: **The bot is active!**");
 });
-addcommand("roleonlytest",[],"testing the role only commands","fake role",function(args,message){
-    message.channel.send("this shouldn't work");
+
+addcommand("verify",[],"verifies an unverified user","",function(args,message){
+    if(message.channel.guild && message.channel.name && message.channel.name === "✅verify" && message.member){
+      var good = true;
+      if(guild.roles.find("name","verified")){
+        message.member.addRole(message.member.guild.roles.find("name","verified"))
+        .catch(() => {
+          good = false;
+          message.channel.send("**:no_entry_sign: There has been an error verifying you,** <@"+message.author.id+">**. If this problem persists, please rejoin or contact mustardfoot.**")
+        }).then(() => {
+          if(good === true){
+            message.channel.send("**:white_check_mark: You have been verified,** <@"+message.author.id+">**.**")
+          }
+        });
+      }else{
+        message.channel.send(":no_entry_sign: **The verified role doesn't exist. Please contact mustardfoot to fix this.**")
+      }
+    }
 });
 
 process.on('unhandledRejection', (err, p) => {
@@ -51,20 +67,20 @@ client.on('message', function(message) {
               if(guild.roles.find("name",command.minrank)){
                 guild.fetchMember(message.author).then((theirmember) => {
                   if(!theirmember){
-                    message.channel.send(":no_entry_sign: Sorry, I can't find you in the server!")
+                    message.channel.send(":no_entry_sign: **Sorry, I can't find you in the server!**")
                   }else{
                     if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
                       command.does(args,message);
                     }else{
-                      message.channel.send(":no_entry_sign: You're not a high enough role to run this command (requires the [*"+command.minrank+"*] rank)")
+                      message.channel.send(":no_entry_sign: **You're not a high enough role to run this command** (requires the [*"+command.minrank+"*] rank)")
                     }
                   }
                 })
                 .catch(() => {
-                  message.channel.send(":no_entry_sign: Sorry, I can't find you in the server!")
+                  message.channel.send(":no_entry_sign: **Sorry, I can't find you in the server!**")
                 })
               }else{
-                message.channel.send(":no_entry_sign: Sorry, the required role (*"+command.minrank+"*) for this command doesn't exist!")
+                message.channel.send(":no_entry_sign: **Sorry, the required role** (*"+command.minrank+"*) **for this command doesn't exist!**")
               }
             }
           }
