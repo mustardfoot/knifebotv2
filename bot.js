@@ -113,6 +113,7 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
                 })
                 t.post('/1/cards?name='+mentionedmember.id+'&desc='+args[2]+'&pos=top&idList='+hwids,function(err,returns){
                   if(guild.roles.find("name","muted")){
+                    var good = true;
                     mentionedmember.addRole(guild.roles.find("name","muted"))
                     .catch(() => {
                       good = false;
