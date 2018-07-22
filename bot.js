@@ -9,7 +9,10 @@ function addcommand(name,aliases,desc,minrank,does){
 }
 
 addcommand("test",["check"],"checks if the bot is online","",function(args,message){
-    console.log('active');
+    message.channel.send(":white_check_mark: The bot is active!");
+});
+addcommand("roleonlytest",[],"testing the role only commands","fake role",function(args,message){
+    message.channel.send("this shouldn't work");
 });
 
 process.on('unhandledRejection', (err, p) => {
