@@ -6,6 +6,14 @@ var pref = "!"
 var guild;
 var commands = [];
 
+function getmemberfromid(id){
+  if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
+    return guild.members.get(id.substring(2,id.length-1))
+  }else{
+    return null
+  }
+}
+
 function addcommand(name,aliases,desc,minrank,does){
     commands.push({name:name,aliases:aliases,desc:desc,minrank:minrank,does:does});
 }
@@ -19,7 +27,16 @@ addcommand("unmute",[],"unmutes a user who was previously muted","helper",functi
 });
 
 addcommand("mute",[],"prevents the mentioned user from talking in text and voice channels","helper",function(args,message){
-  message.channel.send("**Command not yet added**");
+  if(message.guild){
+    var mentionedmember = getmemberfromid(args[1]);
+    if (mentionedmember){
+      message.channel.send("**:white_check_mark: The user <@"++"> would be muted.**")
+    }else{
+      message.channel.send("**:no_entry_sign: This is not a valid user.**")
+    }
+  }else{
+    message.channel.send("**:no_entry_sign: This command cannot be used in DMs.**")
+  }
 });
 
 addcommand("verify",[],"verifies an unverified user","",function(args,message){
