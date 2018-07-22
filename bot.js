@@ -167,14 +167,14 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
                       }).then(() => {
                         mentionedmember.user.createDM().then((boi) => {
                           if(displaytime !== "forever"){
-                            boi.send("You have been muted in the server for **"+displaytime+"**. You are unable to speak in text and voice chats until the time is up or a staff member unmutes you. \n \n **Reason:** \n ``` \n "+reason+" \n ```")
+                            boi.send("You have been muted in the server for **"+displaytime+"**. You are unable to speak in text and voice chats until the time is up or a staff member unmutes you.\n\n**Reason:**\n```"+reason+"```")
                           }else{
-                            boi.send("You have been muted in the server **forever**. You are unable to speak in text and voice chats unless a staff member unmutes you.")
+                            boi.send("You have been muted in the server **forever**. You are unable to speak in text and voice chats unless a staff member unmutes you.\n\n**Reason:**\n```"+reason+"```")
                           }
                         })
                         if(good === true){
                           if(displaytime !== "forever"){
-                            message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted for **"+displaytime+"**. \n \n **Reason:** \n ``` \n "+reason+" \n ```")
+                            message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted for **"+displaytime+"**.")
                           }else{
                             message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted **forever**.")
                           }
