@@ -13,20 +13,24 @@ addcommand("test",["check"],"checks if the bot is online","",function(args,messa
 });
 
 addcommand("verify",[],"verifies an unverified user","",function(args,message){
-    if(message.channel.guild && message.channel.name && message.channel.name === "✅verify" && message.member){
-      var good = true;
-      if(guild.roles.find("name","verified")){
-        message.member.addRole(message.member.guild.roles.find("name","verified"))
-        .catch(() => {
-          good = false;
-          message.channel.send("**:no_entry_sign: There has been an error verifying you,** <@"+message.author.id+">**. If this problem persists, please rejoin or contact mustardfoot.**")
-        }).then(() => {
-          if(good === true){
-            message.channel.send("**:white_check_mark: You have been verified,** <@"+message.author.id+">**.**")
-          }
-        });
+    if(message.channel.guild && message.channel.name && message.channel.name === "✅verify"){
+      if(message.member){
+        var good = true;
+        if(guild.roles.find("name","verified")){
+          message.member.addRole(message.member.guild.roles.find("name","verified"))
+          .catch(() => {
+            good = false;
+            message.channel.send("**:no_entry_sign: There has been an error verifying you,** <@"+message.author.id+">**. If this problem persists, please rejoin or contact mustardfoot.**")
+          }).then(() => {
+            if(good === true){
+              message.channel.send("**:white_check_mark: You have been verified,** <@"+message.author.id+">**.**")
+            }
+          });
+        }else{
+          message.channel.send(":no_entry_sign: **The verified role doesn't exist. Please contact mustardfoot to fix this.**")
+        }
       }else{
-        message.channel.send(":no_entry_sign: **The verified role doesn't exist. Please contact mustardfoot to fix this.**")
+        message.channel.send("**:no_entry_sign: There has been an error verifying you,** <@"+message.author.id+">**. If this problem persists, please rejoin or contact mustardfoot.**")
       }
     }
 });
