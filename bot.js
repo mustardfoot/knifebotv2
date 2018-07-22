@@ -25,7 +25,52 @@ addcommand("test",["check"],"checks if the bot is online","",function(args,messa
 });
 
 addcommand("unmute",[],"unmutes a user who was previously muted","helper",function(args,message){
-  message.channel.send("**Command not yet added**");
+  if(message.guild && message.guild === guild){
+    if(args[1]){
+      var mentionedmember = getmemberfromid(args[1]);
+      if (mentionedmember){
+        if(mentionedmember.user !== client.user){
+          if (message.member && message.member.highestRole.comparePositionTo(mentionedmember.highestRole) > 0 ) {
+            t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
+              datas.forEach(function(data){
+                if (data.name === "mutes"){
+                  hwids = data.id;
+                }
+              })
+              if(hwids){
+                t.get("/1/lists/"+hwids+"/cards?fields=id,name,desc",function(err,cards){
+                  cards.forEach(function(card){
+                    if (card.name === user.id){
+                      t.del('1/cards/'+card.id,function(err,returns){});
+                    }
+                  })
+                });
+              }else{
+                message.channel.send("**Something seems to be wrong with the mute database, please contact mustardfoot about this issue.**")
+              }
+            });
+            mentionedmember.user.createDM().then((boi) => {
+              var good = true;
+              boi.send('**You have been unmuted in the server. You may now talk again.**')
+            })
+            var roles = mentionedmember.roles
+            roles.forEach(function(role){
+              if (role.name === "muted") {
+                mentionedmember.removeRole(role)
+              }
+            })
+            message.channel.send(":white_check_mark: <@"+mentionedmember.id+"> has been unmuted.")
+          }else{
+            message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
+          }
+        }
+      }else{
+        message.channel.send("**:no_entry_sign: This is not a valid user.**")
+      }
+    }
+  }else{
+    message.channel.send("**:no_entry_sign: This command cannot be used in DMs.**")
+  }
 });
 
 addcommand("mute",[],"prevents the mentioned user from talking in text and voice channels","helper",function(args,message){
