@@ -78,14 +78,16 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
           }
         }
       }
+      var adjustment = 0;
       if(!time){
+        adjustment = 1;
         time = 0;
       }
       if(args.length > 3){
         reason = "";
         args.forEach(function(arg,n){
-          if(n > 3){
-            if(n > 4){
+          if(n > 2-adjustment){
+            if(n > 3-adjustment){
               reason = reason+" "
             }
             reason = reason+arg
