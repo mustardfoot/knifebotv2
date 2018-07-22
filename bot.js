@@ -56,7 +56,7 @@ client.on('message', function(message) {
                     if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
                       command.does(args,message);
                     }else{
-                      message.channel.send(":no_entry_sign: You need to have the *"+command.minrank+"* role or above to run this command.")
+                      message.channel.send(":no_entry_sign: You're not a high enough role to run this command (requires the [*"+command.minrank+"*] rank)")
                     }
                   }
                 })
@@ -64,7 +64,7 @@ client.on('message', function(message) {
                   message.channel.send(":no_entry_sign: Sorry, I can't find you in the server!")
                 })
               }else{
-                message.channel.send(":no_entry_sign: Sorry, the required role *("+command.minrank+")* for this command doesn't exist!")
+                message.channel.send(":no_entry_sign: Sorry, the required role (*"+command.minrank+"*) for this command doesn't exist!")
               }
             }
           }
