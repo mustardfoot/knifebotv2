@@ -30,7 +30,7 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
   if(message.guild){
     var mentionedmember = getmemberfromid(args[1]);
     if (mentionedmember){
-      message.channel.send("**:white_check_mark: The user <@"++"> would be muted.**")
+      message.channel.send("**:white_check_mark: The user <@"+mentionedmember.id+"> would be muted.**")
     }else{
       message.channel.send("**:no_entry_sign: This is not a valid user.**")
     }
