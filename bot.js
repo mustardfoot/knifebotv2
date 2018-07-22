@@ -8,8 +8,10 @@ var commands = [];
 
 function getmemberfromid(id){
   if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
-    return guild.members.get(id.substring(2,id.length-1))
+    console.log('valid user');
+    return guild.members.get(id.substring(2,id.length-1));
   }else{
+    console.log('invalid user');
     return null
   }
 }
@@ -30,7 +32,52 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
   if(message.guild){
     var mentionedmember = getmemberfromid(args[1]);
     if (mentionedmember){
-      message.channel.send("**:white_check_mark: The user <@"+mentionedmember.id+"> would be muted.**")
+      var time;
+      var displaytime = "ERROR";
+      if(Number(args[2])){
+        time = args[2];
+        displaytime = args[2]+" minutes";
+      }else if(Number(args[2].substring(0,args[2].length-1))){
+        if(args[2].substring(args[2].length-1) === "d"){
+          time = Number(args[2].substring(0,args[2].length-1))*1440;
+          if(args[2].substring(0,args[2].length-1) !== 1){
+            displaytime = args[2].substring(0,args[2].length-1)+" days";
+          }else{
+            displaytime = args[2].substring(0,args[2].length-1)+" day";
+          }
+        }else if(args[2].substring(args[2].length-1) === "m"){
+          time = Number(args[2].substring(0,args[2].length-1));
+          if(args[2].substring(0,args[2].length-1) !== 1){
+            displaytime = args[2].substring(0,args[2].length-1)+" minutes";
+          }else{
+            displaytime = args[2].substring(0,args[2].length-1)+" minute";
+          }
+        }else if(args[2].substring(args[2].length-1) === "s"){
+          time = Number(args[2].substring(0,args[2].length-1))/60;
+          if(args[2].substring(0,args[2].length-1) !== 1){
+            displaytime = args[2].substring(0,args[2].length-1)+" seconds";
+          }else{
+            displaytime = args[2].substring(0,args[2].length-1)+" second";
+          }
+        }else if(args[2].substring(args[2].length-1) === "h"){
+          time = Number(args[2].substring(0,args[2].length-1))*60;
+          if(args[2].substring(0,args[2].length-1) !== 1){
+            displaytime = args[2].substring(0,args[2].length-1)+" hours";
+          }else{
+            displaytime = args[2].substring(0,args[2].length-1)+" hour";
+          }
+        }else if(args[2].substring(args[2].length-1) === "w"){
+          time = Number(args[2].substring(0,args[2].length-1))*10080;
+          if(args[2].substring(0,args[2].length-1) !== 1){
+            displaytime = args[2].substring(0,args[2].length-1)+" weeks";
+          }else{
+            displaytime = args[2].substring(0,args[2].length-1)+" week";
+          }
+        }
+      }
+      if (time){
+        message.channel.send("**:white_check_mark: The user <@"+mentionedmember.id+"> would be muted for "+displaytime+".**")
+      }
     }else{
       message.channel.send("**:no_entry_sign: This is not a valid user.**")
     }
