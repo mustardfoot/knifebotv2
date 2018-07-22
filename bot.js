@@ -10,7 +10,7 @@ function getmemberfromid(id){
   if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
     return guild.members.get(id.substring(2,id.length-1));
   }else if(id.substring(0,3) === "<@!" && id.substring(id.length-1) === ">" && Number(id.substring(3,id.length-1))){
-    return guild.members.get(id.substring(2,id.length-1));
+    return guild.members.get(id.substring(3,id.length-1));
   }else{
     return null
   }
