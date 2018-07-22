@@ -366,7 +366,7 @@ var myInterval = setInterval(function() {
                   roles.forEach(function(role){
                     if (role.name === "muted") {
                       muser.removeRole(role)
-                      thatuser.createDM().then((boi) => {
+                      muser.createDM().then((boi) => {
                         boi.send('**Your mute time has run out and you have been unmuted in the server. You may now talk again.**')
                       })
                       guild.channels.forEach(function(channel){
@@ -376,7 +376,7 @@ var myInterval = setInterval(function() {
                             "fields": [
                               {
                                 "name": "User",
-                                "value": "<@"+mentionedmember.id+">"
+                                "value": "<@"+muser.id+">"
                               }
                             ]
                           }})
