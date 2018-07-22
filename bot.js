@@ -30,7 +30,7 @@ client.on('message', function(message) {
       }
     });
   }
-  var saidcommand = args[0].toLowercase()
+  var saidcommand = args[0].toLowerCase()
   var alreadycommanded = false;
   commands.forEach(function(command){
       if(alreadycommanded === false){
