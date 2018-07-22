@@ -40,7 +40,7 @@ addcommand("unmute",[],"unmutes a user who was previously muted","helper",functi
               if(hwids){
                 t.get("/1/lists/"+hwids+"/cards?fields=id,name,desc",function(err,cards){
                   cards.forEach(function(card){
-                    if (card.name === user.id){
+                    if (card.name === mentionedmember.user.id){
                       t.del('1/cards/'+card.id,function(err,returns){});
                     }
                   })
