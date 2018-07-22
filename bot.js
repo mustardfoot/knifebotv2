@@ -86,7 +86,7 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
             if(args[2]){
               if(Number(args[2])){
                 time = args[2];
-                if(args[2]) !== "1"){
+                if(args[2] !== "1"){
                   displaytime = args[2]+" minutes";
                 }else{
                   displaytime = args[2]+" minute";
