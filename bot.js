@@ -122,12 +122,12 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
             time = parseInt(args[2])+" Minutes";
           }
           if(time === "Forever"){
-            cmdoutput("**<@"+muser.id+"> has been muted forever.**",message.channel)
+            message.channel.send("**<@"+muser.id+"> has been muted forever.**")
             muser.muser.createDM().then((boi) => {
               boi.send("**:no_entry_sign: You have been muted forever.**")
             });
           }else{
-            cmdoutput("**<@"+muser.id+"> has been muted by <@"+message.user.id+"> for "+time+" minutes.**",message.channel)
+            message.channel.send("**<@"+muser.id+"> has been muted for "+time+" minutes.**")
             muser.muser.createDM().then((boi) => {
               boi.send("**:no_entry_sign: You have been muted for "+time+" minutes.**")
             });
