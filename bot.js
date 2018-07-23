@@ -41,13 +41,13 @@ addcommand("commands",["cmds","help"],"displays a list of commands","",function(
         var firstone = true;
         var theirmember = message.member
         commands.forEach(function(command){
-          if(guild.roles.find("name",command.minrank)){
-            if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
+          if(command.minrank === "" || guild.roles.find("name",command.minrank)){
+            if(command.minrank === "" || theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
               if(firstone === true){
                 firstone = false;
                 viablecommands = viablecommands+command.name;
               }else{
-                viablecommands = ", "+viablecommands+command.name;
+                viablecommands = viablecommands+", "+command.name;
               }
               commandsamount = commandsamount+1;
             }
