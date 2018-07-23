@@ -59,7 +59,7 @@ addcommand("commands",["cmds","help"],"This command displays all the commands av
         });
         message.channel.send({"embed": {
           "title": "You have access to ("+commandsamount+") commands",
-          "description": "``"+viablecommands+"``"
+          "description": "``"+viablecommands+"``",
           "footer": {
             "text": "To learn more about a command, say !help [command name] and you will be shown more information about it."
           }
