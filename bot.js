@@ -109,11 +109,8 @@ addcommand("permit",[],"Permitting a user allows them to post an image, file, or
               }
             })
             if(alreadypermitted === false){
-              console.log('b');
               theirmember.addRole(guild.roles.find("name","permit"));
-              console.log('ba');
-              message.channel.send("**:white_check_mark: <@"+mentionedmember.id+"> has been permitted to post an image, file, or link.**");
-              console.log('bad');
+              message.channel.send("**:white_check_mark: <@"+theirmember.id+"> has been permitted to post an image, file, or link.**");
             }else{
               message.channel.send("**:no_entry_sign: This user is already permitted.**")
             }
@@ -138,11 +135,11 @@ addcommand("revokepermit",["removepermit","unpermit"],"Removes a user's permit i
             if (role.name === "permit") {
               unpermitted = true;
               theirmember.removeRole(role);
-              message.channel.send("**:white_check_mark: <@"+mentionedmember.id+">'s permit has been removed.**");
+              message.channel.send("**:white_check_mark: <@"+theirmember.id+">'s permit has been removed.**");
             }
           })
           if(unpermitted === false){
-            message.channel.send("**:no_entry_sign: <@"+mentionedmember.id+"> is not permitted.**");
+            message.channel.send("**:no_entry_sign: <@"+theirmember.id+"> is not permitted.**");
           }
         }else{
           message.channel.send("**:no_entry_sign: This is not a valid user.**")
@@ -522,6 +519,8 @@ addcommand("verify",[],"This command is used only in the #verify channel and is 
     }
 });
 
+process.on('unhandledRejection', (err, p) => {
+});
 
 client.on('ready', () => {
   console.log('hell yeah');
@@ -637,9 +636,9 @@ var myInterval = setInterval(function() {
               var cardname = card.name;
               var carddesc = card.desc;
               client.fetchUser(cardname).then((thatuser) => {
-                if(thatuser){
+                if(thatuser && thatuser !== undefined){
                   guild.fetchMember(thatuser).then((muser) => {
-                    if(muser){
+                    if(muser && muser !== undefined){
                       if (guild.roles.find("name","muted")) {
                         muser.addRole(guild.roles.find("name","muted"))
                       }
