@@ -33,6 +33,38 @@ addcommand("test",["check"],"checks if the bot is online","",function(args,messa
     message.channel.send(":white_check_mark: **The bot is active!**");
 });
 
+addcommand("commands",["cmds","help"],"displays a list of commands","",function(args,message){
+    if(message.guild && message.guild === guild){
+      if(!args[1]){
+        var commandsamount = 0
+        var viablecommands = ""
+        var firstone = true;
+        var theirmember = message.member
+        commands.forEach(function(command){
+          if(guild.roles.find("name",command.minrank)){
+            if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
+              if(firstone === true){
+                firstone = false;
+                viablecommands = viablecommands+command.name;
+              }else{
+                viablecommands = ", "+viablecommands+command.name;
+              }
+              commandsamount = commandsamount+1;
+            }
+          }
+        });
+        message.channel.send({"embed": {
+          "title": "You have access to ("+commandsamount+") commands",
+          "description": viablecommands
+        }})
+      }else{
+        message.channel.send("**:no_entry_sign: The specified command does not exist.**")
+      }
+    }else{
+      message.channel.send("**:no_entry_sign: This command cannot be used in DMs.**")
+    }
+});
+
 addcommand("unmute",[],"unmutes a user who was previously muted","helper",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
