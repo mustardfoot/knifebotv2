@@ -19,6 +19,64 @@ function diff_minutes(dt2, dt1, add)
 
  }
 
+ function checkpermit(message,oldmessage){
+   if(message.guild && message.guild === guild){
+     var linkfound = false;
+     if(!oldmessage || (message.content.toLowerCase().indexOf('http') === -1 || message.content.toLowerCase().indexOf('discord.gg') === -1)){
+       if (message.content.toLowerCase().indexOf('http') !== -1 || message.content.toLowerCase().indexOf('discord.gg') !== -1){
+         var okay = false
+         linkfound = true;
+         if(message.member){
+           if(guild.roles.find("name","helper")){
+             if(message.member.highestRole.comparePositionTo(guild.roles.find("name","helper")) >= 0){
+               okay = true;
+             }
+           }
+           var roles = message.member.roles
+           roles.forEach(function(role){
+             if (role.name === "permit") {
+               okay = true;
+               message.member.removeRole(role);
+             }
+           })
+         }
+         if (okay !== true){
+          message.delete()
+         }
+       }
+     }
+     var attachments = false;
+     message.attachments.forEach(function(att){
+       attachments = true;
+     })
+     if(oldmessage){
+       oldmessage.attachments.forEach(function(att){
+         attachments = false;
+       })
+     }
+     if (attachments === true && linkfound === false){
+       var okay = false;
+       if(message.member){
+         if(guild.roles.find("name","helper")){
+           if(message.member.highestRole.comparePositionTo(guild.roles.find("name","helper")) >= 0){
+             okay = true;
+           }
+         }
+         var roles = message.member.roles
+         roles.forEach(function(role){
+           if (role.name === "permit") {
+             okay = true;
+             message.member.removeRole(role);
+           }
+         })
+       }
+       if (okay !== true){
+        message.delete()
+       }
+     }
+   }
+ }
+
 function getmemberfromid(id){
   if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
     return guild.members.get(id.substring(2,id.length-1));
@@ -35,6 +93,58 @@ function addcommand(name,aliases,desc,minrank,does){
 
 addcommand("test",["check"],"This command will respond if the bot is online. A simple test to make sure the bot isn't down.","",function(args,message){
     message.channel.send(":white_check_mark: **The bot is active!**");
+});
+
+addcommand("permit",[],"Permitting a user allowed them to post an image, file, or link. The link or image should then be moderated by the user issuing the permit to make sure it follows the rules.","helper",function(args,message){
+    if(message.guild && message.guild === guild){
+      if(args[1]){}
+        var theirmember = getmemberfromid(args[1])
+        if(theirmember){
+          if(guild.roles.find("name","permit")){
+            var alreadypermitted = false;
+            var roles = theirmember.roles
+            roles.forEach(function(role){
+              if (role.name === "permit") {
+                alreadypermitted = true;
+              }
+            })
+            if(alreadypermitted === false){
+              user.addRole(guild.roles.find("name","permit"));
+              message.channel.send("**:white_check_mark: <@"+mentionedmember.id+"> has been permitted to post an image, file, or link.**");
+            }else{
+              message.channel.send("**:no_entry_sign: This user is already permitted.**")
+            }
+          }else{
+            message.channel.send("**:no_entry_sign: The permit role cannot be found.**")
+          }
+        }else{
+          message.channel.send("**:no_entry_sign: This is not a valid user.**")
+        }
+      }
+    }
+});
+
+addcommand("revokepermit",["removepermit","unpermit"],"Removes a user's permit if they refuse to post a file, image, or link after receiving one.","helper",function(args,message){
+    if(message.guild && message.guild === guild){
+      if(args[1]){}
+        var theirmember = getmemberfromid(args[1])
+        if(theirmember){
+          var unpermitted = false;
+          var roles = theirmember.roles
+          roles.forEach(function(role){
+            if (role.name === "permit") {
+              unpermitted = true;
+              message.channel.send("**:white_check_mark: <@"+mentionedmember.id+">'s permit has been removed.**");
+            }
+          })
+          if(unpermitted === false){
+            message.channel.send("**:no_entry_sign: <@"+mentionedmember.id+"> is not permitted.**");
+          }
+        }else{
+          message.channel.send("**:no_entry_sign: This is not a valid user.**")
+        }
+      }
+    }
 });
 
 addcommand("commands",["cmds","help","?"],"This command displays all the commands avaliable for use by the user running the command. Supplying it with a command to look up will provide further detail on said command.","",function(args,message){
@@ -209,7 +319,7 @@ addcommand("unmute",[],"This command unmutes a user who was previously muted.","
                 }})
               }
             });
-            message.channel.send(":white_check_mark: <@"+mentionedmember.id+"> has been unmuted.")
+            message.channel.send("**:white_check_mark: <@"+mentionedmember.id+"> has been unmuted.**")
           }else{
             message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
           }
@@ -410,13 +520,20 @@ addcommand("verify",[],"This command is used only in the #verify channel and is 
 
 process.on('unhandledRejection', (err, p) => {
 });
+
 client.on('ready', () => {
   console.log('hell yeah');
   client.user.setActivity('over the server (prefix is !)', { type: 'WATCHING' })
   .catch(console.error);
 });
+
+client.on('messageUpdate', (omessage, message) => {
+  checkpermit(message,omessage);
+});
+
 client.on('message', function(message) {
   if (message.author.equals(client.user)) return;
+  checkpermit(message);
   var args = message.content.substring(pref.length).split(" ");
   if (!message.content.startsWith(pref)) return;
   if(!guild){
