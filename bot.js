@@ -97,7 +97,7 @@ addcommand("test",["check"],"This command will respond if the bot is online. A s
 
 addcommand("permit",[],"Permitting a user allowed them to post an image, file, or link. The link or image should then be moderated by the user issuing the permit to make sure it follows the rules.","helper",function(args,message){
     if(message.guild && message.guild === guild){
-      if(args[1]){}
+      if(args[1]){
         var theirmember = getmemberfromid(args[1])
         if(theirmember){
           if(guild.roles.find("name","permit")){
