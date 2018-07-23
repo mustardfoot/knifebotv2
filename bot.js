@@ -108,13 +108,19 @@ addcommand("commands",["cmds","help"],"This command displays all the commands av
                   	]
                   }})
                 }else{
+                  console.log('1');
                   if(guild){
+                    console.log('2');
                     if(guild.roles.find("name",command.minrank)){
+                      console.log('3');
                       guild.fetchMember(message.author).then((theirmember) => {
+                        console.log('4');
                         if(!theirmember){
                           message.channel.send(":no_entry_sign: **Sorry, I can't find you in the server!**")
                         }else{
+                          console.log('5');
                           if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
+                            console.log('6');
                             message.channel.send({"embed": {
                             	"description": "`Displaying Info About: ["+capitalizeFirstLetter(command.name)+"]`",
                             	"fields": [
