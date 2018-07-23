@@ -405,6 +405,8 @@ addcommand("verify",[],"This command is used only in the #verify channel and is 
     }
 });
 
+process.on('unhandledRejection', (err, p) => {
+});
 client.on('ready', () => {
   console.log('hell yeah');
   client.user.setActivity('over the server (prefix is !)', { type: 'WATCHING' })
@@ -509,11 +511,15 @@ var myInterval = setInterval(function() {
               var cardname = card.name;
               var carddesc = card.desc;
               client.fetchUser(cardname).then((thatuser) => {
-                guild.fetchMember(thatuser).then((muser) => {
-                  if (guild.roles.find("name","muted")) {
-                    muser.addRole(guild.roles.find("name","muted"))
-                  }
-                })
+                if(thatuser){
+                  guild.fetchMember(thatuser).then((muser) => {
+                    if(muser){
+                      if (guild.roles.find("name","muted")) {
+                        muser.addRole(guild.roles.find("name","muted"))
+                      }
+                    }
+                  })
+                }
               })
             }
           });
