@@ -116,21 +116,21 @@ addcommand("commands",["cmds","help"],"This command displays all the commands av
                         }else{
                           if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
                             message.channel.send({"embed": {
-                            	"description": "`Displaying Info About: ["+capitalizeFirstLetter(command.name)+"]`",
-                            	"fields": [
-                            		{
-                            			"name": "Aliases:",
-                            			"value": aliases
-                            		},
-                            		{
-                            			"name": "Description:",
-                            			"value": command.desc
-                            		},
-                            		{
-                            			"name": "Minimum Rank:",
-                            			"value": "does this fucking fix it" //capitalizeFirstLetter(command.minrank)
-                            		}
-                            	]
+                              "description": "`Displaying Info About: ["+capitalizeFirstLetter(command.name)+"]`",
+                              "fields": [
+                                {
+                                  "name": "Aliases:",
+                                  "value": aliases
+                                },
+                                {
+                                  "name": "Description:",
+                                  "value": command.desc
+                                },
+                                {
+                                  "name": "Minimum Rank:",
+                                  "value": capitalizeFirstLetter(command.minrank)
+                                }
+                              ]
                             }})
                           }else{
                             message.channel.send(":no_entry_sign: **You're not a high enough role to see this command** (requires the [*"+command.minrank+"*] rank)")
@@ -405,8 +405,6 @@ addcommand("verify",[],"This command is used only in the #verify channel and is 
     }
 });
 
-process.on('unhandledRejection', (err, p) => {
-});
 client.on('ready', () => {
   console.log('hell yeah');
   client.user.setActivity('over the server (prefix is !)', { type: 'WATCHING' })
