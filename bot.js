@@ -126,7 +126,7 @@ addcommand("permit",[],"Permitting a user allowed them to post an image, file, o
 
 addcommand("revokepermit",["removepermit","unpermit"],"Removes a user's permit if they refuse to post a file, image, or link after receiving one.","helper",function(args,message){
     if(message.guild && message.guild === guild){
-      if(args[1]){}
+      if(args[1]){
         var theirmember = getmemberfromid(args[1])
         if(theirmember){
           var unpermitted = false;
