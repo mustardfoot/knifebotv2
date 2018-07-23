@@ -109,8 +109,11 @@ addcommand("permit",[],"Permitting a user allows them to post an image, file, or
               }
             })
             if(alreadypermitted === false){
+              console.log('b');
               theirmember.addRole(guild.roles.find("name","permit"));
+              console.log('ba');
               message.channel.send("**:white_check_mark: <@"+mentionedmember.id+"> has been permitted to post an image, file, or link.**");
+              console.log('bad');
             }else{
               message.channel.send("**:no_entry_sign: This user is already permitted.**")
             }
@@ -519,8 +522,6 @@ addcommand("verify",[],"This command is used only in the #verify channel and is 
     }
 });
 
-process.on('unhandledRejection', (err, p) => {
-});
 
 client.on('ready', () => {
   console.log('hell yeah');
