@@ -135,7 +135,6 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
                                 }
                               ]
                             }})
-                            console.log('autismo')
                           }else{
                             message.channel.send(":no_entry_sign: **You're not a high enough role to see this command** (requires the [*"+command.minrank+"*] rank)")
                           }
