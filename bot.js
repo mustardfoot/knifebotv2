@@ -37,7 +37,7 @@ addcommand("test",["check"],"This command will respond if the bot is online. A s
     message.channel.send(":white_check_mark: **The bot is active!**");
 });
 
-addcommand("commands",["cmds","help"],"This command displays all the commands avaliable for use by the user running the command. Supplying it with a command to look up will provide further detail on said command.","",function(args,message){
+addcommand("commands",["cmds","help","?"],"This command displays all the commands avaliable for use by the user running the command. Supplying it with a command to look up will provide further detail on said command.","",function(args,message){
     if(message.guild && message.guild === guild){
       if(!args[1]){
         var commandsamount = 0
@@ -84,6 +84,9 @@ addcommand("commands",["cmds","help"],"This command displays all the commands av
                   isalias = true;
                 }
               });
+              if(aliases === ""){
+                aliases = "None";
+              }
               var itsminrank = "None"
               if(command.minrank !== ""){
                 itsminrank = capitalizeFirstLetter(command.minrank);
@@ -406,6 +409,8 @@ addcommand("verify",[],"This command is used only in the #verify channel and is 
     }
 });
 
+process.on('unhandledRejection', (err, p) => {
+});
 client.on('ready', () => {
   console.log('hell yeah');
   client.user.setActivity('over the server (prefix is !)', { type: 'WATCHING' })
@@ -481,30 +486,34 @@ var myInterval = setInterval(function() {
               var carddesc = card.desc;
               t.del('1/cards/'+card.id,function(err,returns){});
               client.fetchUser(cardname).then((thatuser) => {
-                guild.fetchMember(thatuser).then((muser) => {
-                  var roles = muser.roles
-                  roles.forEach(function(role){
-                    if (role.name === "muted") {
-                      muser.removeRole(role)
-                      muser.createDM().then((boi) => {
-                        boi.send('**Your mute time has run out and you have been unmuted in the server. You may now talk again.**')
-                      })
-                      guild.channels.forEach(function(channel){
-                        if(channel.name === "logs"){
-                          channel.send({"embed": {
-                            "description":"Automatic Unmute",
-                            "fields": [
-                              {
-                                "name": "User",
-                                "value": "<@"+muser.id+">"
-                              }
-                            ]
-                          }})
+                if(thatuser){
+                  guild.fetchMember(thatuser).then((muser) => {
+                    if(muser){
+                      var roles = muser.roles
+                      roles.forEach(function(role){
+                        if (role.name === "muted") {
+                          muser.removeRole(role)
+                          muser.createDM().then((boi) => {
+                            boi.send('**Your mute time has run out and you have been unmuted in the server. You may now talk again.**')
+                          })
+                          guild.channels.forEach(function(channel){
+                            if(channel.name === "logs"){
+                              channel.send({"embed": {
+                                "description":"Automatic Unmute",
+                                "fields": [
+                                  {
+                                    "name": "User",
+                                    "value": "<@"+muser.id+">"
+                                  }
+                                ]
+                              }})
+                            }
+                          });
                         }
-                      });
+                      })
                     }
                   })
-                })
+                }
               })
             }else{
               var cardname = card.name;
