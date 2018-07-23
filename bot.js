@@ -23,6 +23,7 @@ function diff_minutes(dt2, dt1, add)
    if(message.guild && message.guild === guild){
      var linkfound = false;
      var oldattachments = false;
+     var oldlinks = false;
      if(oldmessage){
        oldmessage.attachments.forEach(function(att){
          oldattachments = true;
@@ -50,12 +51,14 @@ function diff_minutes(dt2, dt1, add)
           message.delete()
          }
        }
+     }else{
+       oldlinks = true;
      }
      var attachments = false;
      message.attachments.forEach(function(att){
        attachments = true;
      })
-     if(oldattachments === true){
+     if(oldattachments === true || oldlinks === true){
        attachments = false;
      }
      if (attachments === true && linkfound === false){
