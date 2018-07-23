@@ -132,6 +132,7 @@ addcommand("commands",["cmds","help"],"This command displays all the commands av
                                 }
                               ]
                             }})
+                            console.log('autismo')
                           }else{
                             message.channel.send(":no_entry_sign: **You're not a high enough role to see this command** (requires the [*"+command.minrank+"*] rank)")
                           }
@@ -405,8 +406,6 @@ addcommand("verify",[],"This command is used only in the #verify channel and is 
     }
 });
 
-process.on('unhandledRejection', (err, p) => {
-});
 client.on('ready', () => {
   console.log('hell yeah');
   client.user.setActivity('over the server (prefix is !)', { type: 'WATCHING' })
