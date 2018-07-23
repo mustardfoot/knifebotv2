@@ -115,6 +115,7 @@ addcommand("commands",["cmds","help"],"This command displays all the commands av
                           message.channel.send(":no_entry_sign: **Sorry, I can't find you in the server!**")
                         }else{
                           if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
+                            console.log('ok so what the FUCKS THE PROBLEM YOU NIGGER');
                             message.channel.send({"embed": {
                             	"description": "`Displaying Info About: ["+capitalizeFirstLetter(command.name)+"]`",
                             	"fields": [
