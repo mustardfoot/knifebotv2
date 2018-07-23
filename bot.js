@@ -6,6 +6,10 @@ var pref = "!"
 var guild;
 var commands = [];
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function diff_minutes(dt2, dt1, add)
  {
 
@@ -29,11 +33,11 @@ function addcommand(name,aliases,desc,minrank,does){
     commands.push({name:name,aliases:aliases,desc:desc,minrank:minrank,does:does});
 }
 
-addcommand("test",["check"],"checks if the bot is online","",function(args,message){
+addcommand("test",["check"],"This command will respond if the bot is online. A simple test to make sure the bot isn't down.","",function(args,message){
     message.channel.send(":white_check_mark: **The bot is active!**");
 });
 
-addcommand("commands",["cmds","help"],"displays a list of commands","",function(args,message){
+addcommand("commands",["cmds","help"],"This command displays all the commands avaliable for use by the user running the command. Supplying it with a command to look up will provide further detail on said command.","",function(args,message){
     if(message.guild && message.guild === guild){
       if(!args[1]){
         var commandsamount = 0
@@ -45,9 +49,9 @@ addcommand("commands",["cmds","help"],"displays a list of commands","",function(
             if(command.minrank === "" || theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
               if(firstone === true){
                 firstone = false;
-                viablecommands = viablecommands+command.name;
+                viablecommands = viablecommands+capitalizeFirstLetter(command.name);
               }else{
-                viablecommands = viablecommands+", "+command.name;
+                viablecommands = viablecommands+", "+capitalizeFirstLetter(command.name);
               }
               commandsamount = commandsamount+1;
             }
@@ -55,17 +59,102 @@ addcommand("commands",["cmds","help"],"displays a list of commands","",function(
         });
         message.channel.send({"embed": {
           "title": "You have access to ("+commandsamount+") commands",
-          "description": viablecommands
+          "description": "``"+viablecommands+"``"
+          "footer": {
+            "text": "To learn more about a command, say !help [command name] and you will be shown more information about it."
+          }
         }})
       }else{
-        message.channel.send("**:no_entry_sign: The specified command does not exist.**")
+        var saidcommand = args[1].toLowerCase();
+        var alreadycommanded = false;
+        var theirmember = message.member
+        commands.forEach(function(command){
+            if(alreadycommanded === false){
+              var isalias = false;
+              var firstone = true;
+              var aliases = ""
+              command.aliases.forEach(function(alias){
+                if(firstone === true){
+                  firstone = false;
+                  aliases = aliases+capitalizeFirstLetter(alias);
+                }else{
+                  aliases = aliases+", "+capitalizeFirstLetter(alias);
+                }
+                if(saidcommand === alias){
+                  isalias = true;
+                }
+              });
+              var itsminrank = "None"
+              if(command.minrank !== ""){
+                itsminrank = capitalizeFirstLetter(command.minrank);
+              }
+            	if(command.name === saidcommand || isalias === true){
+                if(command.minrank === ""){
+                  message.channel.send({"embed": {
+                  	"description": "`Displaying Info About: ["+capitalizeFirstLetter(command.name)+"]`",
+                  	"fields": [
+                  		{
+                  			"name": "Aliases:",
+                  			"value": aliases
+                  		},
+                  		{
+                  			"name": "Description:",
+                  			"value": command.desc
+                  		},
+                  		{
+                  			"name": "Minimum Rank:",
+                  			"value": "None"
+                  		}
+                  	]
+                  }})
+                }else{
+                  if(guild){
+                    if(guild.roles.find("name",command.minrank)){
+                      guild.fetchMember(message.author).then((theirmember) => {
+                        if(!theirmember){
+                          message.channel.send(":no_entry_sign: **Sorry, I can't find you in the server!**")
+                        }else{
+                          if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
+                            message.channel.send({"embed": {
+                            	"description": "`Displaying Info About: ["+capitalizeFirstLetter(command.name)+"]`",
+                            	"fields": [
+                            		{
+                            			"name": "Aliases:",
+                            			"value": aliases
+                            		},
+                            		{
+                            			"name": "Description:",
+                            			"value": command.desc
+                            		},
+                            		{
+                            			"name": "Minimum Rank:",
+                            			"value": "None"
+                            		}
+                            	]
+                            }})
+                          }else{
+                            message.channel.send(":no_entry_sign: **You're not a high enough role to see this command** (requires the [*"+command.minrank+"*] rank)")
+                          }
+                        }
+                      })
+                      .catch(() => {
+                        message.channel.send(":no_entry_sign: **Sorry, I can't find you in the server!**")
+                      })
+                    }else{
+                      message.channel.send(":no_entry_sign: **Sorry, the required role** (*"+command.minrank+"*) **for this command doesn't exist!**")
+                    }
+                  }
+                }
+              }
+            }
+        });
       }
     }else{
       message.channel.send("**:no_entry_sign: This command cannot be used in DMs.**")
     }
 });
 
-addcommand("unmute",[],"unmutes a user who was previously muted","helper",function(args,message){
+addcommand("unmute",[],"This command unmutes a user who was previously muted.","helper",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -131,7 +220,7 @@ addcommand("unmute",[],"unmutes a user who was previously muted","helper",functi
   }
 });
 
-addcommand("mute",[],"prevents the mentioned user from talking in text and voice channels","helper",function(args,message){
+addcommand("mute",[],"Prevents the specified user from speaking in text and voice channels until they're unmuted or their mute time is up.\n\n**Examples:**\n!mute [user] 50 (mutes for 50 minutes)\n!mute [user] 30s (mutes for 30 seconds)\n!mute [user] 5h (mutes for 5 hours)\n!mute [user] 2d (mutes for 2 days)\n!mute [user] 1w (mutes for 1 week)","helper",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -293,7 +382,7 @@ addcommand("mute",[],"prevents the mentioned user from talking in text and voice
   }
 });
 
-addcommand("verify",[],"verifies an unverified user","",function(args,message){
+addcommand("verify",[],"This command is used only in the #verify channel and is used to make sure users are not bots and aren't glitched.","",function(args,message){
     if(message.channel.guild && message.channel.name && message.channel.name === "verify"){
       if(message.member){
         var good = true;
