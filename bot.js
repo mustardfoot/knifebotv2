@@ -97,34 +97,20 @@ addcommand("test",["check"],"This command will respond if the bot is online. A s
 
 addcommand("permit",[],"Permitting a user allows them to post an image, file, or link. The link or image should then be moderated by the user issuing the permit to make sure it follows the rules.","helper",function(args,message){
     if(message.guild && message.guild === guild){
-      console.log('1');
       if(args[1]){
-        console.log('2');
         var theirmember = getmemberfromid(args[1])
-        console.log('3');
         if(theirmember){
-          console.log('4');
           if(guild.roles.find("name","permit")){
-            console.log('5');
             var alreadypermitted = false;
-            console.log('6');
             var roles = theirmember.roles
-            console.log('7');
             roles.forEach(function(role){
-              console.log('7.25');
               if (role.name === "permit") {
-                console.log('7.5');
                 alreadypermitted = true;
-                console.log('7.75');
               }
             })
-            console.log('8');
             if(alreadypermitted === false){
-              console.log('9');
-              user.addRole(guild.roles.find("name","permit"));
-              console.log('10');
+              theirmember.addRole(guild.roles.find("name","permit"));
               message.channel.send("**:white_check_mark: <@"+mentionedmember.id+"> has been permitted to post an image, file, or link.**");
-              console.log('11');
             }else{
               message.channel.send("**:no_entry_sign: This user is already permitted.**")
             }
@@ -148,6 +134,7 @@ addcommand("revokepermit",["removepermit","unpermit"],"Removes a user's permit i
           roles.forEach(function(role){
             if (role.name === "permit") {
               unpermitted = true;
+              theirmember.removeRole(role);
               message.channel.send("**:white_check_mark: <@"+mentionedmember.id+">'s permit has been removed.**");
             }
           })
