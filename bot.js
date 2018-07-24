@@ -22,7 +22,7 @@ function diff_minutes(dt2, dt1, add)
  function checkpermit(message,oldmessage){
    if(message.guild && message.guild === guild){
      var linkfound = false;
-     if (message.content.toLowerCase().indexOf('http') !== -1 || message.content.toLowerCase().indexOf('discord.gg') !== -1){
+       if (message.content.toLowerCase().indexOf('http') !== -1 || message.content.toLowerCase().indexOf('discord.gg') !== -1){
          var okay = false
          linkfound = true;
          if(message.member){
@@ -42,7 +42,7 @@ function diff_minutes(dt2, dt1, add)
          if (okay !== true){
           message.delete()
          }
-     }
+       }
      var attachments = false;
      message.attachments.forEach(function(att){
        attachments = true;
