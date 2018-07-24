@@ -22,6 +22,14 @@ function diff_minutes(dt2, dt1, add)
  function checkpermit(message,oldmessage){
    if(message.guild && message.guild === guild){
      var linkfound = false;
+     var oldattachments = false;
+     var oldlinks = false;
+     if(oldmessage){
+       oldmessage.attachments.forEach(function(att){
+         oldattachments = true;
+       })
+     }
+     if(!oldmessage || (oldattachments === false && (oldmessage.content.toLowerCase().indexOf('http') === -1 || oldmessage.content.toLowerCase().indexOf('discord.gg') === -1))){
        if (message.content.toLowerCase().indexOf('http') !== -1 || message.content.toLowerCase().indexOf('discord.gg') !== -1){
          var okay = false
          linkfound = true;
@@ -43,10 +51,16 @@ function diff_minutes(dt2, dt1, add)
           message.delete()
          }
        }
+     }else{
+       oldlinks = true;
+     }
      var attachments = false;
      message.attachments.forEach(function(att){
        attachments = true;
      })
+     if(oldattachments === true || oldlinks === true){
+       attachments = false;
+     }
      if (attachments === true && linkfound === false){
        var okay = false;
        if(message.member){
