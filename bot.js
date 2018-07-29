@@ -651,57 +651,59 @@ var myInterval = setInterval(function() {
       t.get("/1/lists/"+hwids+"/cards?fields=id,name,desc",function(err,cards){
         cards.forEach(function(card){
           t.get('1/cards/'+card.id+'/dateLastActivity',function(err,date){
-            var goaltime = new Date(date._value);
-            var todaytime = new Date();
-            var todaymin = diff_minutes(todaytime,goaltime,card.desc);
-            if (todaymin >= 0 && card.desc !== 0 && card.desc !== "0"){
-              var cardname = card.name;
-              var carddesc = card.desc;
-              t.del('1/cards/'+card.id,function(err,returns){});
-              client.fetchUser(cardname).then((thatuser) => {
-                if(thatuser){
-                  guild.fetchMember(thatuser).then((muser) => {
-                    if(muser){
-                      var roles = muser.roles
-                      roles.forEach(function(role){
-                        if (role.name === "muted") {
-                          muser.removeRole(role)
-                          muser.createDM().then((boi) => {
-                            boi.send('**Your mute time has run out and you have been unmuted in the server. You may now talk again.**')
-                          })
-                          guild.channels.forEach(function(channel){
-                            if(channel.name === "logs"){
-                              channel.send({"embed": {
-                                "description":"Automatic Unmute",
-                                "fields": [
-                                  {
-                                    "name": "User",
-                                    "value": "<@"+muser.id+">"
-                                  }
-                                ]
-                              }})
-                            }
-                          });
-                        }
-                      })
-                    }
-                  })
-                }
-              })
-            }else{
-              var cardname = card.name;
-              var carddesc = card.desc;
-              client.fetchUser(cardname).then((thatuser) => {
-                if(thatuser && thatuser !== undefined){
-                  guild.fetchMember(thatuser).then((muser) => {
-                    if(muser && muser !== undefined){
-                      if (guild.roles.find("name","muted")) {
-                        muser.addRole(guild.roles.find("name","muted"))
+            if(date){
+              var goaltime = new Date(date._value);
+              var todaytime = new Date();
+              var todaymin = diff_minutes(todaytime,goaltime,card.desc);
+              if (todaymin >= 0 && card.desc !== 0 && card.desc !== "0"){
+                var cardname = card.name;
+                var carddesc = card.desc;
+                t.del('1/cards/'+card.id,function(err,returns){});
+                client.fetchUser(cardname).then((thatuser) => {
+                  if(thatuser){
+                    guild.fetchMember(thatuser).then((muser) => {
+                      if(muser){
+                        var roles = muser.roles
+                        roles.forEach(function(role){
+                          if (role.name === "muted") {
+                            muser.removeRole(role)
+                            muser.createDM().then((boi) => {
+                              boi.send('**Your mute time has run out and you have been unmuted in the server. You may now talk again.**')
+                            })
+                            guild.channels.forEach(function(channel){
+                              if(channel.name === "logs"){
+                                channel.send({"embed": {
+                                  "description":"Automatic Unmute",
+                                  "fields": [
+                                    {
+                                      "name": "User",
+                                      "value": "<@"+muser.id+">"
+                                    }
+                                  ]
+                                }})
+                              }
+                            });
+                          }
+                        })
                       }
-                    }
-                  })
-                }
-              })
+                    })
+                  }
+                })
+              }else{
+                var cardname = card.name;
+                var carddesc = card.desc;
+                client.fetchUser(cardname).then((thatuser) => {
+                  if(thatuser && thatuser !== undefined){
+                    guild.fetchMember(thatuser).then((muser) => {
+                      if(muser && muser !== undefined){
+                        if (guild.roles.find("name","muted")) {
+                          muser.addRole(guild.roles.find("name","muted"))
+                        }
+                      }
+                    })
+                  }
+                })
+              }
             }
           });
         })
