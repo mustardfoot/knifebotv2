@@ -22,6 +22,7 @@ function diff_minutes(dt2, dt1, add)
  function checkpermit(message){
    var good = true;
    var links = false;
+   var attachments = false;
    if(message.guild && message.guild === guild){
      if (message.content.toLowerCase().indexOf('http') !== -1 || message.content.toLowerCase().indexOf('discord.gg') !== -1){
        links = true;
