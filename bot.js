@@ -85,6 +85,94 @@ addcommand("test",["check"],"This command will respond if the bot is online. A s
     message.channel.send(":white_check_mark: **The bot is active!**");
 });
 
+addcommand("unwhitelist",["removewhitelist","revokewhitelist"],"This command will remove a user's whitelist from the database.","owner",function(args,message){
+  if(message.guild && message.guild === guild){
+    if(args[1]){
+      var mentionedmember = getmemberfromid(args[1]);
+      if (mentionedmember){
+        if(mentionedmember.user !== client.user){
+          t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
+            datas.forEach(function(data){
+              if (data.name === "mains"){
+                hwids = data.id;
+              }
+            })
+            if(hwids){
+              var alreadyfound = false;
+              t.get("/1/lists/"+hwids+"/cards?fields=id,name,desc",function(err,cards){
+                cards.forEach(function(card){
+                  if(card.name === mentionedmember.id){
+                    t.del('1/cards/'+card.id,function(err,returns){
+                      var roles = mentionedmember.roles
+                      roles.forEach(function(role){
+                        if (role.name === "buyer") {
+                          mentionedmember.removeRole(role)
+                        }
+                      })
+                      message.channel.send(":white_check_mark: **<@"+mentionedmember.id+">'s whitelist has been revoked.**");
+                    });
+                    alreadyfound = true;
+                  }
+                })
+                if(alreadyfound === false){
+                  t.post('/1/cards?name='+mentionedmember.id+'&desc='+time+'&pos=top&idList='+hwids,function(err,returns){
+                    message.channel.send("**:no_entry_sign: This user is not whitelisted.**")
+                  });
+                }
+              });
+            }else{
+              message.channel.send("**Something seems to be wrong with the whitelist database, please contact mustardfoot about this issue.**")
+            }
+          });
+        }
+      }
+    }
+  }
+});
+
+addcommand("whitelist",[],"This command will whitelist a user after they purchase the product.","owner",function(args,message){
+  if(message.guild && message.guild === guild){
+    if(args[1]){
+      var mentionedmember = getmemberfromid(args[1]);
+      if (mentionedmember){
+        if(mentionedmember.user !== client.user){
+          t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
+            datas.forEach(function(data){
+              if (data.name === "mains"){
+                hwids = data.id;
+              }
+            })
+            if(hwids){
+              var alreadyfound = false;
+              t.get("/1/lists/"+hwids+"/cards?fields=id,name,desc",function(err,cards){
+                cards.forEach(function(card){
+                  if(card.name === mentionedmember.id){
+                    alreadyfound = true;
+                  }
+                })
+                if(alreadyfound === false){
+                  t.post('/1/cards?name='+mentionedmember.id+'&desc='+time+'&pos=top&idList='+hwids,function(err,returns){
+                    if(guild.roles.find("name","buyer")){
+                      mentionedmember.addRole(guild.roles.find("name","buyer"))
+                      message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been whitelisted!**");
+                    }else{
+                      message.channel.send("**:no_entry_sign: The buyer role does not exist.**")
+                    }
+                  });
+                }else{
+                  message.channel.send("**:no_entry_sign: This user is already whitelisted.**")
+                }
+              });
+            }else{
+              message.channel.send("**Something seems to be wrong with the whitelist database, please contact mustardfoot about this issue.**")
+            }
+          });
+        }
+      }
+    }
+  }
+});
+
 addcommand("permit",[],"Permitting a user allows them to post an image, file, or link. The link or image should then be moderated by the user issuing the permit to make sure it follows the rules.","helper",function(args,message){
     if(message.guild && message.guild === guild){
       if(args[1]){
