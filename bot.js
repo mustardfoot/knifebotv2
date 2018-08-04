@@ -85,7 +85,7 @@ addcommand("test",["check"],"This command will respond if the bot is online. A s
     message.channel.send(":white_check_mark: **The bot is active!**");
 });
 
-addcommand("rerole",["rerank"],"This command will give back a user's buyer role if their whitelist is in the database.","owner",function(args,message){
+addcommand("rerole",["rerank"],"This command will give back a user's buyer role if their whitelist is in the database.","helper",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
