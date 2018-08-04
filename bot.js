@@ -85,6 +85,47 @@ addcommand("test",["check"],"This command will respond if the bot is online. A s
     message.channel.send(":white_check_mark: **The bot is active!**");
 });
 
+addcommand("rerole",["rerank"],"This command will give back a user's buyer role if their whitelist is in the database.","owner",function(args,message){
+  if(message.guild && message.guild === guild){
+    if(args[1]){
+      var mentionedmember = getmemberfromid(args[1]);
+      if (mentionedmember){
+        if(mentionedmember.user !== client.user){
+          t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
+            datas.forEach(function(data){
+              if (data.name === "mains"){
+                hwids = data.id;
+              }
+            })
+            if(hwids){
+              var alreadyfound = false;
+              t.get("/1/lists/"+hwids+"/cards?fields=id,name,desc",function(err,cards){
+                cards.forEach(function(card){
+                  if(card.name === mentionedmember.id){
+                    alreadyfound = true;
+                  }
+                })
+                if(alreadyfound === true){
+                  if(guild.roles.find("name","buyer")){
+                    mentionedmember.addRole(guild.roles.find("name","buyer"))
+                    message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been given back their role.**");
+                  }else{
+                    message.channel.send("**:no_entry_sign: The buyer role does not exist.**")
+                  }
+                }else{
+                  message.channel.send("**:no_entry_sign: This user is not whitelisted.**")
+                }
+              });
+            }else{
+              message.channel.send("**Something seems to be wrong with the whitelist database, please contact mustardfoot about this issue.**")
+            }
+          });
+        }
+      }
+    }
+  }
+});
+
 addcommand("unwhitelist",["removewhitelist","revokewhitelist"],"This command will remove a user's whitelist from the database.","owner",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
