@@ -115,7 +115,7 @@ addcommand("unwhitelist",["removewhitelist","revokewhitelist"],"This command wil
                   }
                 })
                 if(alreadyfound === false){
-                  t.post('/1/cards?name='+mentionedmember.id+'&desc='+time+'&pos=top&idList='+hwids,function(err,returns){
+                  t.post('/1/cards?name='+mentionedmember.id+'&pos=top&idList='+hwids,function(err,returns){
                     message.channel.send("**:no_entry_sign: This user is not whitelisted.**")
                   });
                 }
