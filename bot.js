@@ -115,9 +115,7 @@ addcommand("unwhitelist",["removewhitelist","revokewhitelist"],"This command wil
                   }
                 })
                 if(alreadyfound === false){
-                  t.post('/1/cards?name='+mentionedmember.id+'&pos=top&idList='+hwids,function(err,returns){
-                    message.channel.send("**:no_entry_sign: This user is not whitelisted.**")
-                  });
+                  message.channel.send("**:no_entry_sign: This user is not whitelisted.**")
                 }
               });
             }else{
@@ -151,7 +149,7 @@ addcommand("whitelist",[],"This command will whitelist a user after they purchas
                   }
                 })
                 if(alreadyfound === false){
-                  t.post('/1/cards?name='+mentionedmember.id+'&desc='+time+'&pos=top&idList='+hwids,function(err,returns){
+                  t.post('/1/cards?name='+mentionedmember.id+'&pos=top&idList='+hwids,function(err,returns){
                     if(guild.roles.find("name","buyer")){
                       mentionedmember.addRole(guild.roles.find("name","buyer"))
                       message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been whitelisted!**");
