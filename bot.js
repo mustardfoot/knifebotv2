@@ -657,7 +657,7 @@ client.on('message', function(message) {
   checkpermit(message);
   var args = message.content.substring(pref.length).split(" ");
   if(message.content.toLowerCase().indexOf('this is so sad') !== -1){
-    message.send(':musical_note: **Now playing Despacito.**')
+    message.channel.send(':musical_note: **Now playing Despacito.**')
   }
   if (!message.content.startsWith(pref)) return;
   if(!guild){
