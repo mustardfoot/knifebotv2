@@ -123,7 +123,7 @@ addcommand("kick",[],"This command will kick someone out of the server.","modera
                       },
                       {
                         "name": "User",
-                        "value": "<@"+mentionedmember.id+">"
+                        "value": "<@"+mentionedmember.id+">",
                         "inline": true
                       },
                       {
