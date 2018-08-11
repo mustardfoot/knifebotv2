@@ -656,6 +656,9 @@ client.on('message', function(message) {
   if (message.author.equals(client.user)) return;
   checkpermit(message);
   var args = message.content.substring(pref.length).split(" ");
+  if(message.content.toLowerCase().indexOf('this is so sad') !== -1){
+    message.send(':musical_note: **Now playing Despacito.**')
+  }
   if (!message.content.startsWith(pref)) return;
   if(!guild){
     client.guilds.forEach(function(g){
@@ -663,9 +666,6 @@ client.on('message', function(message) {
         guild = g;
       }
     });
-  }
-  if(message.content.toLowerCase().indexOf('this is so sad') !== -1){
-    message.send(':musical_note: **Now playing Despacito.**')
   }
   var saidcommand = args[0].toLowerCase()
   var alreadycommanded = false;
