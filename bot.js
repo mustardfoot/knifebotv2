@@ -99,8 +99,8 @@ addcommand("kick",[],"This command will kick someone out of the server.","modera
             if(args[2]){
               reason = "";
               args.forEach(function(arg,n){
-                if(n > 2){
-                  if(n > 3){
+                if(n > 1){
+                  if(n > 2){
                     reason = reason+" "
                   }
                   reason = reason+arg
