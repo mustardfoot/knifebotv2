@@ -108,7 +108,7 @@ addcommand("kick",[],"This command will kick someone out of the server.","modera
               });
             }
             mentionedmember.user.createDM().then((boi) => {
-              boi.send('**You have been unmuted in the server. You may now talk again.**')
+              boi.send('**You have been kicked from the server.**')
               mentionedmember.kick()
               message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been kicked.**");
               guild.channels.forEach(function(channel){
