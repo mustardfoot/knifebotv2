@@ -88,6 +88,64 @@ addcommand("test",["check"],"This command will respond if the bot is online. A s
     message.channel.send(":white_check_mark: **The bot is active!**");
 });
 
+addcommand("kick",[],"This command will kick someone out of the server.","moderator",function(args,message){
+  if(message.guild && message.guild === guild){
+    if(args[1]){
+      var mentionedmember = getmemberfromid(args[1]);
+      if (mentionedmember){
+        if(mentionedmember.user !== client.user){
+          if(message.member && message.member.highestRole.comparePositionTo(mentionedmember.highestRole) > 0){
+            var reason = "No Reason Provided"
+            if(args[2]){
+              reason = "";
+              args.forEach(function(arg,n){
+                if(n > 2){
+                  if(n > 3){
+                    reason = reason+" "
+                  }
+                  reason = reason+arg
+                }
+              });
+            }
+            mentionedmember.user.createDM().then((boi) => {
+              boi.send('**You have been unmuted in the server. You may now talk again.**')
+              mentionedmember.kick()
+              message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been kicked.**");
+              guild.channels.forEach(function(channel){
+                if(channel.name === "logs"){
+                  channel.send({"embed": {
+                    "description":"Kick",
+                    "fields": [
+                      {
+                        "name": "Staff Member",
+                        "value": "<@"+message.author.id+">",
+                        "inline": true
+                      },
+                      {
+                        "name": "User",
+                        "value": "<@"+mentionedmember.id+">"
+                        "inline": true
+                      },
+                      {
+                        "name": "Reason",
+                        "value": reason
+                      }
+                    ]
+                  }})
+                }
+              });
+            });
+          }else{
+            message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
+          }
+        }else{
+          message.channel.send("**:no_entry_sign: You can't kick the bot.**")
+        }
+      }
+    }
+  }
+});
+
 addcommand("rerole",["rerank"],"This command will give back a user's buyer role if their whitelist is in the database.","helper",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
