@@ -208,7 +208,9 @@ addcommand("ban",["bean"],"This command will kick someone out of the server.","m
             message.channel.send("**:no_entry_sign: You can't ban the bot.**")
           }
         }
-      })
+      }).catch(() => {
+        message.channel.send(":no_entry_sign: **Sorry, I can't find that user!**")
+      });
     }
   }
 });
