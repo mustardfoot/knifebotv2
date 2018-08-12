@@ -70,6 +70,16 @@ function diff_minutes(dt2, dt1, add)
    }
  }
 
+
+ function getuserfromid(id){
+   if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
+     return client.fetchUser(id.substring(2,id.length-1));
+   }else if(id.substring(0,3) === "<@!" && id.substring(id.length-1) === ">" && Number(id.substring(3,id.length-1))){
+     return client.fetchUser(id.substring(3,id.length-1));
+   }else{
+     return null
+   }
+ }
 function getmemberfromid(id){
   if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
     return guild.members.get(id.substring(2,id.length-1));
@@ -86,6 +96,107 @@ function addcommand(name,aliases,desc,minrank,does){
 
 addcommand("test",["check"],"This command will respond if the bot is online. A simple test to make sure the bot isn't down.","",function(args,message){
     message.channel.send(":white_check_mark: **The bot is active!**");
+});
+
+addcommand("ban",["bean"],"This command will kick someone out of the server.","moderator",function(args,message){
+  if(message.guild && message.guild === guild){
+    if(args[1]){
+      var mentionedmember = getmemberfromid(args[1]);
+      var mentioneduser = getuserfromid(args[1]);
+      if (mentionedmember){
+        if(mentionedmember.user !== client.user){
+          if(message.member && message.member.highestRole.comparePositionTo(mentionedmember.highestRole) > 0){
+            var reason = "No Reason Provided"
+            if(args[2]){
+              reason = "";
+              args.forEach(function(arg,n){
+                if(n > 1){
+                  if(n > 2){
+                    reason = reason+" "
+                  }
+                  reason = reason+arg
+                }
+              });
+            }
+            mentionedmember.user.createDM().then((boi) => {
+              boi.send('**You have been banned from the server for ['+reason+']**')
+              guild.ban(mentionedmember,{reason: reason})
+              message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been banned.**");
+              guild.channels.forEach(function(channel){
+                if(channel.name === "logs"){
+                  channel.send({"embed": {
+                    "description":"Ban",
+                    "fields": [
+                      {
+                        "name": "Staff Member",
+                        "value": "<@"+message.author.id+">",
+                        "inline": true
+                      },
+                      {
+                        "name": "User",
+                        "value": "<@"+mentionedmember.id+">",
+                        "inline": true
+                      },
+                      {
+                        "name": "Reason",
+                        "value": reason
+                      }
+                    ]
+                  }})
+                }
+              });
+            });
+          }else{
+            message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
+          }
+        }else{
+          message.channel.send("**:no_entry_sign: You can't ban the bot.**")
+        }
+      }else if(mentioneduser){
+        if(mentioneduser !== client.user){
+          var reason = "No Reason Provided"
+          if(args[2]){
+            reason = "";
+            args.forEach(function(arg,n){
+              if(n > 1){
+                if(n > 2){
+                  reason = reason+" "
+                }
+                reason = reason+arg
+              }
+            });
+          }
+          guild.ban(mentioneduser,{reason: reason})
+          message.channel.send(":white_check_mark: **<@"+mentioneduser.id+"> has been banned.**");
+          guild.channels.forEach(function(channel){
+            if(channel.name === "logs"){
+              channel.send({"embed": {
+                "description":"Ban",
+                "fields": [
+                  {
+                    "name": "Staff Member",
+                    "value": "<@"+message.author.id+">",
+                    "inline": true
+                  },
+                  {
+                    "name": "User",
+                    "value": "<@"+mentioneduser.id+">",
+                    "inline": true
+                  },
+                  {
+                    "name": "Reason",
+                    "value": reason
+                  }
+                ]
+              }})
+            }
+          });
+        }else{
+          message.channel.send("**:no_entry_sign: You can't ban the bot.**")
+        }
+      }
+    }
+  }
 });
 
 addcommand("kick",[],"This command will kick someone out of the server.","moderator",function(args,message){
