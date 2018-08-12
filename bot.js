@@ -103,6 +103,7 @@ addcommand("ban",["bean"],"This command will kick someone out of the server.","m
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
       var mentioneduser = getuserfromid(args[1]);
+      console.log(mentioneduser);
       if (mentionedmember){
         if(mentionedmember.user !== client.user){
           if(message.member && message.member.highestRole.comparePositionTo(mentionedmember.highestRole) > 0){
