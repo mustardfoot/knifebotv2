@@ -77,7 +77,7 @@ var getuserfromid = new Promise(function(resolve, reject){
        if(user){
          resolve(user);
        }else{
-         resolve(null);
+         reject(null);
        }
      });
    }else if(id.substring(0,3) === "<@!" && id.substring(id.length-1) === ">" && Number(id.substring(3,id.length-1))){
@@ -85,11 +85,11 @@ var getuserfromid = new Promise(function(resolve, reject){
        if(user){
          resolve(user);
        }else{
-         resolve(null);
+         reject(null);
        }
      });
    }else{
-     resolve(null);
+     reject(null);
    }
  })
 
