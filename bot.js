@@ -70,28 +70,29 @@ function diff_minutes(dt2, dt1, add)
    }
  }
 
-
-var getuserfromid = new Promise(function(resolve, reject){
-   if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
-     client.fetchUser(id.substring(2,id.length-1)).then((user) => {
-       if(user){
-         resolve(user);
-       }else{
-         reject(null);
-       }
-     });
-   }else if(id.substring(0,3) === "<@!" && id.substring(id.length-1) === ">" && Number(id.substring(3,id.length-1))){
-     client.fetchUser(id.substring(3,id.length-1)).then((user) => {
-       if(user){
-         resolve(user);
-       }else{
-         reject(null);
-       }
-     });
-   }else{
-     reject(null);
-   }
- })
+var getuserfromid = function(id) {
+  return new Promise(function(resolve, reject){
+     if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
+       client.fetchUser(id.substring(2,id.length-1)).then((user) => {
+         if(user){
+           resolve(user);
+         }else{
+           reject(null);
+         }
+       });
+     }else if(id.substring(0,3) === "<@!" && id.substring(id.length-1) === ">" && Number(id.substring(3,id.length-1))){
+       client.fetchUser(id.substring(3,id.length-1)).then((user) => {
+         if(user){
+           resolve(user);
+         }else{
+           reject(null);
+         }
+       });
+     }else{
+       reject(null);
+     }
+  })
+}
 
 function getmemberfromid(id){
   if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
@@ -115,7 +116,7 @@ addcommand("ban",["bean"],"This command will kick someone out of the server.","m
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
-      getuserfromid.then((mentioneduser) => {
+      getuserfromid(args[1]).then((mentioneduser) => {
         if (mentionedmember){
           if(mentionedmember.user !== client.user){
             if(message.member && message.member.highestRole.comparePositionTo(mentionedmember.highestRole) > 0){
