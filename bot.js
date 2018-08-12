@@ -181,7 +181,7 @@ addcommand("ban",["bean"],"This command will kick someone out of the server.","m
               });
             }
             guild.ban(mentioneduser,{reason: reason})
-            message.channel.send(":white_check_mark: **"+mentioneduser.username+"#"+mentioneduser.tag+" has been banned.**");
+            message.channel.send(":white_check_mark: **"+mentioneduser.tag+" has been banned.**");
             guild.channels.forEach(function(channel){
               if(channel.name === "logs"){
                 channel.send({"embed": {
@@ -194,7 +194,7 @@ addcommand("ban",["bean"],"This command will kick someone out of the server.","m
                     },
                     {
                       "name": "User",
-                      "value": mentioneduser.username+"#"+mentioneduser.tag,
+                      "value": mentioneduser.tag,
                       "inline": true
                     },
                     {
