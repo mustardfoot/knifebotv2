@@ -74,6 +74,7 @@ function diff_minutes(dt2, dt1, add)
  function getuserfromid(id){
    if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
      client.fetchUser(id.substring(2,id.length-1)).then((user) => {
+       console.log(user);
        if(user){
          return user
        }else{
@@ -82,6 +83,7 @@ function diff_minutes(dt2, dt1, add)
      });
    }else if(id.substring(0,3) === "<@!" && id.substring(id.length-1) === ">" && Number(id.substring(3,id.length-1))){
      client.fetchUser(id.substring(3,id.length-1)).then((user) => {
+       console.log(user)
        if(user){
          return user
        }else{
