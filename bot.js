@@ -73,9 +73,21 @@ function diff_minutes(dt2, dt1, add)
 
  function getuserfromid(id){
    if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
-     return client.fetchUser(id.substring(2,id.length-1));
+     client.fetchUser(id.substring(2,id.length-1)).then((user) => {
+       if(user){
+         return user
+       }else{
+         return null
+       }
+     });
    }else if(id.substring(0,3) === "<@!" && id.substring(id.length-1) === ">" && Number(id.substring(3,id.length-1))){
-     return client.fetchUser(id.substring(3,id.length-1));
+     client.fetchUser(id.substring(3,id.length-1)).then((user) => {
+       if(user){
+         return user
+       }else{
+         return null
+       }
+     });
    }else{
      return null
    }
@@ -102,58 +114,11 @@ addcommand("ban",["bean"],"This command will kick someone out of the server.","m
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
-      var mentioneduser = getuserfromid(args[1]).then(() => {
-        if (mentionedmember){
-          if(mentionedmember.user !== client.user){
-            if(message.member && message.member.highestRole.comparePositionTo(mentionedmember.highestRole) > 0){
-              var reason = "No Reason Provided"
-              if(args[2]){
-                reason = "";
-                args.forEach(function(arg,n){
-                  if(n > 1){
-                    if(n > 2){
-                      reason = reason+" "
-                    }
-                    reason = reason+arg
-                  }
-                });
-              }
-              mentionedmember.user.createDM().then((boi) => {
-                boi.send('**You have been banned from the server for ['+reason+']**')
-                guild.ban(mentionedmember,{reason: reason})
-                message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been banned.**");
-                guild.channels.forEach(function(channel){
-                  if(channel.name === "logs"){
-                    channel.send({"embed": {
-                      "description":"Ban",
-                      "fields": [
-                        {
-                          "name": "Staff Member",
-                          "value": "<@"+message.author.id+">",
-                          "inline": true
-                        },
-                        {
-                          "name": "User",
-                          "value": "<@"+mentionedmember.id+">",
-                          "inline": true
-                        },
-                        {
-                          "name": "Reason",
-                          "value": reason
-                        }
-                      ]
-                    }})
-                  }
-                });
-              });
-            }else{
-              message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
-            }
-          }else{
-            message.channel.send("**:no_entry_sign: You can't ban the bot.**")
-          }
-        }else if(mentioneduser){
-          if(mentioneduser !== client.user){
+      var mentioneduser = getuserfromid(args[1]);
+      console.log(mentioneduser)
+      if (mentionedmember){
+        if(mentionedmember.user !== client.user){
+          if(message.member && message.member.highestRole.comparePositionTo(mentionedmember.highestRole) > 0){
             var reason = "No Reason Provided"
             if(args[2]){
               reason = "";
@@ -166,36 +131,83 @@ addcommand("ban",["bean"],"This command will kick someone out of the server.","m
                 }
               });
             }
-            guild.ban(mentioneduser,{reason: reason})
-            message.channel.send(":white_check_mark: **"+mentioneduser.username+"#"+mentioneduser.tag+" has been banned.**");
-            guild.channels.forEach(function(channel){
-              if(channel.name === "logs"){
-                channel.send({"embed": {
-                  "description":"Ban",
-                  "fields": [
-                    {
-                      "name": "Staff Member",
-                      "value": "<@"+message.author.id+">",
-                      "inline": true
-                    },
-                    {
-                      "name": "User",
-                      "value": mentioneduser.username+"#"+mentioneduser.tag,
-                      "inline": true
-                    },
-                    {
-                      "name": "Reason",
-                      "value": reason
-                    }
-                  ]
-                }})
-              }
+            mentionedmember.user.createDM().then((boi) => {
+              boi.send('**You have been banned from the server for ['+reason+']**')
+              guild.ban(mentionedmember,{reason: reason})
+              message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been banned.**");
+              guild.channels.forEach(function(channel){
+                if(channel.name === "logs"){
+                  channel.send({"embed": {
+                    "description":"Ban",
+                    "fields": [
+                      {
+                        "name": "Staff Member",
+                        "value": "<@"+message.author.id+">",
+                        "inline": true
+                      },
+                      {
+                        "name": "User",
+                        "value": "<@"+mentionedmember.id+">",
+                        "inline": true
+                      },
+                      {
+                        "name": "Reason",
+                        "value": reason
+                      }
+                    ]
+                  }})
+                }
+              });
             });
           }else{
-            message.channel.send("**:no_entry_sign: You can't ban the bot.**")
+            message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
           }
+        }else{
+          message.channel.send("**:no_entry_sign: You can't ban the bot.**")
         }
-      });
+      }else if(mentioneduser){
+        if(mentioneduser !== client.user){
+          var reason = "No Reason Provided"
+          if(args[2]){
+            reason = "";
+            args.forEach(function(arg,n){
+              if(n > 1){
+                if(n > 2){
+                  reason = reason+" "
+                }
+                reason = reason+arg
+              }
+            });
+          }
+          guild.ban(mentioneduser,{reason: reason})
+          message.channel.send(":white_check_mark: **"+mentioneduser.username+"#"+mentioneduser.tag+" has been banned.**");
+          guild.channels.forEach(function(channel){
+            if(channel.name === "logs"){
+              channel.send({"embed": {
+                "description":"Ban",
+                "fields": [
+                  {
+                    "name": "Staff Member",
+                    "value": "<@"+message.author.id+">",
+                    "inline": true
+                  },
+                  {
+                    "name": "User",
+                    "value": mentioneduser.username+"#"+mentioneduser.tag,
+                    "inline": true
+                  },
+                  {
+                    "name": "Reason",
+                    "value": reason
+                  }
+                ]
+              }})
+            }
+          });
+        }else{
+          message.channel.send("**:no_entry_sign: You can't ban the bot.**")
+        }
+      }
     }
   }
 });
