@@ -112,7 +112,7 @@ addcommand("test",["check"],"This command will respond if the bot is online. A s
     message.channel.send(":white_check_mark: **The bot is active!**");
 });
 
-addcommand("ban",["bean"],"This command will kick someone out of the server.","moderator",function(args,message){
+addcommand("ban",["bean"],"This command will ban someone from joining the server permanently.","moderator",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
