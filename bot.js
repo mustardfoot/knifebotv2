@@ -839,6 +839,7 @@ client.on('messageUpdate', (omessage, message) => {
 });
 
 client.on('messageReactionAdd', (reaction, user) => {
+    console.log('received');
     console.log(reaction.message.channel);
     console.log(reaction.message.channel.name);
     console.log(reaction.message.channel.name === "nsfw-verification");
