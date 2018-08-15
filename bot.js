@@ -841,26 +841,6 @@ client.on('messageUpdate', (omessage, message) => {
 client.on('messageReactionAdd', (reaction, user) => {
     if(reaction.message.channel && reaction.message.channel.name && reaction.message.channel.name === "nsfw-verification"){
       console.log(reaction.emoji.name);
-      if(reaction.emoji.name === "✅") {
-        reaction.users.forEach(function(user){
-          guild.fetchMember(user)
-          .then((member) => {
-            if(member){
-              if(guild.roles.find("name","nsfw-verified")){
-                member.addRole(guild.roles.find("name","nsfw-verified"))
-                .catch(() => {
-                  reaction.remove()
-                });
-              };
-            }else{
-              reaction.remove()
-            };
-          })
-          .catch(() => {
-            reaction.remove()
-          });
-        });
-      }
     }
 });
 
