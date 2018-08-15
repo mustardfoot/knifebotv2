@@ -838,6 +838,31 @@ client.on('messageUpdate', (omessage, message) => {
   checkpermit(message);
 });
 
+client.on('messageReactionAdd', (reaction, user) => {
+    if(reaction.channel && reaction.channel.name && reaction.channel.name === "nsfw-verification"){
+      if(reaction.emoji.name === "✅") {
+        reaction.users.forEach(function(user){
+          guild.fetchMember(user)
+          .then((member) => {
+            if(member){
+              if(guild.roles.find("name","nsfw-verified")){
+                member.addRole(guild.roles.find("name","nsfw-verified"))
+                .catch(() => {
+                  reaction.remove()
+                });
+              }
+            }else{
+              reaction.remove()
+            }
+          })
+          .catch(() => {
+            reaction.remove()
+          });
+        });
+      }
+    }
+});
+
 client.on('message', function(message) {
   if (message.author.equals(client.user)) return;
   checkpermit(message);
