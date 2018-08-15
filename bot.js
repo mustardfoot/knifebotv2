@@ -839,8 +839,7 @@ client.on('messageUpdate', (omessage, message) => {
 });
 
 client.on('messageReactionAdd', (reaction, user) => {
-    console.log(reaction.channel,reaction.channel.name,reaction.channel.name === "nsfw-verification")
-    if(reaction.channel && reaction.channel.name && reaction.channel.name === "nsfw-verification"){
+    if(reaction.message.channel && reaction.message.channel.name && reaction.message.channel.name === "nsfw-verification"){
       console.log(reaction.emoji.name);
       if(reaction.emoji.name === "✅") {
         reaction.users.forEach(function(user){
