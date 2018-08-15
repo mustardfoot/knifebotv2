@@ -839,7 +839,7 @@ client.on('messageUpdate', (omessage, message) => {
 });
 
 client.on('messageReactionAdd', (reaction, user) => {
-    if(reaction.message.channel && reaction.message.channel.name && reaction.message.channel.name === "nsfw-verification"){
+    if(reaction && reaction.message && reaction.message.channel && reaction.message.channel.name && reaction.message.channel.name === "nsfw-verification"){
       console.log(reaction.emoji.name);
     }
 });
