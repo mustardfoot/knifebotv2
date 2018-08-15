@@ -839,10 +839,8 @@ client.on('messageUpdate', (omessage, message) => {
 });
 
 client.on('messageReactionAdd', (reaction, user) => {
-    console.log('received');
-    console.log(reaction.message.channel);
-    console.log(reaction.message.channel.name);
-    console.log(reaction.message.channel.name === "nsfw-verification");
+  console.log('fuck this honestly');
+    /*
     if(reaction.message.channel && reaction.message.channel.name && reaction.message.channel.name === "nsfw-verification"){
       console.log(reaction.emoji.name);
       if(reaction.emoji.name === "✅") {
@@ -866,6 +864,7 @@ client.on('messageReactionAdd', (reaction, user) => {
         });
       }
     }
+    */
 });
 
 client.on('message', function(message) {
