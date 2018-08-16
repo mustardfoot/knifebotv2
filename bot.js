@@ -835,7 +835,7 @@ client.on('ready', () => {
 });
 
 client.on('messageReactionAdd', (reaction, user) => {
-  console.log(reaction.message.channel.name);
+  console.log(reaction.message);
   if(reaction.emoji.name === "✅" && reaction.message && reaction.message.channel && reaction.message.channel.name && reaction.message.channel.name === "how-to-verify") {
     console.log(user);
   };
