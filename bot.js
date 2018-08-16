@@ -835,10 +835,10 @@ client.on('ready', () => {
 });
 
 client.on('messageReactionAdd', (reaction, user) => {
-  console.log(reaction.emoji.name);
-  if(reaction.emoji.name === "✅") {
+  console.log(reaction.message.channel.name);
+  if(reaction.emoji.name === "✅" && reaction.message && reaction.message.channel && reaction.message.channel.name && reaction.message.channel.name === "how-to-verify") {
     console.log(user);
-  }
+  };
 });
 
 client.on('messageUpdate', (omessage, message) => {
