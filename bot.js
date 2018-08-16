@@ -836,7 +836,7 @@ client.on('ready', () => {
 
 client.on('messageReactionAdd', (reaction, user) => {
   console.log(reaction);
-  if(reaction.emoji.name === "✅") {
+  if(reaction.emoji.name === "e") {
     console.log(user);
   };
 });
