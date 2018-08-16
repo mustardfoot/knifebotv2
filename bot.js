@@ -834,13 +834,6 @@ client.on('ready', () => {
   .catch(console.error);
 });
 
-client.on('messageReactionAdd', (reaction, user) => {
-  console.log(reaction);
-  if(reaction.emoji.name === "e") {
-    console.log(user);
-  };
-});
-
 client.on('messageUpdate', (omessage, message) => {
   checkpermit(message);
 });
