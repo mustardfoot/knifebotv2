@@ -19,49 +19,51 @@ function diff_minutes(dt2, dt1, add)
 
  }
 
- function checkpermit(message){
+ function checkpermit(message,oldmessage){
    var good = true;
-   var links = false;
-   var attachments = false;
-   if(message.guild && message.guild === guild){
-     if (message.content.toLowerCase().indexOf('http') !== -1 || message.content.toLowerCase().indexOf('discord.gg') !== -1 || message.content.toLowerCase().indexOf('://') !== -1){
-       links = true;
-       good = false;
-       if(message.member){
-         if(guild.roles.find("name","helper")){
-           if(message.member.highestRole.comparePositionTo(guild.roles.find("name","helper")) >= 0){
-             good = true;
+   if(!oldmessage){
+     var links = false;
+     var attachments = false;
+     if(message.guild && message.guild === guild){
+       if (message.content.toLowerCase().indexOf('http') !== -1 || message.content.toLowerCase().indexOf('discord.gg') !== -1 || message.content.toLowerCase().indexOf('://') !== -1){
+         links = true;
+         good = false;
+         if(message.member){
+           if(guild.roles.find("name","helper")){
+             if(message.member.highestRole.comparePositionTo(guild.roles.find("name","helper")) >= 0){
+               good = true;
+             }
            }
-         }
-         var roles = message.member.roles
-         roles.forEach(function(role){
-           if (role.name === "permit") {
-             good = true;
-             message.member.removeRole(role);
+           var roles = message.member.roles
+           roles.forEach(function(role){
+             if (role.name === "permit") {
+               good = true;
+               message.member.removeRole(role);
+             }
+           })
+           if(good === false){
+             links = false;
            }
-         })
-         if(good === false){
-           links = false;
          }
        }
-     }
-     message.attachments.forEach(function(att){
-       attachments = true;
-     })
-     if (attachments === true && links === false){
-       if(message.member){
-         if(guild.roles.find("name","helper")){
-           if(message.member.highestRole.comparePositionTo(guild.roles.find("name","helper")) >= 0){
-             good = true;
+       message.attachments.forEach(function(att){
+         attachments = true;
+       })
+       if (attachments === true && links === false){
+         if(message.member){
+           if(guild.roles.find("name","helper")){
+             if(message.member.highestRole.comparePositionTo(guild.roles.find("name","helper")) >= 0){
+               good = true;
+             }
            }
+           var roles = message.member.roles
+           roles.forEach(function(role){
+             if (role.name === "permit") {
+               good = true;
+               message.member.removeRole(role);
+             }
+           })
          }
-         var roles = message.member.roles
-         roles.forEach(function(role){
-           if (role.name === "permit") {
-             good = true;
-             message.member.removeRole(role);
-           }
-         })
        }
      }
    }
@@ -835,7 +837,7 @@ client.on('ready', () => {
 });
 
 client.on('messageUpdate', (omessage, message) => {
-  checkpermit(message);
+  checkpermit(message,omessage);
 });
 
 client.on('message', function(message) {
