@@ -115,13 +115,13 @@ addcommand("test",["check"],"This command will respond if the bot is online. A s
     message.channel.send(":white_check_mark: **The bot is active!**");
 });
 
-addcommand("getpicture",["getprofile","getprofilepicture","getpfp"],"This command will reply with the profile picture of the user specified.","",function(args,message){
+addcommand("getpicture",["getprofile","getprofilepicture","getpfp","pfp","picture","getprofile"],"This command will reply with the profile picture of the user specified.","",function(args,message){
     if(message.guild && message.guild === guild && message.channel.guild && message.channel.name && message.channel.name === "bot"){
       if(args[1]){
         var user = getuserfromid(args[1]).then((mentioneduser) => {
           if(mentioneduser){
             if(mentioneduser.avatarURL){
-              message.channel.send(":white_check_mark: **Here is **"+mentioneduser.tag+"'s** profile picture: "+mentioneduser.avatarURL+"**");
+              message.channel.send(":white_check_mark: Here is **"+mentioneduser.tag+"'s** profile picture: "+mentioneduser.avatarURL);
             }
           }else{
             message.channel.send(":no_entry_sign: **Sorry, I can't find that user!**")
