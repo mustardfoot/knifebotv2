@@ -45,6 +45,7 @@ function diff_minutes(dt2, dt1, add)
              links = false;
            }
          }
+
        }
        message.attachments.forEach(function(att){
          attachments = true;
@@ -112,6 +113,28 @@ function addcommand(name,aliases,desc,minrank,does){
 
 addcommand("test",["check"],"This command will respond if the bot is online. A simple test to make sure the bot isn't down.","",function(args,message){
     message.channel.send(":white_check_mark: **The bot is active!**");
+});
+
+addcommand("getpicture",["getprofile","getprofilepicture","getpfp"],"This command will reply with the profile picture of the user specified.","",function(args,message){
+    if(message.guild && message.guild === guild && message.channel.guild && message.channel.name && message.channel.name === "bot"){
+      if(args[1]){
+        var user = getuserfromid(args[1]).then((mentioneduser) => {
+          if(mentioneduser){
+            if(mentioneduser.avatarURL){
+              message.channel.send(":white_check_mark: **Here is **"+mentioneduser.tag+"'s** profile picture: "+mentioneduser.avatarURL+"**");
+            }
+          }else{
+            message.channel.send(":no_entry_sign: **Sorry, I can't find that user!**")
+          }
+        }).catch(() => {
+          message.channel.send(":no_entry_sign: **Sorry, I can't find that user!**")
+        });
+      }else{
+        message.channel.send(":no_entry_sign: **You need to specify a user to get their profile picture.**");
+      }
+    }else{
+      message.channel.send(":no_entry_sign: **This command can only be used in the bot commands channel.**");
+    }
 });
 
 addcommand("ban",["bean"],"This command will ban someone from joining the server permanently.","moderator",function(args,message){
