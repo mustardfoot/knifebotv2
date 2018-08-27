@@ -870,13 +870,13 @@ client.on('message', function(message) {
   if(message.content.toLowerCase().indexOf('this is so sad') !== -1){
     message.channel.send(':musical_note: **Now playing Despacito.**')
   }
-  if(message.content.toLowerCase().indexOf("what's ligma") !== -1 || message.content.toLowerCase().indexOf("what is ligma") !== -1){
+  if(message.content.toLowerCase().indexOf("what's ligma") !== -1 || message.content.toLowerCase().indexOf("what is ligma") !== -1 || message.content.toLowerCase().indexOf("whats ligma") !== -1){
     message.channel.send('ligma balls XD')
-  }else if(message.content.toLowerCase().indexOf("what's sugma") !== -1 || message.content.toLowerCase().indexOf("what is sugma") !== -1){
+  }else if(message.content.toLowerCase().indexOf("what's sugma") !== -1 || message.content.toLowerCase().indexOf("what is sugma") !== -1 || message.content.toLowerCase().indexOf("whats sugma") !== -1){
     message.channel.send('sugma dick XD')
-  }else if(message.content.toLowerCase().indexOf("what's updog") !== -1 || message.content.toLowerCase().indexOf("what is updog") !== -1){
+  }else if(message.content.toLowerCase().indexOf("what's updog") !== -1 || message.content.toLowerCase().indexOf("what is updog") !== -1 || message.content.toLowerCase().indexOf("whats updog") !== -1){
     message.channel.send('not much, whats up with you XD')
-  }else if(message.content.toLowerCase().indexOf("what's sugondese") !== -1 || message.content.toLowerCase().indexOf("what is sugondese") !== -1){
+  }else if(message.content.toLowerCase().indexOf("what's sugondese") !== -1 || message.content.toLowerCase().indexOf("what is sugondese" || message.content.toLowerCase().indexOf("whats sugondese") !== -1) !== -1){
     message.channel.send('sugondese nuts XD')
   }
 
