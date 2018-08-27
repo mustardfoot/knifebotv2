@@ -872,11 +872,11 @@ client.on('message', function(message) {
   }
   if(message.content.toLowerCase().indexOf("what's ligma") !== -1 || message.content.toLowerCase().indexOf("what is ligma") !== -1){
     message.channel.send('ligma balls XD')
-  }elseif(message.content.toLowerCase().indexOf("what's sugma") !== -1 || message.content.toLowerCase().indexOf("what is sugma") !== -1){
+  }else if(message.content.toLowerCase().indexOf("what's sugma") !== -1 || message.content.toLowerCase().indexOf("what is sugma") !== -1){
     message.channel.send('sugma dick XD')
-  }elseif(message.content.toLowerCase().indexOf("what's updog") !== -1 || message.content.toLowerCase().indexOf("what is updog") !== -1){
+  }else if(message.content.toLowerCase().indexOf("what's updog") !== -1 || message.content.toLowerCase().indexOf("what is updog") !== -1){
     message.channel.send('not much, whats up with you XD')
-  }elseif(message.content.toLowerCase().indexOf("what's sugondese") !== -1 || message.content.toLowerCase().indexOf("what is sugondese") !== -1){
+  }else if(message.content.toLowerCase().indexOf("what's sugondese") !== -1 || message.content.toLowerCase().indexOf("what is sugondese") !== -1){
     message.channel.send('sugondese nuts XD')
   }
 
