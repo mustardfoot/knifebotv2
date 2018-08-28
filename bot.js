@@ -165,6 +165,7 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
                   if(channel.name === "logs"){
                     channel.send({"embed": {
                       "description":"Ban",
+                      "timestamp": new Date(),
                       "fields": [
                         {
                           "name": "Staff Member",
@@ -211,6 +212,7 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
               if(channel.name === "logs"){
                 channel.send({"embed": {
                   "description":"Ban",
+                  "timestamp": new Date(),
                   "fields": [
                     {
                       "name": "Staff Member",
@@ -268,6 +270,7 @@ addcommand("kick",[],"This command will kick someone out of the server.","modera
                 if(channel.name === "logs"){
                   channel.send({"embed": {
                     "description":"Kick",
+                    "timestamp": new Date(),
                     "fields": [
                       {
                         "name": "Staff Member",
@@ -638,6 +641,7 @@ addcommand("unmute",[],"This command unmutes a user who was previously muted.","
               if(channel.name === "logs"){
                 channel.send({"embed": {
                   "description":"Unmute",
+                  "timestamp": new Date(),
                   "fields": [
                     {
                       "name": "Staff Member",
@@ -773,6 +777,7 @@ addcommand("mute",[],"Prevents the specified user from speaking in text and voic
                             if(channel.name === "logs"){
                               channel.send({"embed": {
                                 "description":"Mute",
+                                "timestamp": new Date(),
                                 "fields": [
                                   {
                                     "name": "Staff Member",
@@ -962,6 +967,7 @@ var myInterval = setInterval(function() {
                               if(channel.name === "logs"){
                                 channel.send({"embed": {
                                   "description":"Automatic Unmute",
+                                  "timestamp": new Date(),
                                   "fields": [
                                     {
                                       "name": "User",
