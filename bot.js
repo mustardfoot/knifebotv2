@@ -3,6 +3,8 @@ const Trello = require("node-trello");
 const t = new Trello(process.env.T_KEY,process.env.T_TOKEN);
 const client = new Discord.Client();
 var pref = "!"
+var sEmoji;
+var fEmoji;
 var guild;
 var commands = [];
 
@@ -112,7 +114,7 @@ function addcommand(name,aliases,desc,minrank,does){
 }
 
 addcommand("test",["check"],"This command will respond if the bot is online. A simple test to make sure the bot isn't down.","",function(args,message){
-    message.channel.send(":mustardGood: **The bot is active!**");
+    message.channel.send(sEmoji+" **The bot is active!**");
 });
 
 addcommand("getpicture",["getprofile","getprofilepicture","getpfp","pfp","picture","getprofile"],"This command will reply with the profile picture of the user specified.","",function(args,message){
@@ -121,19 +123,19 @@ addcommand("getpicture",["getprofile","getprofilepicture","getpfp","pfp","pictur
         var user = getuserfromid(args[1]).then((mentioneduser) => {
           if(mentioneduser){
             if(mentioneduser.avatarURL){
-              message.channel.send(":mustardGood: Here is **"+mentioneduser.tag+"'s** profile picture: "+mentioneduser.avatarURL);
+              message.channel.send(sEmoji+" Here is **"+mentioneduser.tag+"'s** profile picture: "+mentioneduser.avatarURL);
             }
           }else{
-            message.channel.send(":mustardBad: **Sorry, I can't find that user!**")
+            message.channel.send(fEmoji+" **Sorry, I can't find that user!**")
           }
         }).catch(() => {
-          message.channel.send(":mustardBad: **Sorry, I can't find that user!**")
+          message.channel.send(fEmoji+" **Sorry, I can't find that user!**")
         });
       }else{
-        message.channel.send(":mustardBad: **You need to specify a user to get their profile picture.**");
+        message.channel.send(fEmoji+" **You need to specify a user to get their profile picture.**");
       }
     }else{
-      message.channel.send(":mustardBad: **This command can only be used in the bot commands channel.**");
+      message.channel.send(fEmoji+" **This command can only be used in the bot commands channel.**");
     }
 });
 
@@ -160,7 +162,7 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
               mentionedmember.user.createDM().then((boi) => {
                 boi.send('**You have been banned from the server for ['+reason+']**')
                 guild.ban(mentionedmember,{reason: reason})
-                message.channel.send(":mustardGood: **<@"+mentionedmember.id+"> has been banned.**");
+                message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been banned.**");
                 guild.channels.forEach(function(channel){
                   if(channel.name === "logs"){
                     channel.send({"embed": {
@@ -187,10 +189,10 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
                 });
               });
             }else{
-              message.channel.send("**:mustardBad: You are not able to moderate this user.**")
+              message.channel.send("**"+fEmoji+" You are not able to moderate this user.**")
             }
           }else{
-            message.channel.send("**:mustardBad: You can't ban the bot.**")
+            message.channel.send("**"+fEmoji+" You can't ban the bot.**")
           }
         }else if(mentioneduser){
           if(mentioneduser !== client.user){
@@ -207,7 +209,7 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
               });
             }
             guild.ban(mentioneduser,{reason: reason})
-            message.channel.send(":mustardGood: **"+mentioneduser.tag+" has been banned.**");
+            message.channel.send(sEmoji+" **"+mentioneduser.tag+" has been banned.**");
             guild.channels.forEach(function(channel){
               if(channel.name === "logs"){
                 channel.send({"embed": {
@@ -233,11 +235,11 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
               }
             });
           }else{
-            message.channel.send("**:mustardBad: You can't ban the bot.**")
+            message.channel.send("**"+fEmoji+" You can't ban the bot.**")
           }
         }
       }).catch(() => {
-        message.channel.send(":mustardBad: **Sorry, I can't find that user!**")
+        message.channel.send(fEmoji+" **Sorry, I can't find that user!**")
       });
     }
   }
@@ -265,7 +267,7 @@ addcommand("kick",[],"This command will kick someone out of the server.","modera
             mentionedmember.user.createDM().then((boi) => {
               boi.send('**You have been kicked from the server for ['+reason+']**')
               mentionedmember.kick()
-              message.channel.send(":mustardGood: **<@"+mentionedmember.id+"> has been kicked.**");
+              message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been kicked.**");
               guild.channels.forEach(function(channel){
                 if(channel.name === "logs"){
                   channel.send({"embed": {
@@ -292,10 +294,10 @@ addcommand("kick",[],"This command will kick someone out of the server.","modera
               });
             });
           }else{
-            message.channel.send("**:mustardBad: You are not able to moderate this user.**")
+            message.channel.send("**"+fEmoji+" You are not able to moderate this user.**")
           }
         }else{
-          message.channel.send("**:mustardBad: You can't kick the bot.**")
+          message.channel.send("**"+fEmoji+" You can't kick the bot.**")
         }
       }
     }
@@ -325,12 +327,12 @@ addcommand("rerole",["rerank"],"This command will give back a user's buyer role 
                 if(alreadyfound === true){
                   if(guild.roles.find("name","buyer")){
                     mentionedmember.addRole(guild.roles.find("name","buyer"))
-                    message.channel.send(":mustardGood: **<@"+mentionedmember.id+"> has been given back their role.**");
+                    message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been given back their role.**");
                   }else{
-                    message.channel.send("**:mustardBad: The buyer role does not exist.**")
+                    message.channel.send("**"+fEmoji+" The buyer role does not exist.**")
                   }
                 }else{
-                  message.channel.send("**:mustardBad: This user is not whitelisted.**")
+                  message.channel.send("**"+fEmoji+" This user is not whitelisted.**")
                 }
               });
             }else{
@@ -367,13 +369,13 @@ addcommand("unwhitelist",["removewhitelist","revokewhitelist"],"This command wil
                           mentionedmember.removeRole(role)
                         }
                       })
-                      message.channel.send(":mustardGood: **<@"+mentionedmember.id+">'s whitelist has been revoked.**");
+                      message.channel.send(sEmoji+" **<@"+mentionedmember.id+">'s whitelist has been revoked.**");
                     });
                     alreadyfound = true;
                   }
                 })
                 if(alreadyfound === false){
-                  message.channel.send("**:mustardBad: This user is not whitelisted.**")
+                  message.channel.send("**"+fEmoji+" This user is not whitelisted.**")
                 }
               });
             }else{
@@ -410,13 +412,13 @@ addcommand("whitelist",[],"This command will whitelist a user after they purchas
                   t.post('/1/cards?name='+mentionedmember.id+'&pos=top&idList='+hwids,function(err,returns){
                     if(guild.roles.find("name","buyer")){
                       mentionedmember.addRole(guild.roles.find("name","buyer"))
-                      message.channel.send(":mustardGood: **<@"+mentionedmember.id+"> has been whitelisted!**");
+                      message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been whitelisted!**");
                     }else{
-                      message.channel.send("**:mustardBad: The buyer role does not exist.**")
+                      message.channel.send("**"+fEmoji+" The buyer role does not exist.**")
                     }
                   });
                 }else{
-                  message.channel.send("**:mustardBad: This user is already whitelisted.**")
+                  message.channel.send("**"+fEmoji+" This user is already whitelisted.**")
                 }
               });
             }else{
@@ -444,15 +446,15 @@ addcommand("permit",[],"Permitting a user allows them to post an image, file, or
             })
             if(alreadypermitted === false){
               theirmember.addRole(guild.roles.find("name","permit"));
-              message.channel.send("**:mustardGood: <@"+theirmember.id+"> has been permitted to post an image, file, or link.**");
+              message.channel.send("**"+sEmoji+" <@"+theirmember.id+"> has been permitted to post an image, file, or link.**");
             }else{
-              message.channel.send("**:mustardBad: This user is already permitted.**")
+              message.channel.send("**"+fEmoji+" This user is already permitted.**")
             }
           }else{
-            message.channel.send("**:mustardBad: The permit role cannot be found.**")
+            message.channel.send("**"+fEmoji+" The permit role cannot be found.**")
           }
         }else{
-          message.channel.send("**:mustardBad: This is not a valid user.**")
+          message.channel.send("**"+fEmoji+" This is not a valid user.**")
         }
       }
     }
@@ -469,14 +471,14 @@ addcommand("revokepermit",["removepermit","unpermit"],"Removes a user's permit i
             if (role.name === "permit") {
               unpermitted = true;
               theirmember.removeRole(role);
-              message.channel.send("**:mustardGood: <@"+theirmember.id+">'s permit has been removed.**");
+              message.channel.send("**"+sEmoji+" <@"+theirmember.id+">'s permit has been removed.**");
             }
           })
           if(unpermitted === false){
-            message.channel.send("**:mustardBad: <@"+theirmember.id+"> is not permitted.**");
+            message.channel.send("**"+fEmoji+" <@"+theirmember.id+"> is not permitted.**");
           }
         }else{
-          message.channel.send("**:mustardBad: This is not a valid user.**")
+          message.channel.send("**"+fEmoji+" This is not a valid user.**")
         }
       }
     }
@@ -560,7 +562,7 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
                     if(guild.roles.find("name",command.minrank)){
                       guild.fetchMember(message.author).then((theirmember) => {
                         if(!theirmember){
-                          message.channel.send(":mustardBad: **Sorry, I can't find you in the server!**")
+                          message.channel.send(fEmoji+" **Sorry, I can't find you in the server!**")
                         }else{
                           if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
                             message.channel.send({"embed": {
@@ -581,15 +583,15 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
                               ]
                             }})
                           }else{
-                            message.channel.send(":mustardBad: **You're not a high enough role to see this command** (requires the [*"+command.minrank+"*] rank)")
+                            message.channel.send(fEmoji+" **You're not a high enough role to see this command** (requires the [*"+command.minrank+"*] rank)")
                           }
                         }
                       })
                       .catch(() => {
-                        message.channel.send(":mustardBad: **Sorry, I can't find you in the server!**")
+                        message.channel.send(fEmoji+" **Sorry, I can't find you in the server!**")
                       })
                     }else{
-                      message.channel.send(":mustardBad: **Sorry, the required role** (*"+command.minrank+"*) **for this command doesn't exist!**")
+                      message.channel.send(fEmoji+" **Sorry, the required role** (*"+command.minrank+"*) **for this command doesn't exist!**")
                     }
                   }
                 }
@@ -598,7 +600,7 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
         });
       }
     }else{
-      message.channel.send("**:mustardBad: This command cannot be used in DMs.**")
+      message.channel.send("**"+fEmoji+" This command cannot be used in DMs.**")
     }
 });
 
@@ -655,17 +657,17 @@ addcommand("unmute",[],"This command unmutes a user who was previously muted.","
                 }})
               }
             });
-            message.channel.send("**:mustardGood: <@"+mentionedmember.id+"> has been unmuted.**")
+            message.channel.send("**"+sEmoji+" <@"+mentionedmember.id+"> has been unmuted.**")
           }else{
-            message.channel.send("**:mustardBad: You are not able to moderate this user.**")
+            message.channel.send("**"+fEmoji+" You are not able to moderate this user.**")
           }
         }
       }else{
-        message.channel.send("**:mustardBad: This is not a valid user.**")
+        message.channel.send("**"+fEmoji+" This is not a valid user.**")
       }
     }
   }else{
-    message.channel.send("**:mustardBad: This command cannot be used in DMs.**")
+    message.channel.send("**"+fEmoji+" This command cannot be used in DMs.**")
   }
 });
 
@@ -763,7 +765,7 @@ addcommand("mute",[],"Prevents the specified user from speaking in text and voic
                       mentionedmember.addRole(guild.roles.find("name","muted"))
                       .catch(() => {
                         good = false;
-                        message.channel.send("**:mustardBad: There has been an error giving the user the muted role. Please attempt to re-mute them.**")
+                        message.channel.send("**"+fEmoji+" There has been an error giving the user the muted role. Please attempt to re-mute them.**")
                       }).then(() => {
                         mentionedmember.user.createDM().then((boi) => {
                           if(displaytime !== "forever"){
@@ -802,14 +804,14 @@ addcommand("mute",[],"Prevents the specified user from speaking in text and voic
                             }
                           });
                           if(displaytime !== "forever"){
-                            message.channel.send(":mustardGood: The user <@"+mentionedmember.id+"> has been muted for **"+displaytime+"**.")
+                            message.channel.send(sEmoji+" The user <@"+mentionedmember.id+"> has been muted for **"+displaytime+"**.")
                           }else{
-                            message.channel.send(":mustardGood: The user <@"+mentionedmember.id+"> has been muted **forever**.")
+                            message.channel.send(sEmoji+" The user <@"+mentionedmember.id+"> has been muted **forever**.")
                           }
                         }
                       });
                     }else{
-                      message.channel.send(":mustardBad: **The muted role doesn't exist. Please contact mustardfoot to fix this.**")
+                      message.channel.send(fEmoji+" **The muted role doesn't exist. Please contact mustardfoot to fix this.**")
                     }
                   });
                 });
@@ -818,17 +820,17 @@ addcommand("mute",[],"Prevents the specified user from speaking in text and voic
               }
             });
           }else{
-            message.channel.send("**:mustardBad: You are not able to moderate this user.**")
+            message.channel.send("**"+fEmoji+" You are not able to moderate this user.**")
           }
         }else{
-          message.channel.send("**:mustardBad: You can't mute the bot.**")
+          message.channel.send("**"+fEmoji+" You can't mute the bot.**")
         }
       }else{
-        message.channel.send("**:mustardBad: This is not a valid user.**")
+        message.channel.send("**"+fEmoji+" This is not a valid user.**")
       }
     }
   }else{
-    message.channel.send("**:mustardBad: This command cannot be used in DMs.**")
+    message.channel.send("**"+fEmoji+" This command cannot be used in DMs.**")
   }
 });
 
@@ -840,17 +842,17 @@ addcommand("verify",[],"This command is used only in the #verify channel and is 
           message.member.addRole(message.member.guild.roles.find("name","verified"))
           .catch(() => {
             good = false;
-            message.channel.send("**:mustardBad: There has been an error verifying you,** <@"+message.author.id+">**. If this problem persists, please rejoin or contact mustardfoot.**")
+            message.channel.send("**"+fEmoji+" There has been an error verifying you,** <@"+message.author.id+">**. If this problem persists, please rejoin or contact mustardfoot.**")
           }).then(() => {
             if(good === true){
-              message.channel.send("**:mustardGood: You have been verified,** <@"+message.author.id+">**.**")
+              message.channel.send("**"+sEmoji+" You have been verified,** <@"+message.author.id+">**.**")
             }
           });
         }else{
-          message.channel.send(":mustardBad: **The verified role doesn't exist. Please contact mustardfoot to fix this.**")
+          message.channel.send(fEmoji+" **The verified role doesn't exist. Please contact mustardfoot to fix this.**")
         }
       }else{
-        message.channel.send("**:mustardBad: There has been an error verifying you,** <@"+message.author.id+">**. Please rejoin the server.**")
+        message.channel.send("**"+fEmoji+" There has been an error verifying you,** <@"+message.author.id+">**. Please rejoin the server.**")
       }
     }
 });
@@ -893,7 +895,8 @@ client.on('message', function(message) {
       }
     });
   }
-  //setupemojis() -- maybe later
+  sEmoji = client.emojis.find("name", "mustardGood").toString()
+  fEmoji = client.emojis.find("name", "mustardBad").toString()
   var saidcommand = args[0].toLowerCase()
   var alreadycommanded = false;
   commands.forEach(function(command){
@@ -912,20 +915,20 @@ client.on('message', function(message) {
               if(guild.roles.find("name",command.minrank)){
                 guild.fetchMember(message.author).then((theirmember) => {
                   if(!theirmember){
-                    message.channel.send(":mustardBad: **Sorry, I can't find you in the server!**")
+                    message.channel.send(fEmoji+" **Sorry, I can't find you in the server!**")
                   }else{
                     if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
                       command.does(args,message);
                     }else{
-                      message.channel.send(":mustardBad: **You're not a high enough role to run this command** (requires the [*"+command.minrank+"*] rank)")
+                      message.channel.send(fEmoji+" **You're not a high enough role to run this command** (requires the [*"+command.minrank+"*] rank)")
                     }
                   }
                 })
                 .catch(() => {
-                  message.channel.send(":mustardBad: **Sorry, I can't find you in the server!**")
+                  message.channel.send(fEmoji+" **Sorry, I can't find you in the server!**")
                 })
               }else{
-                message.channel.send(":mustardBad: **Sorry, the required role** (*"+command.minrank+"*) **for this command doesn't exist!**")
+                message.channel.send(fEmoji+" **Sorry, the required role** (*"+command.minrank+"*) **for this command doesn't exist!**")
               }
             }
           }
