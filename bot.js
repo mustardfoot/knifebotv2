@@ -874,10 +874,10 @@ var setupemojis = function() {
     var sEmoji
     guild.createEmoji('./images/xmark.png', 'mustardBad')
     .then((emoji) => {
-      fEmoji = client.emojis.find("name", "mustardBad");
+      fEmoji = ":mustardBad:"
       guild.createEmoji('./images/checkmark.png', 'mustardGood')
       .then((emoji) => {
-        sEmoji = client.emojis.find("name", "mustardGood");
+        sEmoji = ":mustardGood:"
         resolve(sEmoji,fEmoji)
       })
       .catch(() => {
@@ -889,7 +889,7 @@ var setupemojis = function() {
       fEmoji = ""
       guild.createEmoji('./images/checkmark.png', 'mustardGood')
       .then((emoji) => {
-        sEmoji = client.emojis.find("name", "mustardGood");
+        sEmoji = ":mustardGood:"
         resolve(sEmoji,fEmoji)
       })
       .catch(() => {
