@@ -893,7 +893,7 @@ client.on('message', function(message) {
       }
     });
   }
-  setupemojis()
+  //setupemojis() -- maybe later
   var saidcommand = args[0].toLowerCase()
   var alreadycommanded = false;
   commands.forEach(function(command){
