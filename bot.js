@@ -870,61 +870,33 @@ client.on('messageUpdate', (omessage, message) => {
 
 var setupemojis = function() {
   return new Promise(function(resolve, reject){
-     var fEmoji
-     var sEmoji
-     if(client.emojis.find("name", "mustardGood")){
-       sEmoji = client.emojis.find("name", "mustardGood");
-       if(client.emojis.find("name", "mustardBad")){
-         fEmoji = client.emojis.find("name", "mustardBad");
-         resolve(sEmoji,fEmoji)
-       }else{
-         guild.createEmoji('./images/xmark.png', 'mustardBad')
-         .then((emoji) => {
-           fEmoji = emoji
-           resolve(sEmoji,fEmoji)
-         })
-         .catch(() => {
-           fEmoji = ""
-           resolve(sEmoji,fEmoji)
-         })
-       }
-     }else{
-       guild.createEmoji('./images/checkmark.png', 'mustardGood')
-       .then((emoji) => {
-         sEmoji = emoji
-         if(client.emojis.find("name", "mustardBad")){
-           fEmoji = client.emojis.find("name", "mustardBad");
-           resolve(sEmoji,fEmoji)
-         }else{
-           guild.createEmoji('./images/xmark.png', 'mustardBad')
-           .then((emoji) => {
-             fEmoji = emoji
-             resolve(sEmoji,fEmoji)
-           })
-           .catch(() => {
-             fEmoji = ""
-             resolve(sEmoji,fEmoji)
-           })
-         }
-       })
-       .catch(() => {
-         sEmoji = ""
-         if(client.emojis.find("name", "mustardBad")){
-           fEmoji = client.emojis.find("name", "mustardBad");
-           resolve(sEmoji,fEmoji)
-         }else{
-           guild.createEmoji('./images/xmark.png', 'mustardBad')
-           .then((emoji) => {
-             fEmoji = emoji
-             resolve(sEmoji,fEmoji)
-           })
-           .catch(() => {
-             fEmoji = ""
-             resolve(sEmoji,fEmoji)
-           })
-         }
-       })
-     }
+    var fEmoji
+    var sEmoji
+    guild.createEmoji('./images/xmark.png', 'mustardBad')
+    .then((emoji) => {
+      fEmoji = client.emojis.find("name", "mustardBad");
+      guild.createEmoji('./images/checkmark.png', 'mustardGood')
+      .then((emoji) => {
+        sEmoji = client.emojis.find("name", "mustardGood");
+        resolve(sEmoji,fEmoji)
+      })
+      .catch(() => {
+        sEmoji = ""
+        resolve(sEmoji,fEmoji)
+      })
+    })
+    .catch(() => {
+      fEmoji = ""
+      guild.createEmoji('./images/checkmark.png', 'mustardGood')
+      .then((emoji) => {
+        sEmoji = client.emojis.find("name", "mustardGood");
+        resolve(sEmoji,fEmoji)
+      })
+      .catch(() => {
+        sEmoji = ""
+        resolve(sEmoji,fEmoji)
+      })
+    })
   })
 }
 
