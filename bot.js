@@ -111,33 +111,33 @@ function addcommand(name,aliases,desc,minrank,does){
     commands.push({name:name,aliases:aliases,desc:desc,minrank:minrank,does:does});
 }
 
-addcommand("test",["check"],"This command will respond if the bot is online. A simple test to make sure the bot isn't down.","",function(args,message){
-    message.channel.send(":white_check_mark: **The bot is active!**");
+addcommand("test",["check"],"This command will respond if the bot is online. A simple test to make sure the bot isn't down.","",function(args,message,sEmoji,fEmoji){
+    message.channel.send(sEmoji+" **The bot is active!**");
 });
 
-addcommand("getpicture",["getprofile","getprofilepicture","getpfp","pfp","picture","getprofile"],"This command will reply with the profile picture of the user specified.","",function(args,message){
+addcommand("getpicture",["getprofile","getprofilepicture","getpfp","pfp","picture","getprofile"],"This command will reply with the profile picture of the user specified.","",function(args,message,sEmoji,fEmoji){
     if(message.guild && message.guild === guild && message.channel.guild && message.channel.name && message.channel.name === "bot"){
       if(args[1]){
         var user = getuserfromid(args[1]).then((mentioneduser) => {
           if(mentioneduser){
             if(mentioneduser.avatarURL){
-              message.channel.send(":white_check_mark: Here is **"+mentioneduser.tag+"'s** profile picture: "+mentioneduser.avatarURL);
+              message.channel.send(sEmoji+" Here is **"+mentioneduser.tag+"'s** profile picture: "+mentioneduser.avatarURL);
             }
           }else{
-            message.channel.send(":no_entry_sign: **Sorry, I can't find that user!**")
+            message.channel.send(fEmoji+" **Sorry, I can't find that user!**")
           }
         }).catch(() => {
-          message.channel.send(":no_entry_sign: **Sorry, I can't find that user!**")
+          message.channel.send(fEmoji+" **Sorry, I can't find that user!**")
         });
       }else{
-        message.channel.send(":no_entry_sign: **You need to specify a user to get their profile picture.**");
+        message.channel.send(fEmoji+" **You need to specify a user to get their profile picture.**");
       }
     }else{
-      message.channel.send(":no_entry_sign: **This command can only be used in the bot commands channel.**");
+      message.channel.send(fEmoji+" **This command can only be used in the bot commands channel.**");
     }
 });
 
-addcommand("ban",["bean"],"This command will ban someone from joining the server permanently.","moderator",function(args,message){
+addcommand("ban",["bean"],"This command will ban someone from joining the server permanently.","moderator",function(args,message,sEmoji,fEmoji){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -160,7 +160,7 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
               mentionedmember.user.createDM().then((boi) => {
                 boi.send('**You have been banned from the server for ['+reason+']**')
                 guild.ban(mentionedmember,{reason: reason})
-                message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been banned.**");
+                message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been banned.**");
                 guild.channels.forEach(function(channel){
                   if(channel.name === "logs"){
                     channel.send({"embed": {
@@ -187,10 +187,10 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
                 });
               });
             }else{
-              message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
+              message.channel.send("**"+fEmoji+" You are not able to moderate this user.**")
             }
           }else{
-            message.channel.send("**:no_entry_sign: You can't ban the bot.**")
+            message.channel.send("**"+fEmoji+" You can't ban the bot.**")
           }
         }else if(mentioneduser){
           if(mentioneduser !== client.user){
@@ -207,7 +207,7 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
               });
             }
             guild.ban(mentioneduser,{reason: reason})
-            message.channel.send(":white_check_mark: **"+mentioneduser.tag+" has been banned.**");
+            message.channel.send(sEmoji+" **"+mentioneduser.tag+" has been banned.**");
             guild.channels.forEach(function(channel){
               if(channel.name === "logs"){
                 channel.send({"embed": {
@@ -233,17 +233,17 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
               }
             });
           }else{
-            message.channel.send("**:no_entry_sign: You can't ban the bot.**")
+            message.channel.send("**"+fEmoji+" You can't ban the bot.**")
           }
         }
       }).catch(() => {
-        message.channel.send(":no_entry_sign: **Sorry, I can't find that user!**")
+        message.channel.send(fEmoji+" **Sorry, I can't find that user!**")
       });
     }
   }
 });
 
-addcommand("kick",[],"This command will kick someone out of the server.","moderator",function(args,message){
+addcommand("kick",[],"This command will kick someone out of the server.","moderator",function(args,message,sEmoji,fEmoji){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -265,7 +265,7 @@ addcommand("kick",[],"This command will kick someone out of the server.","modera
             mentionedmember.user.createDM().then((boi) => {
               boi.send('**You have been kicked from the server for ['+reason+']**')
               mentionedmember.kick()
-              message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been kicked.**");
+              message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been kicked.**");
               guild.channels.forEach(function(channel){
                 if(channel.name === "logs"){
                   channel.send({"embed": {
@@ -292,17 +292,17 @@ addcommand("kick",[],"This command will kick someone out of the server.","modera
               });
             });
           }else{
-            message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
+            message.channel.send("**"+fEmoji+" You are not able to moderate this user.**")
           }
         }else{
-          message.channel.send("**:no_entry_sign: You can't kick the bot.**")
+          message.channel.send("**"+fEmoji+" You can't kick the bot.**")
         }
       }
     }
   }
 });
 
-addcommand("rerole",["rerank"],"This command will give back a user's buyer role if their whitelist is in the database.","helper",function(args,message){
+addcommand("rerole",["rerank"],"This command will give back a user's buyer role if their whitelist is in the database.","helper",function(args,message,sEmoji,fEmoji){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -325,12 +325,12 @@ addcommand("rerole",["rerank"],"This command will give back a user's buyer role 
                 if(alreadyfound === true){
                   if(guild.roles.find("name","buyer")){
                     mentionedmember.addRole(guild.roles.find("name","buyer"))
-                    message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been given back their role.**");
+                    message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been given back their role.**");
                   }else{
-                    message.channel.send("**:no_entry_sign: The buyer role does not exist.**")
+                    message.channel.send("**"+fEmoji+" The buyer role does not exist.**")
                   }
                 }else{
-                  message.channel.send("**:no_entry_sign: This user is not whitelisted.**")
+                  message.channel.send("**"+fEmoji+" This user is not whitelisted.**")
                 }
               });
             }else{
@@ -343,7 +343,7 @@ addcommand("rerole",["rerank"],"This command will give back a user's buyer role 
   }
 });
 
-addcommand("unwhitelist",["removewhitelist","revokewhitelist"],"This command will remove a user's whitelist from the database.","owner",function(args,message){
+addcommand("unwhitelist",["removewhitelist","revokewhitelist"],"This command will remove a user's whitelist from the database.","owner",function(args,message,sEmoji,fEmoji){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -367,13 +367,13 @@ addcommand("unwhitelist",["removewhitelist","revokewhitelist"],"This command wil
                           mentionedmember.removeRole(role)
                         }
                       })
-                      message.channel.send(":white_check_mark: **<@"+mentionedmember.id+">'s whitelist has been revoked.**");
+                      message.channel.send(sEmoji+" **<@"+mentionedmember.id+">'s whitelist has been revoked.**");
                     });
                     alreadyfound = true;
                   }
                 })
                 if(alreadyfound === false){
-                  message.channel.send("**:no_entry_sign: This user is not whitelisted.**")
+                  message.channel.send("**"+fEmoji+" This user is not whitelisted.**")
                 }
               });
             }else{
@@ -386,7 +386,7 @@ addcommand("unwhitelist",["removewhitelist","revokewhitelist"],"This command wil
   }
 });
 
-addcommand("whitelist",[],"This command will whitelist a user after they purchase the product.","owner",function(args,message){
+addcommand("whitelist",[],"This command will whitelist a user after they purchase the product.","owner",function(args,message,sEmoji,fEmoji){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -410,13 +410,13 @@ addcommand("whitelist",[],"This command will whitelist a user after they purchas
                   t.post('/1/cards?name='+mentionedmember.id+'&pos=top&idList='+hwids,function(err,returns){
                     if(guild.roles.find("name","buyer")){
                       mentionedmember.addRole(guild.roles.find("name","buyer"))
-                      message.channel.send(":white_check_mark: **<@"+mentionedmember.id+"> has been whitelisted!**");
+                      message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been whitelisted!**");
                     }else{
-                      message.channel.send("**:no_entry_sign: The buyer role does not exist.**")
+                      message.channel.send("**"+fEmoji+" The buyer role does not exist.**")
                     }
                   });
                 }else{
-                  message.channel.send("**:no_entry_sign: This user is already whitelisted.**")
+                  message.channel.send("**"+fEmoji+" This user is already whitelisted.**")
                 }
               });
             }else{
@@ -429,7 +429,7 @@ addcommand("whitelist",[],"This command will whitelist a user after they purchas
   }
 });
 
-addcommand("permit",[],"Permitting a user allows them to post an image, file, or link. The link or image should then be moderated by the user issuing the permit to make sure it follows the rules.","helper",function(args,message){
+addcommand("permit",[],"Permitting a user allows them to post an image, file, or link. The link or image should then be moderated by the user issuing the permit to make sure it follows the rules.","helper",function(args,message,sEmoji,fEmoji){
     if(message.guild && message.guild === guild){
       if(args[1]){
         var theirmember = getmemberfromid(args[1])
@@ -444,21 +444,21 @@ addcommand("permit",[],"Permitting a user allows them to post an image, file, or
             })
             if(alreadypermitted === false){
               theirmember.addRole(guild.roles.find("name","permit"));
-              message.channel.send("**:white_check_mark: <@"+theirmember.id+"> has been permitted to post an image, file, or link.**");
+              message.channel.send("**"+sEmoji+" <@"+theirmember.id+"> has been permitted to post an image, file, or link.**");
             }else{
-              message.channel.send("**:no_entry_sign: This user is already permitted.**")
+              message.channel.send("**"+fEmoji+" This user is already permitted.**")
             }
           }else{
-            message.channel.send("**:no_entry_sign: The permit role cannot be found.**")
+            message.channel.send("**"+fEmoji+" The permit role cannot be found.**")
           }
         }else{
-          message.channel.send("**:no_entry_sign: This is not a valid user.**")
+          message.channel.send("**"+fEmoji+" This is not a valid user.**")
         }
       }
     }
 });
 
-addcommand("revokepermit",["removepermit","unpermit"],"Removes a user's permit if they refuse to post a file, image, or link after receiving one.","helper",function(args,message){
+addcommand("revokepermit",["removepermit","unpermit"],"Removes a user's permit if they refuse to post a file, image, or link after receiving one.","helper",function(args,message,sEmoji,fEmoji){
     if(message.guild && message.guild === guild){
       if(args[1]){
         var theirmember = getmemberfromid(args[1])
@@ -469,20 +469,20 @@ addcommand("revokepermit",["removepermit","unpermit"],"Removes a user's permit i
             if (role.name === "permit") {
               unpermitted = true;
               theirmember.removeRole(role);
-              message.channel.send("**:white_check_mark: <@"+theirmember.id+">'s permit has been removed.**");
+              message.channel.send("**"+sEmoji+" <@"+theirmember.id+">'s permit has been removed.**");
             }
           })
           if(unpermitted === false){
-            message.channel.send("**:no_entry_sign: <@"+theirmember.id+"> is not permitted.**");
+            message.channel.send("**"+fEmoji+" <@"+theirmember.id+"> is not permitted.**");
           }
         }else{
-          message.channel.send("**:no_entry_sign: This is not a valid user.**")
+          message.channel.send("**"+fEmoji+" This is not a valid user.**")
         }
       }
     }
 });
 
-addcommand("commands",["cmds","help","?"],"This command displays all the commands avaliable for use by the user running the command. Supplying it with a command to look up will provide further detail on said command.","",function(args,message){
+addcommand("commands",["cmds","help","?"],"This command displays all the commands avaliable for use by the user running the command. Supplying it with a command to look up will provide further detail on said command.","",function(args,message,sEmoji,fEmoji){
     if(message.guild && message.guild === guild){
       if(!args[1]){
         var commandsamount = 0
@@ -560,7 +560,7 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
                     if(guild.roles.find("name",command.minrank)){
                       guild.fetchMember(message.author).then((theirmember) => {
                         if(!theirmember){
-                          message.channel.send(":no_entry_sign: **Sorry, I can't find you in the server!**")
+                          message.channel.send(fEmoji+" **Sorry, I can't find you in the server!**")
                         }else{
                           if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
                             message.channel.send({"embed": {
@@ -581,15 +581,15 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
                               ]
                             }})
                           }else{
-                            message.channel.send(":no_entry_sign: **You're not a high enough role to see this command** (requires the [*"+command.minrank+"*] rank)")
+                            message.channel.send(fEmoji+" **You're not a high enough role to see this command** (requires the [*"+command.minrank+"*] rank)")
                           }
                         }
                       })
                       .catch(() => {
-                        message.channel.send(":no_entry_sign: **Sorry, I can't find you in the server!**")
+                        message.channel.send(fEmoji+" **Sorry, I can't find you in the server!**")
                       })
                     }else{
-                      message.channel.send(":no_entry_sign: **Sorry, the required role** (*"+command.minrank+"*) **for this command doesn't exist!**")
+                      message.channel.send(fEmoji+" **Sorry, the required role** (*"+command.minrank+"*) **for this command doesn't exist!**")
                     }
                   }
                 }
@@ -598,11 +598,11 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
         });
       }
     }else{
-      message.channel.send("**:no_entry_sign: This command cannot be used in DMs.**")
+      message.channel.send("**"+fEmoji+" This command cannot be used in DMs.**")
     }
 });
 
-addcommand("unmute",[],"This command unmutes a user who was previously muted.","helper",function(args,message){
+addcommand("unmute",[],"This command unmutes a user who was previously muted.","helper",function(args,message,sEmoji,fEmoji){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -655,21 +655,21 @@ addcommand("unmute",[],"This command unmutes a user who was previously muted.","
                 }})
               }
             });
-            message.channel.send("**:white_check_mark: <@"+mentionedmember.id+"> has been unmuted.**")
+            message.channel.send("**"+sEmoji+" <@"+mentionedmember.id+"> has been unmuted.**")
           }else{
-            message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
+            message.channel.send("**"+fEmoji+" You are not able to moderate this user.**")
           }
         }
       }else{
-        message.channel.send("**:no_entry_sign: This is not a valid user.**")
+        message.channel.send("**"+fEmoji+" This is not a valid user.**")
       }
     }
   }else{
-    message.channel.send("**:no_entry_sign: This command cannot be used in DMs.**")
+    message.channel.send("**"+fEmoji+" This command cannot be used in DMs.**")
   }
 });
 
-addcommand("mute",[],"Prevents the specified user from speaking in text and voice channels until they're unmuted or their mute time is up.\n\n**Examples:**\n!mute [user] 50 (mutes for 50 minutes)\n!mute [user] 30s (mutes for 30 seconds)\n!mute [user] 5h (mutes for 5 hours)\n!mute [user] 2d (mutes for 2 days)\n!mute [user] 1w (mutes for 1 week)","helper",function(args,message){
+addcommand("mute",[],"Prevents the specified user from speaking in text and voice channels until they're unmuted or their mute time is up.\n\n**Examples:**\n!mute [user] 50 (mutes for 50 minutes)\n!mute [user] 30s (mutes for 30 seconds)\n!mute [user] 5h (mutes for 5 hours)\n!mute [user] 2d (mutes for 2 days)\n!mute [user] 1w (mutes for 1 week)","helper",function(args,message,sEmoji,fEmoji){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -763,7 +763,7 @@ addcommand("mute",[],"Prevents the specified user from speaking in text and voic
                       mentionedmember.addRole(guild.roles.find("name","muted"))
                       .catch(() => {
                         good = false;
-                        message.channel.send("**:no_entry_sign: There has been an error giving the user the muted role. Please attempt to re-mute them.**")
+                        message.channel.send("**"+fEmoji+" There has been an error giving the user the muted role. Please attempt to re-mute them.**")
                       }).then(() => {
                         mentionedmember.user.createDM().then((boi) => {
                           if(displaytime !== "forever"){
@@ -802,14 +802,14 @@ addcommand("mute",[],"Prevents the specified user from speaking in text and voic
                             }
                           });
                           if(displaytime !== "forever"){
-                            message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted for **"+displaytime+"**.")
+                            message.channel.send(sEmoji+" The user <@"+mentionedmember.id+"> has been muted for **"+displaytime+"**.")
                           }else{
-                            message.channel.send(":white_check_mark: The user <@"+mentionedmember.id+"> has been muted **forever**.")
+                            message.channel.send(sEmoji+" The user <@"+mentionedmember.id+"> has been muted **forever**.")
                           }
                         }
                       });
                     }else{
-                      message.channel.send(":no_entry_sign: **The muted role doesn't exist. Please contact mustardfoot to fix this.**")
+                      message.channel.send(fEmoji+" **The muted role doesn't exist. Please contact mustardfoot to fix this.**")
                     }
                   });
                 });
@@ -818,21 +818,21 @@ addcommand("mute",[],"Prevents the specified user from speaking in text and voic
               }
             });
           }else{
-            message.channel.send("**:no_entry_sign: You are not able to moderate this user.**")
+            message.channel.send("**"+fEmoji+" You are not able to moderate this user.**")
           }
         }else{
-          message.channel.send("**:no_entry_sign: You can't mute the bot.**")
+          message.channel.send("**"+fEmoji+" You can't mute the bot.**")
         }
       }else{
-        message.channel.send("**:no_entry_sign: This is not a valid user.**")
+        message.channel.send("**"+fEmoji+" This is not a valid user.**")
       }
     }
   }else{
-    message.channel.send("**:no_entry_sign: This command cannot be used in DMs.**")
+    message.channel.send("**"+fEmoji+" This command cannot be used in DMs.**")
   }
 });
 
-addcommand("verify",[],"This command is used only in the #verify channel and is used to make sure users are not bots and aren't glitched.","",function(args,message){
+addcommand("verify",[],"This command is used only in the #verify channel and is used to make sure users are not bots and aren't glitched.","",function(args,message,sEmoji,fEmoji){
     if(message.channel.guild && message.channel.name && message.channel.name === "verify"){
       if(message.member){
         var good = true;
@@ -840,17 +840,17 @@ addcommand("verify",[],"This command is used only in the #verify channel and is 
           message.member.addRole(message.member.guild.roles.find("name","verified"))
           .catch(() => {
             good = false;
-            message.channel.send("**:no_entry_sign: There has been an error verifying you,** <@"+message.author.id+">**. If this problem persists, please rejoin or contact mustardfoot.**")
+            message.channel.send("**"+fEmoji+" There has been an error verifying you,** <@"+message.author.id+">**. If this problem persists, please rejoin or contact mustardfoot.**")
           }).then(() => {
             if(good === true){
-              message.channel.send("**:white_check_mark: You have been verified,** <@"+message.author.id+">**.**")
+              message.channel.send("**"+sEmoji+" You have been verified,** <@"+message.author.id+">**.**")
             }
           });
         }else{
-          message.channel.send(":no_entry_sign: **The verified role doesn't exist. Please contact mustardfoot to fix this.**")
+          message.channel.send(fEmoji+" **The verified role doesn't exist. Please contact mustardfoot to fix this.**")
         }
       }else{
-        message.channel.send("**:no_entry_sign: There has been an error verifying you,** <@"+message.author.id+">**. Please rejoin the server.**")
+        message.channel.send("**"+fEmoji+" There has been an error verifying you,** <@"+message.author.id+">**. Please rejoin the server.**")
       }
     }
 });
@@ -867,6 +867,66 @@ client.on('ready', () => {
 client.on('messageUpdate', (omessage, message) => {
   checkpermit(message,omessage);
 });
+
+var setupemojis = function() {
+  return new Promise(function(resolve, reject){
+     var fEmoji
+     var sEmoji
+     if(client.emojis.find("name", "mustardGood")){
+       sEmoji = client.emojis.find("name", "mustardGood");
+       if(client.emojis.find("name", "mustardBad")){
+         fEmoji = client.emojis.find("name", "mustardBad");
+         resolve(sEmoji,fEmoji)
+       }else{
+         guild.createEmoji('./images/xmark.png', 'mustardBad')
+         .then((emoji) => {
+           fEmoji = emoji
+           resolve(sEmoji,fEmoji)
+         })
+         .catch(() => {
+           fEmoji = ""
+           resolve(sEmoji,fEmoji)
+         })
+       }
+     }else{
+       guild.createEmoji('./images/checkmark.png', 'mustardGood')
+       .then((emoji) => {
+         sEmoji = emoji
+         if(client.emojis.find("name", "mustardBad")){
+           fEmoji = client.emojis.find("name", "mustardBad");
+           resolve(sEmoji,fEmoji)
+         }else{
+           guild.createEmoji('./images/xmark.png', 'mustardBad')
+           .then((emoji) => {
+             fEmoji = emoji
+             resolve(sEmoji,fEmoji)
+           })
+           .catch(() => {
+             fEmoji = ""
+             resolve(sEmoji,fEmoji)
+           })
+         }
+       })
+       .catch(() => {
+         sEmoji = ""
+         if(client.emojis.find("name", "mustardBad")){
+           fEmoji = client.emojis.find("name", "mustardBad");
+           resolve(sEmoji,fEmoji)
+         }else{
+           guild.createEmoji('./images/xmark.png', 'mustardBad')
+           .then((emoji) => {
+             fEmoji = emoji
+             resolve(sEmoji,fEmoji)
+           })
+           .catch(() => {
+             fEmoji = ""
+             resolve(sEmoji,fEmoji)
+           })
+         }
+       })
+     }
+  })
+}
 
 client.on('message', function(message) {
   if (message.author.equals(client.user)) return;
@@ -895,6 +955,9 @@ client.on('message', function(message) {
   }
   var saidcommand = args[0].toLowerCase()
   var alreadycommanded = false;
+  var fEmoji
+  var sEmoji
+  sEmoji,fEmoji = setupemojis()
   commands.forEach(function(command){
       if(alreadycommanded === false){
         var isalias = false;
@@ -905,26 +968,26 @@ client.on('message', function(message) {
         });
       	if(command.name === saidcommand || isalias === true){
           if(command.minrank === ""){
-            command.does(args,message);
+            command.does(args,message,sEmoji,fEmoji);
           }else{
             if(guild){
               if(guild.roles.find("name",command.minrank)){
                 guild.fetchMember(message.author).then((theirmember) => {
                   if(!theirmember){
-                    message.channel.send(":no_entry_sign: **Sorry, I can't find you in the server!**")
+                    message.channel.send(fEmoji+" **Sorry, I can't find you in the server!**")
                   }else{
                     if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
-                      command.does(args,message);
+                      command.does(args,message,sEmoji,fEmoji);
                     }else{
-                      message.channel.send(":no_entry_sign: **You're not a high enough role to run this command** (requires the [*"+command.minrank+"*] rank)")
+                      message.channel.send(fEmoji+" **You're not a high enough role to run this command** (requires the [*"+command.minrank+"*] rank)")
                     }
                   }
                 })
                 .catch(() => {
-                  message.channel.send(":no_entry_sign: **Sorry, I can't find you in the server!**")
+                  message.channel.send(fEmoji+" **Sorry, I can't find you in the server!**")
                 })
               }else{
-                message.channel.send(":no_entry_sign: **Sorry, the required role** (*"+command.minrank+"*) **for this command doesn't exist!**")
+                message.channel.send(fEmoji+" **Sorry, the required role** (*"+command.minrank+"*) **for this command doesn't exist!**")
               }
             }
           }
