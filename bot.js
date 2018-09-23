@@ -939,6 +939,7 @@ client.on('message', function(message) {
 
 var myInterval = setInterval(function() {
   t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
+    if(datas){
     datas.forEach(function(data){
       if (data.name === "mutes"){
         hwids = data.id;
@@ -1007,6 +1008,7 @@ var myInterval = setInterval(function() {
         })
       });
     }
+  }
 });
 }, 5000);
 
