@@ -583,7 +583,7 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
                               ]
                             }})
                           }else{
-                            message.channel.send(fEmoji+" **You're not a high enough role to see this command** (requires the [*"+command.minrank+"*] rank)")
+                            message.channel.send(fEmoji+" **You're not a high enough role to see this command** (requires the *"+command.minrank+"* rank)")
                           }
                         }
                       })
@@ -920,7 +920,7 @@ client.on('message', function(message) {
                     if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
                       command.does(args,message);
                     }else{
-                      message.channel.send(fEmoji+" **You're not a high enough role to run this command** (requires the [*"+command.minrank+"*] rank)")
+                      message.channel.send(fEmoji+" **You're not a high enough role to run this command** (requires the *"+command.minrank+"* rank)")
                     }
                   }
                 })
