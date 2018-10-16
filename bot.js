@@ -304,7 +304,7 @@ addcommand("kick",[],"This command will kick someone out of the server.","modera
   }
 });
 
-addcommand("rerole",["rerank"],"This command will give back a user's buyer role if their whitelist is in the database.","helper",function(args,message){
+addcommand("rerole",["rerank"],"This command will give back a user's premium role if their whitelist is in the database.","helper",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -325,11 +325,11 @@ addcommand("rerole",["rerank"],"This command will give back a user's buyer role 
                   }
                 })
                 if(alreadyfound === true){
-                  if(guild.roles.find("name","buyer")){
-                    mentionedmember.addRole(guild.roles.find("name","buyer"))
+                  if(guild.roles.find("name","premium")){
+                    mentionedmember.addRole(guild.roles.find("name","premium"))
                     message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been given back their role.**");
                   }else{
-                    message.channel.send("**"+fEmoji+" The buyer role does not exist.**")
+                    message.channel.send("**"+fEmoji+" The premium role does not exist.**")
                   }
                 }else{
                   message.channel.send("**"+fEmoji+" This user is not whitelisted.**")
@@ -365,7 +365,7 @@ addcommand("unwhitelist",["removewhitelist","revokewhitelist"],"This command wil
                     t.del('1/cards/'+card.id,function(err,returns){
                       var roles = mentionedmember.roles
                       roles.forEach(function(role){
-                        if (role.name === "buyer") {
+                        if (role.name === "premium") {
                           mentionedmember.removeRole(role)
                         }
                       })
@@ -410,11 +410,11 @@ addcommand("whitelist",[],"This command will whitelist a user after they purchas
                 })
                 if(alreadyfound === false){
                   t.post('/1/cards?name='+mentionedmember.id+'&pos=top&idList='+hwids,function(err,returns){
-                    if(guild.roles.find("name","buyer")){
-                      mentionedmember.addRole(guild.roles.find("name","buyer"))
+                    if(guild.roles.find("name","premium")){
+                      mentionedmember.addRole(guild.roles.find("name","premium"))
                       message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been whitelisted!**");
                     }else{
-                      message.channel.send("**"+fEmoji+" The buyer role does not exist.**")
+                      message.channel.send("**"+fEmoji+" The premium role does not exist.**")
                     }
                   });
                 }else{
