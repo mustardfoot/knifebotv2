@@ -3,8 +3,8 @@ const Trello = require("node-trello");
 const t = new Trello(process.env.T_KEY,process.env.T_TOKEN);
 const client = new Discord.Client();
 var pref = "!"
-var sEmoji;
-var fEmoji;
+var sEmoji = "";
+var fEmoji = "";
 var guild;
 var commands = [];
 
@@ -20,61 +20,6 @@ function diff_minutes(dt2, dt1, add)
   return Math.round(diff-add);
 
  }
-
- function checkpermit(message,oldmessage){
-   var good = true;
-   if(!oldmessage){
-     var links = false;
-     var attachments = false;
-     if(message.guild && message.guild === guild){
-       if (message.content.toLowerCase().indexOf('http') !== -1 || message.content.toLowerCase().indexOf('discord.gg') !== -1 || message.content.toLowerCase().indexOf('://') !== -1){
-         links = true;
-         good = false;
-         if(message.member){
-           if(guild.roles.find("name","helper")){
-             if(message.member.highestRole.comparePositionTo(guild.roles.find("name","helper")) >= 0){
-               good = true;
-             }
-           }
-           var roles = message.member.roles
-           roles.forEach(function(role){
-             if (role.name === "permit") {
-               good = true;
-               message.member.removeRole(role);
-             }
-           })
-           if(good === false){
-             links = false;
-           }
-         }
-
-       }
-       message.attachments.forEach(function(att){
-         attachments = true;
-       })
-       if (attachments === true && links === false){
-         if(message.member){
-           if(guild.roles.find("name","helper")){
-             if(message.member.highestRole.comparePositionTo(guild.roles.find("name","helper")) >= 0){
-               good = true;
-             }
-           }
-           var roles = message.member.roles
-           roles.forEach(function(role){
-             if (role.name === "permit") {
-               good = true;
-               message.member.removeRole(role);
-             }
-           })
-         }
-       }
-     }
-   }
-   if(good === false){
-     message.delete();
-   }
- }
-
 var getuserfromid = function(id) {
   return new Promise(function(resolve, reject){
      if(id.substring(0,2) === "<@" && id.substring(id.length-1) === ">" && Number(id.substring(2,id.length-1))){
@@ -117,29 +62,7 @@ addcommand("test",["check"],"This command will respond if the bot is online. A s
     message.channel.send(sEmoji+" **The bot is active!**");
 });
 
-addcommand("getpicture",["getprofile","getprofilepicture","getpfp","pfp","picture","getprofile"],"This command will reply with the profile picture of the user specified.","",function(args,message){
-    if(message.guild && message.guild === guild && message.channel.guild && message.channel.name && message.channel.name === "bot"){
-      if(args[1]){
-        var user = getuserfromid(args[1]).then((mentioneduser) => {
-          if(mentioneduser){
-            if(mentioneduser.avatarURL){
-              message.channel.send(sEmoji+" Here is **"+mentioneduser.tag+"'s** profile picture: "+mentioneduser.avatarURL);
-            }
-          }else{
-            message.channel.send(fEmoji+" **Sorry, I can't find that user!**")
-          }
-        }).catch(() => {
-          message.channel.send(fEmoji+" **Sorry, I can't find that user!**")
-        });
-      }else{
-        message.channel.send(fEmoji+" **You need to specify a user to get their profile picture.**");
-      }
-    }else{
-      message.channel.send(fEmoji+" **This command can only be used in the bot commands channel.**");
-    }
-});
-
-addcommand("ban",["bean"],"This command will ban someone from joining the server permanently.","moderator",function(args,message){
+addcommand("ban",["bean"],"This command will ban someone from joining the server permanently.","Server Moderator",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -160,14 +83,20 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
                 });
               }
               mentionedmember.user.createDM().then((boi) => {
-                boi.send('**You have been banned from the server for ['+reason+']**')
-                guild.ban(mentionedmember,{reason: reason})
+                boi.send('**You have been banned from the server for [**'+reason+'**]**')
+                .then(() => {
+                  guild.ban(mentionedmember,{reason: reason})
+                })
+                .catch(() => {
+                  guild.ban(mentionedmember,{reason: reason})
+                })
                 message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been banned.**");
                 guild.channels.forEach(function(channel){
-                  if(channel.name === "logs"){
+                  if(channel.name === "🛑mod-logs"){
                     channel.send({"embed": {
                       "description":"Ban",
                       "timestamp": new Date(),
+                      "color": 1819163,
                       "fields": [
                         {
                           "name": "Staff Member",
@@ -211,10 +140,11 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
             guild.ban(mentioneduser,{reason: reason})
             message.channel.send(sEmoji+" **"+mentioneduser.tag+" has been banned.**");
             guild.channels.forEach(function(channel){
-              if(channel.name === "logs"){
+              if(channel.name === "🛑mod-logs"){
                 channel.send({"embed": {
                   "description":"Ban",
                   "timestamp": new Date(),
+                  "color": 1819163,
                   "fields": [
                     {
                       "name": "Staff Member",
@@ -245,7 +175,7 @@ addcommand("ban",["bean"],"This command will ban someone from joining the server
   }
 });
 
-addcommand("kick",[],"This command will kick someone out of the server.","moderator",function(args,message){
+addcommand("kick",[],"This command will kick someone out of the server.","Server Moderator",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -265,14 +195,20 @@ addcommand("kick",[],"This command will kick someone out of the server.","modera
               });
             }
             mentionedmember.user.createDM().then((boi) => {
-              boi.send('**You have been kicked from the server for ['+reason+']**')
-              mentionedmember.kick()
+              boi.send('**You have been kicked from the server for [**'+reason+'**]**')
+              .then(() => {
+                mentionedmember.kick()
+              })
+              .catch(() => {
+                mentionedmember.kick()
+              })
               message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been kicked.**");
               guild.channels.forEach(function(channel){
-                if(channel.name === "logs"){
+                if(channel.name === "🛑mod-logs"){
                   channel.send({"embed": {
                     "description":"Kick",
                     "timestamp": new Date(),
+                    "color": 1819163,
                     "fields": [
                       {
                         "name": "Staff Member",
@@ -304,184 +240,152 @@ addcommand("kick",[],"This command will kick someone out of the server.","modera
   }
 });
 
-addcommand("rerole",["rerank"],"This command will give back a user's premium role if their whitelist is in the database.","helper",function(args,message){
+addcommand("warn",[],"This command will give a user a warning that can be viewed in the logs.","Server Moderator",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
       if (mentionedmember){
         if(mentionedmember.user !== client.user){
-          t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
-            datas.forEach(function(data){
-              if (data.name === "mains"){
-                hwids = data.id;
-              }
-            })
-            if(hwids){
-              var alreadyfound = false;
-              t.get("/1/lists/"+hwids+"/cards?fields=id,name,desc",function(err,cards){
-                cards.forEach(function(card){
-                  if(card.name === mentionedmember.id){
-                    alreadyfound = true;
+          if(message.member && message.member.highestRole.comparePositionTo(mentionedmember.highestRole) > 0){
+            var reason = "No Reason Provided"
+            if(args[2]){
+              reason = "";
+              args.forEach(function(arg,n){
+                if(n > 1){
+                  if(n > 2){
+                    reason = reason+" "
                   }
-                })
-                if(alreadyfound === true){
-                  if(guild.roles.find("name","premium")){
-                    mentionedmember.addRole(guild.roles.find("name","premium"))
-                    message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been given back their role.**");
-                  }else{
-                    message.channel.send("**"+fEmoji+" The premium role does not exist.**")
-                  }
-                }else{
-                  message.channel.send("**"+fEmoji+" This user is not whitelisted.**")
+                  reason = reason+arg
                 }
               });
-            }else{
-              message.channel.send("**Something seems to be wrong with the whitelist database, please contact mustardfoot about this issue.**")
             }
-          });
-        }
-      }
-    }
-  }
-});
-
-addcommand("unwhitelist",["removewhitelist","revokewhitelist"],"This command will remove a user's whitelist from the database.","owner",function(args,message){
-  if(message.guild && message.guild === guild){
-    if(args[1]){
-      var mentionedmember = getmemberfromid(args[1]);
-      if (mentionedmember){
-        if(mentionedmember.user !== client.user){
-          t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
-            datas.forEach(function(data){
-              if (data.name === "mains"){
-                hwids = data.id;
-              }
-            })
-            if(hwids){
-              var alreadyfound = false;
-              t.get("/1/lists/"+hwids+"/cards?fields=id,name,desc",function(err,cards){
-                cards.forEach(function(card){
-                  if(card.name === mentionedmember.id){
-                    t.del('1/cards/'+card.id,function(err,returns){
-                      var roles = mentionedmember.roles
-                      roles.forEach(function(role){
-                        if (role.name === "premium") {
-                          mentionedmember.removeRole(role)
-                        }
-                      })
-                      message.channel.send(sEmoji+" **<@"+mentionedmember.id+">'s whitelist has been revoked.**");
-                    });
-                    alreadyfound = true;
-                  }
-                })
-                if(alreadyfound === false){
-                  message.channel.send("**"+fEmoji+" This user is not whitelisted.**")
+            mentionedmember.user.createDM().then((boi) => {
+              boi.send("**You have been given a warning for [**"+reason+"**]. Don't do it again.**")
+              mentionedmember.addRole(guild.roles.find("name","Warning"))
+              message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been given a warning.**");
+              guild.channels.forEach(function(channel){
+                if(channel.name === "🛑mod-logs"){
+                  channel.send({"embed": {
+                    "description":"Warning",
+                    "timestamp": new Date(),
+                    "color": 1819163,
+                    "fields": [
+                      {
+                        "name": "Staff Member",
+                        "value": "<@"+message.author.id+">",
+                        "inline": true
+                      },
+                      {
+                        "name": "User",
+                        "value": "<@"+mentionedmember.id+">",
+                        "inline": true
+                      },
+                      {
+                        "name": "Reason",
+                        "value": reason
+                      }
+                    ]
+                  }})
                 }
               });
-            }else{
-              message.channel.send("**Something seems to be wrong with the whitelist database, please contact mustardfoot about this issue.**")
-            }
-          });
-        }
-      }
-    }
-  }
-});
-
-addcommand("whitelist",[],"This command will whitelist a user after they purchase the product.","owner",function(args,message){
-  if(message.guild && message.guild === guild){
-    if(args[1]){
-      var mentionedmember = getmemberfromid(args[1]);
-      if (mentionedmember){
-        if(mentionedmember.user !== client.user){
-          t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
-            datas.forEach(function(data){
-              if (data.name === "mains"){
-                hwids = data.id;
-              }
-            })
-            if(hwids){
-              var alreadyfound = false;
-              t.get("/1/lists/"+hwids+"/cards?fields=id,name,desc",function(err,cards){
-                cards.forEach(function(card){
-                  if(card.name === mentionedmember.id){
-                    alreadyfound = true;
-                  }
-                })
-                if(alreadyfound === false){
-                  t.post('/1/cards?name='+mentionedmember.id+'&pos=top&idList='+hwids,function(err,returns){
-                    if(guild.roles.find("name","premium")){
-                      mentionedmember.addRole(guild.roles.find("name","premium"))
-                      message.channel.send(sEmoji+" **<@"+mentionedmember.id+"> has been whitelisted!**");
-                    }else{
-                      message.channel.send("**"+fEmoji+" The premium role does not exist.**")
-                    }
-                  });
-                }else{
-                  message.channel.send("**"+fEmoji+" This user is already whitelisted.**")
-                }
-              });
-            }else{
-              message.channel.send("**Something seems to be wrong with the whitelist database, please contact mustardfoot about this issue.**")
-            }
-          });
-        }
-      }
-    }
-  }
-});
-
-addcommand("permit",[],"Permitting a user allows them to post an image, file, or link. The link or image should then be moderated by the user issuing the permit to make sure it follows the rules.","helper",function(args,message){
-    if(message.guild && message.guild === guild){
-      if(args[1]){
-        var theirmember = getmemberfromid(args[1])
-        if(theirmember){
-          if(guild.roles.find("name","permit")){
-            var alreadypermitted = false;
-            var roles = theirmember.roles
-            roles.forEach(function(role){
-              if (role.name === "permit") {
-                alreadypermitted = true;
-              }
-            })
-            if(alreadypermitted === false){
-              theirmember.addRole(guild.roles.find("name","permit"));
-              message.channel.send("**"+sEmoji+" <@"+theirmember.id+"> has been permitted to post an image, file, or link.**");
-            }else{
-              message.channel.send("**"+fEmoji+" This user is already permitted.**")
-            }
+            });
           }else{
-            message.channel.send("**"+fEmoji+" The permit role cannot be found.**")
+            message.channel.send("**"+fEmoji+" You are not able to moderate this user.**")
           }
         }else{
-          message.channel.send("**"+fEmoji+" This is not a valid user.**")
+          message.channel.send("**"+fEmoji+" I did nothing wrong! :(**")
         }
       }
     }
+  }
 });
 
-addcommand("revokepermit",["removepermit","unpermit"],"Removes a user's permit if they refuse to post a file, image, or link after receiving one.","helper",function(args,message){
-    if(message.guild && message.guild === guild){
-      if(args[1]){
-        var theirmember = getmemberfromid(args[1])
-        if(theirmember){
-          var unpermitted = false;
-          var roles = theirmember.roles
-          roles.forEach(function(role){
-            if (role.name === "permit") {
-              unpermitted = true;
-              theirmember.removeRole(role);
-              message.channel.send("**"+sEmoji+" <@"+theirmember.id+">'s permit has been removed.**");
-            }
-          })
-          if(unpermitted === false){
-            message.channel.send("**"+fEmoji+" <@"+theirmember.id+"> is not permitted.**");
+addcommand("say",["botsay","botchat"],"This will make the bot say whatever you want; the message and the author will be visible in logs.","Contributor",function(args,message){
+  if(message.guild && message.guild === guild){
+    if(args[1]){
+      var reason = "";
+      args.forEach(function(arg,n){
+        if(n !== 1){
+          reason = reason+" "+arg
+        }else{
+          reason = arg
+        }
+      });
+      message.channel.send(reason)
+      .then(() => {
+        message.delete();
+      });
+      guild.channels.forEach(function(channel){
+        if(channel.name === "🤖bot-blast"){
+          channel.send({"embed": {
+            "description":"Bot Chat",
+            "timestamp": new Date(),
+            "color": 1819163,
+            "fields": [
+              {
+                "name": "Author",
+                "value": "<@"+message.author.id+">",
+                "inline": true
+              },
+              {
+                "name": "Message",
+                "value": reason
+              }
+            ]
+          }})
+        }
+      });
+    }
+  }
+});
+
+addcommand("unwarn",["removewarnings","revokewarnings","clearwarnings"],"This command will remove a user's warning role, should only be used if all of a user's warnings were invalid or very old.","Server Moderator",function(args,message){
+  if(message.guild && message.guild === guild){
+    if(args[1]){
+      var mentionedmember = getmemberfromid(args[1]);
+      if (mentionedmember){
+        if(mentionedmember.user !== client.user){
+          if(message.member && message.member.highestRole.comparePositionTo(mentionedmember.highestRole) > 0){
+            mentionedmember.user.createDM().then((boi) => {
+              boi.send('**Your warning has been removed.**')
+              var roles = mentionedmember.roles
+              roles.forEach(function(role){
+                if (role.name === "Warning") {
+                  mentionedmember.removeRole(role)
+                }
+              })
+              message.channel.send(sEmoji+" **<@"+mentionedmember.id+">'s warning has been removed.**");
+              guild.channels.forEach(function(channel){
+                if(channel.name === "🛑mod-logs"){
+                  channel.send({"embed": {
+                    "description":"Warning Removed",
+                    "timestamp": new Date(),
+                    "color": 1819163,
+                    "fields": [
+                      {
+                        "name": "Staff Member",
+                        "value": "<@"+message.author.id+">",
+                        "inline": true
+                      },
+                      {
+                        "name": "User",
+                        "value": "<@"+mentionedmember.id+">",
+                        "inline": true
+                      }
+                    ]
+                  }})
+                }
+              });
+            });
+          }else{
+            message.channel.send("**"+fEmoji+" You are not able to moderate this user.**")
           }
         }else{
-          message.channel.send("**"+fEmoji+" This is not a valid user.**")
+          message.channel.send("**"+fEmoji+" I don't even have a warning in the first place.**")
         }
       }
     }
+  }
 });
 
 addcommand("commands",["cmds","help","?"],"This command displays all the commands avaliable for use by the user running the command. Supplying it with a command to look up will provide further detail on said command.","",function(args,message){
@@ -507,6 +411,7 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
         message.channel.send({"embed": {
           "title": "You have access to ("+commandsamount+") commands",
           "description": "``"+viablecommands+"``",
+          "color": 1819163,
           "footer": {
             "text": "To learn more about a command, say !help [command name] and you will be shown more information about it."
           }
@@ -542,6 +447,7 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
                 if(command.minrank === ""){
                   message.channel.send({"embed": {
                   	"description": "`Displaying Info About: ["+capitalizeFirstLetter(command.name)+"]`",
+                    "color": 1819163,
                   	"fields": [
                   		{
                   			"name": "Aliases:",
@@ -567,6 +473,7 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
                           if(theirmember.highestRole.comparePositionTo(guild.roles.find("name",command.minrank)) >= 0){
                             message.channel.send({"embed": {
                               "description": "`Displaying Info About: ["+capitalizeFirstLetter(command.name)+"]`",
+                              "color": 1819163,
                               "fields": [
                                 {
                                   "name": "Aliases:",
@@ -604,14 +511,23 @@ addcommand("commands",["cmds","help","?"],"This command displays all the command
     }
 });
 
-addcommand("unmute",[],"This command unmutes a user who was previously muted.","helper",function(args,message){
+addcommand("credits",["creator"],"Tells you who's the super cool boi who made this bot.","",function(args,message){
+    message.channel.send("the supa cool guy who made this bot is ...")
+    .then((msg) => {
+      if(msg){
+        msg.edit("the supa cool guy who made this bot is <@447043299858055170>")
+      }
+    });
+});
+
+addcommand("unmute",[],"This command unmutes a user who was previously muted.","Server Moderator",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
       if (mentionedmember){
         if(mentionedmember.user !== client.user){
           if (message.member && message.member.highestRole.comparePositionTo(mentionedmember.highestRole) > 0 ) {
-            t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
+            t.get("/1/boards/5c106bd3f821397d6bf27c3a/lists", function(err, datas) {
               datas.forEach(function(data){
                 if (data.name === "mutes"){
                   hwids = data.id;
@@ -635,15 +551,16 @@ addcommand("unmute",[],"This command unmutes a user who was previously muted.","
             })
             var roles = mentionedmember.roles
             roles.forEach(function(role){
-              if (role.name === "muted") {
+              if (role.name === "Muted") {
                 mentionedmember.removeRole(role)
               }
             })
             guild.channels.forEach(function(channel){
-              if(channel.name === "logs"){
+              if(channel.name === "🛑mod-logs"){
                 channel.send({"embed": {
                   "description":"Unmute",
                   "timestamp": new Date(),
+                  "color": 1819163,
                   "fields": [
                     {
                       "name": "Staff Member",
@@ -671,7 +588,7 @@ addcommand("unmute",[],"This command unmutes a user who was previously muted.","
   }
 });
 
-addcommand("mute",[],"Prevents the specified user from speaking in text and voice channels until they're unmuted or their mute time is up.\n\n**Examples:**\n!mute [user] 50 (mutes for 50 minutes)\n!mute [user] 30s (mutes for 30 seconds)\n!mute [user] 5h (mutes for 5 hours)\n!mute [user] 2d (mutes for 2 days)\n!mute [user] 1w (mutes for 1 week)","helper",function(args,message){
+addcommand("mute",[],"Prevents the specified user from speaking in text and voice channels until they're unmuted or their mute time is up.\n\n**Examples:**\n!mute [user] 50 (mutes for 50 minutes)\n!mute [user] 30s (mutes for 30 seconds)\n!mute [user] 5h (mutes for 5 hours)\n!mute [user] 2d (mutes for 2 days)\n!mute [user] 1w (mutes for 1 week)","Server Moderator",function(args,message){
   if(message.guild && message.guild === guild){
     if(args[1]){
       var mentionedmember = getmemberfromid(args[1]);
@@ -746,7 +663,7 @@ addcommand("mute",[],"Prevents the specified user from speaking in text and voic
             }
             var today = new Date();
             var m = today.getMinutes();
-            t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
+            t.get("/1/boards/5c106bd3f821397d6bf27c3a/lists", function(err, datas) {
               datas.forEach(function(data){
                 if (data.name === "mutes"){
                   hwids = data.id;
@@ -760,9 +677,9 @@ addcommand("mute",[],"Prevents the specified user from speaking in text and voic
                     }
                   })
                   t.post('/1/cards?name='+mentionedmember.id+'&desc='+time+'&pos=top&idList='+hwids,function(err,returns){
-                    if(guild.roles.find("name","muted")){
+                    if(guild.roles.find("name","Muted")){
                       var good = true;
-                      mentionedmember.addRole(guild.roles.find("name","muted"))
+                      mentionedmember.addRole(guild.roles.find("name","Muted"))
                       .catch(() => {
                         good = false;
                         message.channel.send("**"+fEmoji+" There has been an error giving the user the muted role. Please attempt to re-mute them.**")
@@ -776,10 +693,11 @@ addcommand("mute",[],"Prevents the specified user from speaking in text and voic
                         })
                         if(good === true){
                           guild.channels.forEach(function(channel){
-                            if(channel.name === "logs"){
+                            if(channel.name === "🛑mod-logs"){
                               channel.send({"embed": {
                                 "description":"Mute",
                                 "timestamp": new Date(),
+                                "color": 1819163,
                                 "fields": [
                                   {
                                     "name": "Staff Member",
@@ -834,60 +752,16 @@ addcommand("mute",[],"Prevents the specified user from speaking in text and voic
   }
 });
 
-addcommand("verify",[],"This command is used only in the #verify channel and is used to make sure users are not bots and aren't glitched.","",function(args,message){
-    if(message.channel.guild && message.channel.name && message.channel.name === "verify"){
-      if(message.member){
-        var good = true;
-        if(guild.roles.find("name","verified")){
-          message.member.addRole(message.member.guild.roles.find("name","verified"))
-          .catch(() => {
-            good = false;
-            message.channel.send("**"+fEmoji+" There has been an error verifying you,** <@"+message.author.id+">**. If this problem persists, please rejoin or contact mustardfoot.**")
-          }).then(() => {
-            if(good === true){
-              message.channel.send("**"+sEmoji+" You have been verified,** <@"+message.author.id+">**.**")
-            }
-          });
-        }else{
-          message.channel.send(fEmoji+" **The verified role doesn't exist. Please contact mustardfoot to fix this.**")
-        }
-      }else{
-        message.channel.send("**"+fEmoji+" There has been an error verifying you,** <@"+message.author.id+">**. Please rejoin the server.**")
-      }
-    }
-});
-
 process.on('unhandledRejection', (err, p) => {
 });
 
 client.on('ready', () => {
-  console.log('hell yeah');
-  client.user.setActivity('over the server (prefix is !)', { type: 'WATCHING' })
+  console.log('bot starting up');
+  client.user.setActivity('over the server', { type: 'WATCHING' })
   .catch(console.error);
 });
 
-client.on('messageUpdate', (omessage, message) => {
-  checkpermit(message,omessage);
-});
-
 client.on('message', function(message) {
-  if (message.author.equals(client.user)) return;
-  checkpermit(message);
-  var args = message.content.substring(pref.length).split(" ");
-  if(message.content.toLowerCase().indexOf('this is so sad') !== -1){
-    message.channel.send(':musical_note: **Now playing Despacito.**')
-  }
-  if(message.content.toLowerCase().indexOf("what's ligma") !== -1 || message.content.toLowerCase().indexOf("what is ligma") !== -1 || message.content.toLowerCase().indexOf("whats ligma") !== -1){
-    message.channel.send('ligma balls XD')
-  }else if(message.content.toLowerCase().indexOf("what's sugma") !== -1 || message.content.toLowerCase().indexOf("what is sugma") !== -1 || message.content.toLowerCase().indexOf("whats sugma") !== -1){
-    message.channel.send('sugma dick XD')
-  }else if(message.content.toLowerCase().indexOf("what's updog") !== -1 || message.content.toLowerCase().indexOf("what is updog") !== -1 || message.content.toLowerCase().indexOf("whats updog") !== -1){
-    message.channel.send('not much, whats up with you XD')
-  }else if(message.content.toLowerCase().indexOf("what's sugondese") !== -1 || message.content.toLowerCase().indexOf("what is sugondese" || message.content.toLowerCase().indexOf("whats sugondese") !== -1) !== -1){
-    message.channel.send('sugondese nuts XD')
-  }
-
-  if (!message.content.startsWith(pref)) return;
   if(!guild){
     client.guilds.forEach(function(g){
       if(g.id === process.env.SERVER_ID){
@@ -895,8 +769,21 @@ client.on('message', function(message) {
       }
     });
   }
-  sEmoji = client.emojis.find("name", "mustardGood").toString()
-  fEmoji = client.emojis.find("name", "mustardBad").toString()
+  if (message.author.equals(client.user)) return;
+  var args = message.content.substring(pref.length).split(" ");
+  if (!message.content.startsWith(pref)) return;
+  var yespapa = guild.emojis.find("name","botGood")
+  var nopapa = guild.emojis.find("name","botBad")
+  if(yespapa === null){
+    guild.createEmoji('https://i.imgur.com/1IvY39Q.png', 'botGood')
+  }else{
+    sEmoji = yespapa.toString()
+  }
+  if(nopapa === null){
+    guild.createEmoji('https://i.imgur.com/SuWr1CZ.png', 'botBad')
+  }else{
+    fEmoji = nopapa.toString()
+  }
   var saidcommand = args[0].toLowerCase()
   var alreadycommanded = false;
   commands.forEach(function(command){
@@ -938,7 +825,7 @@ client.on('message', function(message) {
 });
 
 var myInterval = setInterval(function() {
-  t.get("/1/boards/5979179aba4cd1de66a4ea5b/lists", function(err, datas) {
+  t.get("/1/boards/5c106bd3f821397d6bf27c3a/lists", function(err, datas) {
     if(datas){
     datas.forEach(function(data){
       if (data.name === "mutes"){
@@ -963,16 +850,17 @@ var myInterval = setInterval(function() {
                       if(muser){
                         var roles = muser.roles
                         roles.forEach(function(role){
-                          if (role.name === "muted") {
+                          if (role.name === "Muted") {
                             muser.removeRole(role)
                             muser.createDM().then((boi) => {
                               boi.send('**Your mute time has run out and you have been unmuted in the server. You may now talk again.**')
                             })
                             guild.channels.forEach(function(channel){
-                              if(channel.name === "logs"){
+                              if(channel.name === "🛑mod-logs"){
                                 channel.send({"embed": {
                                   "description":"Automatic Unmute",
                                   "timestamp": new Date(),
+                                  "color": 1819163,
                                   "fields": [
                                     {
                                       "name": "User",
@@ -995,8 +883,8 @@ var myInterval = setInterval(function() {
                   if(thatuser && thatuser !== undefined){
                     guild.fetchMember(thatuser).then((muser) => {
                       if(muser && muser !== undefined){
-                        if (guild.roles.find("name","muted")) {
-                          muser.addRole(guild.roles.find("name","muted"))
+                        if (guild.roles.find("name","Muted")) {
+                          muser.addRole(guild.roles.find("name","Muted"))
                         }
                       }
                     })
@@ -1011,5 +899,22 @@ var myInterval = setInterval(function() {
   }
 });
 }, 5000);
-
 client.login(process.env.BOT_TOKEN);
+
+client.guilds.forEach(function(g){
+  if(g.id === process.env.SERVER_ID){
+    guild = g;
+    var yespapa = g.emojis.find("name","botGood")
+    var nopapa = g.emojis.find("name","botBad")
+    if(yespapa === null){
+      g.createEmoji('https://i.imgur.com/1IvY39Q.png', 'botGood')
+    }else{
+      sEmoji = yespapa.toString()
+    }
+    if(nopapa === null){
+      g.createEmoji('https://i.imgur.com/SuWr1CZ.png', 'botBad')
+    }else{
+      fEmoji = nopapa.toString()
+    }
+  }
+});
